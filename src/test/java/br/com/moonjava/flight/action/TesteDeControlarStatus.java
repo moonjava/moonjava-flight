@@ -22,11 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.action.Status;
-import br.com.moonjava.flight.action.Voo;
-import br.com.moonjava.flight.action.VooAction;
-import br.com.moonjava.flight.action.VooUpdate;
-import br.com.moonjava.flight.jdbc.TruncateDataBase;
+import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -39,7 +35,7 @@ public class TesteDeControlarStatus {
 
   @BeforeClass
   public void limparTabela() {
-    new TruncateDataBase().load();
+    new DbUnit().load();
   }
 
   public void status_deve_ser_atualizado() {

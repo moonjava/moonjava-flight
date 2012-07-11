@@ -2,16 +2,16 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="1175" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
+  <suite name="Default suite" duration-ms="1194" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="1175" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
-      <class name="br.com.moonjava.flight.action.TesteDeCriarVoo">
-        <test-method status="PASS" signature="limparTabela()[pri:0, instance:br.com.moonjava.flight.action.TesteDeCriarVoo@811c88]" name="limparTabela" is-config="true" duration-ms="816" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
+    <test name="Default test" duration-ms="1194" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
+      <class name="br.com.moonjava.flight.action.TesteDeControlarStatus">
+        <test-method status="PASS" signature="limparTabela()[pri:0, instance:br.com.moonjava.flight.action.TesteDeControlarStatus@785d65]" name="limparTabela" is-config="true" duration-ms="908" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
         </test-method> <!-- limparTabela -->
-        <test-method status="PASS" signature="voo_deve_ser_criado()[pri:0, instance:br.com.moonjava.flight.action.TesteDeCriarVoo@811c88]" name="voo_deve_ser_criado" duration-ms="342" started-at="2012-07-09T22:54:21Z" finished-at="2012-07-09T22:54:21Z">
-        </test-method> <!-- voo_deve_ser_criado -->
-      </class> <!-- br.com.moonjava.flight.action.TesteDeCriarVoo -->
+        <test-method status="PASS" signature="status_deve_ser_atualizado()[pri:0, instance:br.com.moonjava.flight.action.TesteDeControlarStatus@785d65]" name="status_deve_ser_atualizado" duration-ms="272" started-at="2012-07-10T23:33:09Z" finished-at="2012-07-10T23:33:09Z">
+        </test-method> <!-- status_deve_ser_atualizado -->
+      </class> <!-- br.com.moonjava.flight.action.TesteDeControlarStatus -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

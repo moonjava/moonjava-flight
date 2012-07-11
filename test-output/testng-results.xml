@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="1175" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="1175" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
+      <class name="br.com.moonjava.flight.action.TesteDeCriarVoo">
+        <test-method status="PASS" signature="limparTabela()[pri:0, instance:br.com.moonjava.flight.action.TesteDeCriarVoo@811c88]" name="limparTabela" is-config="true" duration-ms="816" started-at="2012-07-09T22:54:20Z" finished-at="2012-07-09T22:54:21Z">
+        </test-method> <!-- limparTabela -->
+        <test-method status="PASS" signature="voo_deve_ser_criado()[pri:0, instance:br.com.moonjava.flight.action.TesteDeCriarVoo@811c88]" name="voo_deve_ser_criado" duration-ms="342" started-at="2012-07-09T22:54:21Z" finished-at="2012-07-09T22:54:21Z">
+        </test-method> <!-- voo_deve_ser_criado -->
+      </class> <!-- br.com.moonjava.flight.action.TesteDeCriarVoo -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

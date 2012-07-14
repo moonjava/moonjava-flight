@@ -40,7 +40,6 @@ public class VooAction implements Voo.Jdbc {
         .with("join FLIGHT.AERONAVE as AERONAVE")
         .with("on AERONAVE.ID = VOO.AERONAVE_ID")
 
-        .with("where 1 = 1")
         .load(new VooLoader());
   }
 
@@ -77,6 +76,7 @@ public class VooAction implements Voo.Jdbc {
 
     return query()
 
+        .with("where 1 = 1")
         .with("and VOO.STATUS = ?", status.ordinal())
         .with("and VOO.DATA_PARTIDA >= ?", partida)
         .with("and VOO.DATA_CHEGADA <= ?", chegada)
@@ -92,7 +92,7 @@ public class VooAction implements Voo.Jdbc {
   public Voo consultarPorCodigo(int codigo) {
     return query()
 
-        .with("and VOO.CODIGO = ?", codigo)
+        .with("where VOO.CODIGO = ?", codigo)
 
         .andGet();
   }

@@ -18,8 +18,9 @@ package br.com.moonjava.flight.jdbc;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.dbunit.DBTestCase;
-import org.dbunit.PropertiesBasedJdbcDatabaseTester;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.IDatabaseTester;
+import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -28,88 +29,62 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.2 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class DbUnit extends DBTestCase {
+public class DbUnit {
 
   private FlatXmlDataSet fileXml;
+  private IDatabaseTester databaseTester;
+  private DbUnitSupplier supplier;
 
-  public DbUnit() {
-    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
-        "com.mysql.jdbc.Driver");
-    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-        "jdbc:mysql://localhost/FLIGHT");
-    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "usjt");
-    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "usjt");
+  public void load(DbUnitSupplier supplier) {
+    this.supplier = supplier;
+    Conexao conexao = new ConexaoImpl();
+    conexao.getConexao();
+
+    try {
+      this.databaseTester = new JdbcDatabaseTester(
+          conexao.getDriverClass(),
+          String.format("%s/%s", conexao.getUrl(), supplier.getDataBase()),
+          conexao.getUser(),
+          conexao.getPassword());
+
+      IDataSet dataSet = getDataSet();
+      databaseTester.setDataSet(dataSet);
+      IDatabaseConnection conn = databaseTester.getConnection();
+      DatabaseOperation operation = getInsertOperation();
+
+      DatabaseOperation insert = DatabaseOperation.TRANSACTION(operation);
+      insert.execute(conn, dataSet);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException("It's impossible to load the class");
+
+    } catch (DatabaseUnitException e) {
+      throw new RuntimeException("Your connection with DbUnit has been failed");
+
+    } catch (Exception e) {
+      throw new RuntimeException("Error to execute Insert/Delete");
+    }
+
   }
 
-  @Override
   protected IDataSet getDataSet() {
     try {
       fileXml = new FlatXmlDataSetBuilder()
-          .build(new FileInputStream("src/test/resources/dbunit/dbunit-flight.xml"));
+          .build(new FileInputStream(supplier.getXml()));
 
       return fileXml;
     } catch (DataSetException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException("Failed to build a DataSet");
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException("Verify your Class DbUnitSupplier and subclass");
     }
   }
 
   protected DatabaseOperation getInsertOperation() throws Exception {
     return DatabaseOperation.CLEAN_INSERT;
-  }
-
-  protected DatabaseOperation getTruncateOperation() throws Exception {
-    return DatabaseOperation.TRUNCATE_TABLE;
-  }
-
-  public void load() {
-    try {
-      IDataSet dataSet = getDataSet();
-      IDatabaseConnection conn = getConnection();
-      DatabaseOperation operation = getInsertOperation();
-
-      DatabaseOperation insert = DatabaseOperation.TRANSACTION(operation);
-      insert.execute(conn, dataSet);
-    } catch (Exception e) {
-      throw new DbUnitException("Falha na operação: " + e);
-    }
-  }
-
-  public void truncate() {
-    try {
-      IDataSet dataSet = getDataSet();
-      IDatabaseConnection conn = getConnection();
-      DatabaseOperation operation = getTruncateOperation();
-
-      disableForeignKey(conn);
-      DatabaseOperation truncate = DatabaseOperation.TRANSACTION(operation);
-      truncate.execute(conn, dataSet);
-
-      enableForeignKey(conn);
-    } catch (Exception e) {
-      throw new DbUnitException("Falha na operação: " + e);
-    }
-  }
-
-  protected void disableForeignKey(IDatabaseConnection conn) {
-    statement(conn, "set foreign_key_checks=0"); // MySQL
-  }
-
-  protected void enableForeignKey(IDatabaseConnection conn) {
-    statement(conn, "set foreign_key_checks=1"); // MySQL
-  }
-
-  private void statement(IDatabaseConnection con, String sql) {
-    try {
-      con.getConnection().prepareStatement(sql).execute();
-    } catch (Exception e) {
-      throw new DbUnitException("Erro em statement: " + e);
-    }
   }
 
 }

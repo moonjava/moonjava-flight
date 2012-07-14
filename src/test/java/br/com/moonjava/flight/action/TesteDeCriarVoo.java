@@ -26,6 +26,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.jdbc.DbUnit;
+import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -38,7 +39,8 @@ public class TesteDeCriarVoo {
 
   @BeforeClass
   public void limparTabela() {
-    new DbUnit().load();
+    DbUnit dbUnit = new DbUnit();
+    dbUnit.load(new DbUnitFlightXml());
   }
 
   public void voo_deve_ser_criado() {

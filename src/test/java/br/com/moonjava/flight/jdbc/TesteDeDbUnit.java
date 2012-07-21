@@ -30,16 +30,16 @@ import org.testng.annotations.Test;
 @Test
 public class TesteDeDbUnit {
 
-  public void dbunit_deve_funcionar_corretamente() throws Exception {
+  public void teste_de_insert_dbunit() throws Exception {
     DbUnit dbUnit = new DbUnit();
-    dbUnit.load();
+    dbUnit.load(new DbUnitFlightXml());
 
     IDataSet dataSet = dbUnit.getDataSet();
     int aeronave = dataSet.getTable("AERONAVE").getRowCount();
     int voo = dataSet.getTable("VOO").getRowCount();
 
     assertThat(aeronave, equalTo(2));
-    assertThat(voo, equalTo(2));
+    assertThat(voo, equalTo(4));
   }
 
 }

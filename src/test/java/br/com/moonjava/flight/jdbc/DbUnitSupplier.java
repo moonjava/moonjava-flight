@@ -20,12 +20,8 @@ package br.com.moonjava.flight.jdbc;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class DbUnitException extends RuntimeException {
+public interface DbUnitSupplier {
 
-  private static final long serialVersionUID = 1L;
-
-  public DbUnitException(String message) {
-    super(message);
-  }
+  String getXml();
 
 }

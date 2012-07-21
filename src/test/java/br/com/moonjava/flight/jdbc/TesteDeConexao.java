@@ -38,7 +38,7 @@ public class TesteDeConexao {
       Connection connection = conexao.getConexao();
 
       assertThat(conexao.getDriverClass(), equalTo("com.mysql.jdbc.Driver"));
-      assertThat(conexao.getUrl(), equalTo("jdbc:mysql://localhost"));
+      assertThat(conexao.getUrl(), equalTo("jdbc:mysql://localhost/FLIGHT"));
       assertThat(conexao.getUser(), equalTo("usjt"));
       assertThat(conexao.getPassword(), equalTo("usjt"));
 

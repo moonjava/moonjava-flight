@@ -23,13 +23,8 @@ package br.com.moonjava.flight.jdbc;
 public class DbUnitFlightXml implements DbUnitSupplier {
 
   @Override
-  public String getDataBase() {
-    return "FLIGHT";
-  }
-
-  @Override
   public String getXml() {
-    return "src/test/resources/dbunit/dbunit-flight.xml";
+    return "dbunit-flight.xml";
   }
 
 }

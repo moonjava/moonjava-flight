@@ -22,8 +22,6 @@ package br.com.moonjava.flight.jdbc;
  */
 public interface DbUnitSupplier {
 
-  String getDataBase();
-
   String getXml();
 
 }

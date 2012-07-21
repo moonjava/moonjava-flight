@@ -35,19 +35,20 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public class DbUnit {
 
+  private Conexao conexao;
   private FlatXmlDataSet fileXml;
   private IDatabaseTester databaseTester;
   private DbUnitSupplier supplier;
 
   public void load(DbUnitSupplier supplier) {
+    conexao = new ConexaoImpl();
     this.supplier = supplier;
-    Conexao conexao = new ConexaoImpl();
     conexao.getConexao();
 
     try {
       this.databaseTester = new JdbcDatabaseTester(
           conexao.getDriverClass(),
-          String.format("%s/%s", conexao.getUrl(), supplier.getDataBase()),
+          conexao.getUrl(),
           conexao.getUser(),
           conexao.getPassword());
 
@@ -70,10 +71,10 @@ public class DbUnit {
 
   }
 
-  protected IDataSet getDataSet() {
+  public IDataSet getDataSet() {
+    String xml = String.format("src/test/resources/dbunit/%s", supplier.getXml());
     try {
-      fileXml = new FlatXmlDataSetBuilder()
-          .build(new FileInputStream(supplier.getXml()));
+      fileXml = new FlatXmlDataSetBuilder().build(new FileInputStream(xml));
 
       return fileXml;
     } catch (DataSetException e) {
@@ -83,7 +84,7 @@ public class DbUnit {
     }
   }
 
-  protected DatabaseOperation getInsertOperation() throws Exception {
+  public DatabaseOperation getInsertOperation() throws Exception {
     return DatabaseOperation.CLEAN_INSERT;
   }
 

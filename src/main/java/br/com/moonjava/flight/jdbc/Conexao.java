@@ -24,6 +24,8 @@ import java.sql.Connection;
  */
 public interface Conexao {
 
+  String getDriverClass();
+
   String getUrl();
 
   String getUser();

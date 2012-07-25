@@ -24,9 +24,6 @@ import java.sql.SQLException;
 
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.jdbc.Conexao;
-import br.com.moonjava.flight.jdbc.ConexaoImpl;
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -40,7 +37,8 @@ public class TesteDeConexao {
       Conexao conexao = new ConexaoImpl();
       Connection connection = conexao.getConexao();
 
-      assertThat(conexao.getUrl(), equalTo("jdbc:mysql://localhost"));
+      assertThat(conexao.getDriverClass(), equalTo("com.mysql.jdbc.Driver"));
+      assertThat(conexao.getUrl(), equalTo("jdbc:mysql://localhost/FLIGHT"));
       assertThat(conexao.getUser(), equalTo("usjt"));
       assertThat(conexao.getPassword(), equalTo("usjt"));
 

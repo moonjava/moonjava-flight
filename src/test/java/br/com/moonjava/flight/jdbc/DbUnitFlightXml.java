@@ -20,12 +20,11 @@ package br.com.moonjava.flight.jdbc;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-interface TestSqlStatement {
+public class DbUnitFlightXml implements DbUnitSupplier {
 
-  TestSqlStatement truncate();
-
-  TestSqlStatement with(String syntax);
-
-  TestSqlStatement execute();
+  @Override
+  public String getXml() {
+    return "dbunit-flight.xml";
+  }
 
 }

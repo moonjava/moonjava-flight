@@ -15,13 +15,12 @@
  */
 package br.com.moonjava.flight.jdbc;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.testng.internal.PropertiesFile;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -30,6 +29,7 @@ import org.testng.internal.PropertiesFile;
  */
 public class ConexaoImpl implements Conexao {
 
+  private String driverClass;
   private String url;
   private String user;
   private String password;
@@ -37,18 +37,30 @@ public class ConexaoImpl implements Conexao {
   @Override
   public Connection getConexao() {
     try {
-      PropertiesFile file = new PropertiesFile("src/main/resources/jdbc.properties");
-      Properties properties = file.getProperties();
+      FileInputStream input = new FileInputStream("src/main/resources/jdbc.properties");
+      Properties properties = new Properties();
+      properties.load(input);
+
+      driverClass = properties.getProperty("driver");
       url = properties.getProperty("url");
       user = properties.getProperty("user");
       password = properties.getProperty("password");
+
+      Class.forName(driverClass);
 
       return DriverManager.getConnection(url, user, password);
     } catch (IOException e) {
       throw new RuntimeException(e);
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public String getDriverClass() {
+    return driverClass;
   }
 
   @Override

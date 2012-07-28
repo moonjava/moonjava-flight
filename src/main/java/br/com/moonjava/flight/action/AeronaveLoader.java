@@ -70,8 +70,8 @@ public class AeronaveLoader implements ResultSetJdbcLoader<Aeronave> {
     }
 
     @Override
-    public boolean isMapa() {
-      return rs.getBoolean("MAPA");
+    public int mapa() {
+      return rs.getInt("MAPA");
     }
 
   }

@@ -15,6 +15,10 @@
  */
 package br.com.moonjava.flight.action;
 
+import java.util.List;
+
+import br.com.moonjava.flight.util.RequestParam;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -30,8 +34,23 @@ public interface Aeronave {
 
     int getQtdDeAssento();
 
-    boolean isMapa();
+    int mapa();
 
+  }
+  
+  interface Jdbc{
+	  
+	  void criar(Aeronave aeronave);
+	  
+	  List<Aeronave> listaTodasAeronaves();
+	  
+	  List<Aeronave> consultar(RequestParam request);
+	  
+	  Aeronave consultarPorCodigo(int codigo);
+	  
+	  void atualizar(Aeronave aeronave);
+	  
+	  void deletar(int id);
   }
 
   int getId();
@@ -42,6 +61,6 @@ public interface Aeronave {
 
   int getQtdDeAssento();
 
-  boolean isMapa();
+  int mapa();
 
 }

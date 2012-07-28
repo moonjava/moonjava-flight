@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="1" passed="1">
+<testng-results skipped="0" failed="0" total="7" passed="7">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="1194" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
+  <suite name="Default suite" duration-ms="94" started-at="2012-07-28T01:59:13Z" finished-at="2012-07-28T01:59:14Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="1194" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
-      <class name="br.com.moonjava.flight.action.TesteDeControlarStatus">
-        <test-method status="PASS" signature="limparTabela()[pri:0, instance:br.com.moonjava.flight.action.TesteDeControlarStatus@785d65]" name="limparTabela" is-config="true" duration-ms="908" started-at="2012-07-10T23:33:08Z" finished-at="2012-07-10T23:33:09Z">
-        </test-method> <!-- limparTabela -->
-        <test-method status="PASS" signature="status_deve_ser_atualizado()[pri:0, instance:br.com.moonjava.flight.action.TesteDeControlarStatus@785d65]" name="status_deve_ser_atualizado" duration-ms="272" started-at="2012-07-10T23:33:09Z" finished-at="2012-07-10T23:33:09Z">
-        </test-method> <!-- status_deve_ser_atualizado -->
-      </class> <!-- br.com.moonjava.flight.action.TesteDeControlarStatus -->
+    <test name="Default test" duration-ms="94" started-at="2012-07-28T01:59:13Z" finished-at="2012-07-28T01:59:14Z">
+      <class name="br.com.moonjava.flight.util.TesteDeParam">
+        <test-method status="PASS" signature="object_deve_ter_casting_de_String()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_String" duration-ms="15" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:13Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_String -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_boolean()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_boolean" duration-ms="0" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:13Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_boolean -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_date_time()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_date_time" duration-ms="63" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_date_time -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_long()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_long" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_long -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_double()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_double" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_double -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_integer()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_integer" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_integer -->
+        <test-method status="PASS" signature="object_deve_ter_casting_de_local_date()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_local_date" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- object_deve_ter_casting_de_local_date -->
+      </class> <!-- br.com.moonjava.flight.util.TesteDeParam -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

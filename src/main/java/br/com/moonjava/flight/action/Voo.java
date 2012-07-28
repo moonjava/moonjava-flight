@@ -56,6 +56,8 @@ public interface Voo {
     List<Voo> consultar(RequestParam request);
 
     Voo consultarPorCodigo(int codigo);
+    
+    List<Voo> consultarPorIdAeronave(RequestParam request);
 
     void atualizar(Voo voo);
 

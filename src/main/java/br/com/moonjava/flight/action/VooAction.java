@@ -74,6 +74,7 @@ public class VooAction implements Voo.Jdbc {
     String origem = request.stringParam("origem");
     String destino = request.stringParam("destino");
 
+    
     return query()
 
         .with("where 1 = 1")
@@ -82,7 +83,7 @@ public class VooAction implements Voo.Jdbc {
         .with("and VOO.DATA_CHEGADA <= ?", chegada)
         .with("and VOO.ORIGEM = ?", origem)
         .with("and VOO.DESTINO = ?", destino)
-
+ 
         .with("order by VOO.DATA_PARTIDA asc")
 
         .andList();
@@ -95,6 +96,17 @@ public class VooAction implements Voo.Jdbc {
         .with("where VOO.CODIGO = ?", codigo)
 
         .andGet();
+  }
+  
+  @Override
+  public List<Voo> consultarPorAeronaveId(RequestParam request){	  
+	  int idAeronave = request.intParam("idAeronave");
+	  
+	  return query()
+
+		  .with("where VOO.AERONAVE_ID = ?", idAeronave)
+
+		  .andList();
   }
 
   @Override

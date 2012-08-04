@@ -24,14 +24,16 @@ import org.joda.time.DateTime;
  */
 public interface RequestParam {
 
-  void set(String string, Object object);
+	void set(String string, Object object);
 
-  Integer intParam(String param);
+	Integer intParam(String param);
 
-  DateTime dateTimeParam(String param);
+	DateTime dateTimeParam(String param);
 
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
+	<E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
 
-  String stringParam(String param);
+	String stringParam(String param);
+	
+	Boolean booleanParam(String param);
 
 }

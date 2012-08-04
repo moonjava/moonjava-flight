@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]">
   <test name="Default test(failed)" preserve-order="true">
     <classes>
-      <class name="br.com.moonjava.flight.action.TesteDeCriarVoo">
+      <class name="br.com.moonjava.flight.action.TesteDeCriarAeronave">
         <methods>
-          <include name="voo_deve_ser_criado"/>
-          <include name="limparTabela"/>
+          <include name="criar_aeronave"/>
+          <include name="beforeClass"/>
         </methods>
-      </class> <!-- br.com.moonjava.flight.action.TesteDeCriarVoo -->
+      </class> <!-- br.com.moonjava.flight.action.TesteDeCriarAeronave -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -33,5 +33,7 @@ public interface RequestParam {
 	<E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
 
 	String stringParam(String param);
+	
+	Boolean booleanParam(String param);
 
 }

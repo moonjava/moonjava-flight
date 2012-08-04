@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="1.72" errors="0" skipped="0" tests="25" name="TestSuite">
+<testsuite failures="0" time="2.182" errors="0" skipped="0" tests="31" name="TestSuite">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jre7\bin"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="C:\Users\Miqueias Vieira\Desktop\workspace\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf2513695790015015601.tmp"/>
+    <property name="classworlds.conf" value="C:\Users\Miqueias Vieira\Desktop\workspace\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf2416141987159653776.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="C:\Program Files\Java\jre7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Java\jdk1.7.0_04\bin;C:\Program Files\Java\jdk1.7.0_04\jre\bin;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,19 +60,25 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.172" classname="br.com.moonjava.flight.action.TesteDeAtualizarVoo" name="voo_deve_ser_atualizado"/>
-  <testcase time="0.031" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="buscar_por_todos_voos_disponiveis"/>
-  <testcase time="0.016" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="consulta_por_codigo"/>
-  <testcase time="0.015" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_destino"/>
-  <testcase time="0.016" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_origem"/>
-  <testcase time="0.015" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_e_data_de_chegada"/>
-  <testcase time="0.016" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_e_data_de_partida"/>
-  <testcase time="0" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_indisponivel"/>
-  <testcase time="0.032" classname="br.com.moonjava.flight.action.TesteDeControlarStatus" name="status_deve_ser_atualizado"/>
-  <testcase time="0.031" classname="br.com.moonjava.flight.action.TesteDeCriarVoo" name="voo_deve_ser_criado"/>
-  <testcase time="0.031" classname="br.com.moonjava.flight.action.TesteDeDeletarVoo" name="voo_deve_ser_deletado_por_codigo"/>
-  <testcase time="0.016" classname="br.com.moonjava.flight.jdbc.TesteDeConexao" name="conexao_com_o_bd_deve_funcionar"/>
-  <testcase time="0.062" classname="br.com.moonjava.flight.jdbc.TesteDeDbUnit" name="teste_de_insert_dbunit"/>
+  <testcase time="0.06" classname="br.com.moonjava.flight.action.TesteDeAtualizarAeronave" name="atualizar_aeronave"/>
+  <testcase time="0.11" classname="br.com.moonjava.flight.action.TesteDeAtualizarVoo" name="voo_deve_ser_atualizado"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarAeronave" name="consultar_por_filtro_nome"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarAeronave" name="consultar_todas_aeronaves"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="buscar_por_todos_voos_disponiveis"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="consulta_por_codigo"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="consultar_por_id_aeronave"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_destino"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_origem"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_e_data_de_chegada"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_e_data_de_partida"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.action.TesteDeConsultarVoo" name="filtro_por_status_indisponivel"/>
+  <testcase time="0.04" classname="br.com.moonjava.flight.action.TesteDeControlarStatus" name="status_deve_ser_atualizado"/>
+  <testcase time="0.05" classname="br.com.moonjava.flight.action.TesteDeCriarAeronave" name="criar_aeronave"/>
+  <testcase time="0.03" classname="br.com.moonjava.flight.action.TesteDeCriarVoo" name="voo_deve_ser_criado"/>
+  <testcase time="0.08" classname="br.com.moonjava.flight.action.TesteDeDeletarAeronave" name="deletar"/>
+  <testcase time="0.07" classname="br.com.moonjava.flight.action.TesteDeDeletarVoo" name="voo_deve_ser_deletado_por_codigo"/>
+  <testcase time="0" classname="br.com.moonjava.flight.jdbc.TesteDeConexao" name="conexao_com_o_bd_deve_funcionar"/>
+  <testcase time="0.09" classname="br.com.moonjava.flight.jdbc.TesteDeDbUnit" name="teste_de_insert_dbunit"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeCPF" name="cpf_deve_ser_convertido_em_numero"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeCPF" name="cpf_deve_ser_valido"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeCPF" name="excecao_de_cpf_invalido_deve_ser_lancada_com_12_digitos"/>
@@ -82,7 +88,7 @@
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_boolean"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_date_time"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_double"/>
-  <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_integer"/>
-  <testcase time="0.016" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_local_date"/>
+  <testcase time="0.01" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_integer"/>
+  <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_local_date"/>
   <testcase time="0" classname="br.com.moonjava.flight.util.TesteDeParam" name="object_deve_ter_casting_de_long"/>
 </testsuite>

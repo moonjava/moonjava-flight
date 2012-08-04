@@ -16,6 +16,7 @@
 package br.com.moonjava.flight.action;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -82,6 +83,7 @@ public class TesteDeConsultarVoo {
     assertThat(res.get(0).getCodigo(), equalTo(2));
     assertThat(res.get(1).getCodigo(), equalTo(4));
   }
+
   public void filtro_por_status_e_data_de_chegada() {
     VooAction action = new VooAction();
     RequestParamWrapper request = new RequestParamWrapper();
@@ -154,32 +156,31 @@ public class TesteDeConsultarVoo {
     assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getAeronave().getCodigo(), equalTo(1));
   }
-  
-  public void consultar_por_id_aeronave(){
-	  
-	  VooAction action = new VooAction();
-	  RequestParamWrapper request = new RequestParamWrapper();
-	  
-	  int idAeronave = 2;
-	  request.set("idAeronave", idAeronave);
-	  DateTime partida = new DateTime(2012, 3, 1, 0, 0, 0);
-	  DateTime chegada = new DateTime(2012, 3, 1, 6, 0, 0);
-	  Status status = Status.DISPONIVEL;
-	  
-	  List<Voo> test1 = action.consultarPorIdAeronave(request);
-	  assertThat(test1.size(), equalTo(1));
-	  
-	  Voo voo = test1.get(0);
-	  
-	  assertThat(voo.getCodigo(), equalTo(4));
-	  assertThat(voo.getOrigem(), equalTo("origem D"));
-	  assertThat(voo.getDestino(), equalTo("destino D"));
-	  assertThat(voo.getEscala(), equalTo(null));
-	  assertThat(voo.getDataDePartida(), equalTo(partida));
-	  assertThat(voo.getDataDeChegada(), equalTo(chegada));
-	  assertThat(voo.getObservacao(), equalTo(null));
-	  assertThat(voo.getStatus(), equalTo(status));
-	  
+
+  public void consultar_por_id_aeronave() {
+    VooAction action = new VooAction();
+    RequestParamWrapper request = new RequestParamWrapper();
+
+    int idAeronave = 2;
+    request.set("idAeronave", idAeronave);
+    DateTime partida = new DateTime(2012, 3, 1, 0, 0, 0);
+    DateTime chegada = new DateTime(2012, 3, 1, 6, 0, 0);
+    Status status = Status.DISPONIVEL;
+
+    List<Voo> antes = action.consultarPorAeronaveId(request);
+    assertThat(antes.size(), equalTo(1));
+
+    Voo voo = antes.get(0);
+
+    assertThat(voo.getCodigo(), equalTo(4));
+    assertThat(voo.getOrigem(), equalTo("origem D"));
+    assertThat(voo.getDestino(), equalTo("destino D"));
+    assertThat(voo.getEscala(), equalTo(null));
+    assertThat(voo.getDataDePartida(), equalTo(partida));
+    assertThat(voo.getDataDeChegada(), equalTo(chegada));
+    assertThat(voo.getObservacao(), equalTo(null));
+    assertThat(voo.getStatus(), equalTo(status));
+
   }
 
 }

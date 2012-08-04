@@ -28,93 +28,76 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public class AeronaveAction implements Aeronave.Jdbc {
 
-	private SqlStatement query() {
-		return new SqlStatementWrapper()
-			.prepare()
+  private SqlStatement query() {
+    return new SqlStatementWrapper()
+        .prepare()
 
-			.with("select *")
-			.with("from FLIGHT.AERONAVE as AERONAVE")
+        .with("select *")
+        .with("from FLIGHT.AERONAVE as AERONAVE")
 
-			.load(new AeronaveLoader());
-	}
+        .load(new AeronaveLoader());
+  }
 
-	@Override
-	public void criar(Aeronave aeronave) {
-		new SqlStatementWrapper()
-			.prepare()
+  @Override
+  public void criar(Aeronave aeronave) {
+    new SqlStatementWrapper()
+        .prepare()
 
-			.with("insert into FLIGHT.AERONAVE")
-			.with("(NOME, CODIGO, QTD_ASSENTO, MAPA)")
-
-			.with("values (").with("?,", aeronave.getNome())
-			.with("?,", aeronave.getCodigo())
-			.with("?,", aeronave.getQtdDeAssento())
-			.with("?)", aeronave.mapa())
-
-			.andExecute();
-	}
-	
-	@Override
-	public List<Aeronave> listaTodasAeronaves(){
-		
-		return query()
-
-				.with("where 1 = 1")
-				.with("order by AERONAVE.CODIGO asc")
-
-				.andList();
-	}
-
-	@Override
-	public List<Aeronave> consultar(RequestParam request) {
-		String nome = String.valueOf("%"+request.stringParam("nome")+"%");
-
-		
-		return query()
-
-			.with("where 1 = 1")
-			.with("and AERONAVE.NOME like ?", nome)
-
-			.with("order by AERONAVE.CODIGO asc")
-
-			.andList();
-	}
-
-	@Override
-	public Aeronave consultarPorCodigo(int codigo) {
-
-		return query()
-
-		.with("where AERONAVE.CODIGO = ?", codigo)
-
-		.andGet();
-	}
-
-	@Override
-	public void atualizar(Aeronave aeronave) {
-		new SqlStatementWrapper()
-			.prepare()
-			
-			.with("update FLIGHT.AERONAVE AS AERONAVE SET")
-			
-			.with("AERONAVE.NOME = ?,", aeronave.getNome())
-			.with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
-			
-			.with("where AERONAVE.ID = ?", aeronave.getId())
-			
-			.andExecute();
-	}
-
-	@Override
-	public void deletar(int id) {
-	    new SqlStatementWrapper()   
-        .prepare()                            //Esta operação a grandes possibilidades de lançar uma exception
-        									  //pois pode haver um vôo relacionado com a aeronave que deseja deletar
-        .with("delete from FLIGHT.AERONAVE")  //sugestão de solução: caso a exception seja lançada retornar a mesma para 
-        .with("where AERONAVE.ID = ?", id)    //quem chamou o método e assim tratá-lo
+        .with("insert into FLIGHT.AERONAVE")
+        .with("(NOME, CODIGO, QTD_ASSENTO, MAPA)")
+        .with("values (")
+        .with("?,", aeronave.getNome())
+        .with("?,", aeronave.getCodigo())
+        .with("?,", aeronave.getQtdDeAssento())
+        .with("?)", aeronave.isMapa())
 
         .andExecute();
+  }
 
-	}
+  @Override
+  public List<Aeronave> consultar(RequestParam request) {
+    String nome = request.stringParam("nome");
+
+    return query()
+
+        .with("where 1 = 1")
+        .with("and AERONAVE.NOME like concat ('%',?,'%')", nome)
+        .with("order by AERONAVE.CODIGO asc")
+
+        .andList();
+  }
+
+  @Override
+  public Aeronave consultarPorId(int id) {
+    return query()
+
+        .with("where AERONAVE.ID = ?", id)
+
+        .andGet();
+  }
+
+  @Override
+  public void atualizar(Aeronave aeronave) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.AERONAVE AS AERONAVE set")
+        .with("AERONAVE.NOME = ?,", aeronave.getNome())
+        .with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
+        .with("where AERONAVE.ID = ?", aeronave.getId())
+
+        .andExecute();
+  }
+
+  @Override
+  public void deletar(int id) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("delete from FLIGHT.AERONAVE")
+        .with("where ID = ?", id)
+
+        .andExecute();
+  }
 
 }

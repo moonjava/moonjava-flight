@@ -53,25 +53,25 @@ public class TesteDeCriarVoo {
     DateTime chegada = new DateTime(2012, 8, 9, 3, 0, 0);
 
     VooAction action = new VooAction();
-    RequestParamWrapper req = new RequestParamWrapper();
+    RequestParamWrapper request = new RequestParamWrapper();
 
-    req.set("status", Status.DISPONIVEL);
+    request.set("status", Status.DISPONIVEL);
 
-    List<Voo> antes = action.consultar(req);
+    List<Voo> antes = action.consultar(request);
     assertThat(antes.size(), equalTo(3));
 
-    req.set("codigo", codigo);
-    req.set("aeronave", aeronave);
-    req.set("origem", origem);
-    req.set("destino", destino);
-    req.set("escala", escala);
-    req.set("partida", partida);
-    req.set("chegada", chegada);
+    request.set("codigo", codigo);
+    request.set("aeronave", aeronave);
+    request.set("origem", origem);
+    request.set("destino", destino);
+    request.set("escala", escala);
+    request.set("partida", partida);
+    request.set("chegada", chegada);
 
-    Voo voo = new VooCreate(req).createInstance();
+    Voo voo = new VooCreate(request).createInstance();
     action.criar(voo);
 
-    RequestParamWrapper request = new RequestParamWrapper();
+    request = new RequestParamWrapper();
 
     request.set("status", Status.DISPONIVEL);
 

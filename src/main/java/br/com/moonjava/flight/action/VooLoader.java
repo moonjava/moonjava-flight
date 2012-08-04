@@ -30,7 +30,7 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
  */
 public class VooLoader implements ResultSetJdbcLoader<Voo> {
 
-  private String alias;
+  private final String alias;
 
   public VooLoader() {
     this.alias = "VOO";
@@ -50,6 +50,7 @@ public class VooLoader implements ResultSetJdbcLoader<Voo> {
       this.rs = rs;
     }
 
+    @Override
     public Voo createInstance() {
       VooImpl impl = new VooImpl(this);
       impl.setId(rs.getInt("ID"));

@@ -25,15 +25,15 @@ import org.joda.time.DateTime;
 public class VooImpl implements Voo {
 
   private int id;
-  private int codigo;
-  private Aeronave aeronave;
-  private String origem;
-  private String destino;
-  private String escala;
-  private DateTime dataDePartida;
-  private DateTime dataDeChegada;
-  private String observacao;
-  private Status status;
+  private final int codigo;
+  private final Aeronave aeronave;
+  private final String origem;
+  private final String destino;
+  private final String escala;
+  private final DateTime dataDePartida;
+  private final DateTime dataDeChegada;
+  private final String observacao;
+  private final Status status;
 
   public VooImpl(Builder builder) {
     this.codigo = builder.getCodigo();

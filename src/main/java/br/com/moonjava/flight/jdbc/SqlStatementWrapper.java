@@ -35,7 +35,7 @@ public class SqlStatementWrapper implements SqlStatement {
   private Connection connection;
   private PreparedStatement stm;
   private String syntax;
-  private ArrayList<Param<?>> params;
+  private final List<Param<?>> params;
   private ResultSetJdbcLoader<?> loader;
 
   public SqlStatementWrapper() {

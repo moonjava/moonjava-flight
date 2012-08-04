@@ -22,46 +22,46 @@ package br.com.moonjava.flight.action;
  */
 public class AeronaveImpl implements Aeronave {
 
-	private int id;
-	private int codigo;
-	private String nome;
-	private int qtdDeAssento;
-	private int mapa;
+  private int id;
+  private final int codigo;
+  private final String nome;
+  private final int qtdDeAssento;
+  private final boolean mapa;
 
-	public AeronaveImpl(Builder builder) {
-		this.codigo = builder.getCodigo();
-		this.nome = builder.getNome();
-		this.qtdDeAssento = builder.getQtdDeAssento();
-		this.mapa = builder.mapa();
-	}
+  public AeronaveImpl(Builder builder) {
+    this.codigo = builder.getCodigo();
+    this.nome = builder.getNome();
+    this.qtdDeAssento = builder.getQtdDeAssento();
+    this.mapa = builder.isMapa();
+  }
 
-	@Override
-	public int getId() {
-		return id;
-	}
+  @Override
+  public int getId() {
+    return id;
+  }
 
-	void setId(int id) {
-		this.id = id;
-	}
+  void setId(int id) {
+    this.id = id;
+  }
 
-	@Override
-	public int getCodigo() {
-		return codigo;
-	}
+  @Override
+  public int getCodigo() {
+    return codigo;
+  }
 
-	@Override
-	public String getNome() {
-		return nome;
-	}
+  @Override
+  public String getNome() {
+    return nome;
+  }
 
-	@Override
-	public int getQtdDeAssento() {
-		return qtdDeAssento;
-	}
+  @Override
+  public int getQtdDeAssento() {
+    return qtdDeAssento;
+  }
 
-	@Override
-	public int mapa() {
-		return mapa;
-	}
+  @Override
+  public boolean isMapa() {
+    return mapa;
+  }
 
 }

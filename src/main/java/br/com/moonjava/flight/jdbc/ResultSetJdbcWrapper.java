@@ -31,7 +31,7 @@ import org.joda.time.LocalDate;
 public class ResultSetJdbcWrapper implements ResultSetJdbc {
 
   private final ResultSet rs;
-  private String alias;
+  private final String alias;
 
   public ResultSetJdbcWrapper(ResultSet rs, String alias) {
     this.rs = rs;

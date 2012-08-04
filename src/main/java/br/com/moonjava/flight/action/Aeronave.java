@@ -44,7 +44,7 @@ public interface Aeronave {
 
     List<Aeronave> consultar(RequestParam request);
 
-    Aeronave consultarPorCodigo(int codigo);
+    Aeronave consultarPorId(int id);
 
     void atualizar(Aeronave aeronave);
 

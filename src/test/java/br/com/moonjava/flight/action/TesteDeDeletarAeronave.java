@@ -23,35 +23,28 @@ public class TesteDeDeletarAeronave {
   }
 
   public void deletar() {
-    VooAction action = new VooAction();
-    AeronaveAction actionAero = new AeronaveAction();
+    VooAction actionVoo = new VooAction();
+    AeronaveAction actionAeronave = new AeronaveAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
     request.set("status", Status.DISPONIVEL);
 
-    int id = 4;
+    int id = 1;
 
-    List<Voo> antes = action.consultar(request);
-    assertThat(antes.size(), equalTo(3));
+    List<Voo> antesVoo = actionVoo.consultar(request);
+    assertThat(antesVoo.size(), equalTo(3));
 
-    action.deletar(id);
+    List<Aeronave> antesAeronave = actionAeronave.consultar(request);
+    assertThat(antesAeronave.size(), equalTo(2));
 
-    List<Voo> res = action.consultar(request);
-    assertThat(res.size(), equalTo(2));
+    actionVoo.deletarPorAeronaveId(id);
+    actionAeronave.deletar(id);
 
-    int id2 = 2;
+    List<Voo> resVoo = actionVoo.consultar(request);
+    assertThat(resVoo.size(), equalTo(1));
 
-    String nome = "";
-    RequestParamWrapper req = new RequestParamWrapper();
-    req.set("nome", nome);
-
-    List<Aeronave> res2 = actionAero.consultar(req);
-    assertThat(res2.size(), equalTo(2));
-
-    actionAero.deletar(id2);
-
-    List<Aeronave> res3 = actionAero.consultar(req);
-    assertThat(res3.size(), equalTo(1));
-
+    List<Aeronave> resAeronave = actionAeronave.consultar(request);
+    assertThat(resAeronave.size(), equalTo(1));
   }
+
 }

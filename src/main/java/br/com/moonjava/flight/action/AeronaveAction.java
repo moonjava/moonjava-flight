@@ -33,7 +33,6 @@ public class AeronaveAction implements Aeronave.Jdbc {
         .prepare()
 
         .with("select *")
-
         .with("from FLIGHT.AERONAVE as AERONAVE")
 
         .load(new AeronaveLoader());
@@ -45,15 +44,11 @@ public class AeronaveAction implements Aeronave.Jdbc {
         .prepare()
 
         .with("insert into FLIGHT.AERONAVE")
-
         .with("(NOME, CODIGO, QTD_ASSENTO, MAPA)")
-
-        .with("values (").with("?,", aeronave.getNome())
-
+        .with("values (")
+        .with("?,", aeronave.getNome())
         .with("?,", aeronave.getCodigo())
-
         .with("?,", aeronave.getQtdDeAssento())
-
         .with("?)", aeronave.isMapa())
 
         .andExecute();
@@ -66,19 +61,17 @@ public class AeronaveAction implements Aeronave.Jdbc {
     return query()
 
         .with("where 1 = 1")
-
         .with("and AERONAVE.NOME like concat ('%',?,'%')", nome)
-
         .with("order by AERONAVE.CODIGO asc")
 
         .andList();
   }
 
   @Override
-  public Aeronave consultarPorCodigo(int codigo) {
+  public Aeronave consultarPorId(int id) {
     return query()
 
-        .with("where AERONAVE.CODIGO = ?", codigo)
+        .with("where AERONAVE.ID = ?", id)
 
         .andGet();
   }
@@ -89,11 +82,8 @@ public class AeronaveAction implements Aeronave.Jdbc {
         .prepare()
 
         .with("update FLIGHT.AERONAVE AS AERONAVE set")
-
         .with("AERONAVE.NOME = ?,", aeronave.getNome())
-
         .with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
-
         .with("where AERONAVE.ID = ?", aeronave.getId())
 
         .andExecute();
@@ -105,16 +95,9 @@ public class AeronaveAction implements Aeronave.Jdbc {
         .prepare()
 
         .with("delete from FLIGHT.AERONAVE")
-
-        .with("where AERONAVE.ID = ?", id)
+        .with("where ID = ?", id)
 
         .andExecute();
-
-    // Esta operação a grandes possibilidades de lançar uma
-    // exception
-    // pois pode haver um vôo relacionado com a aeronave que deseja deletar
-    // sugestão de solução: caso a exception seja lançada retornar a mesma
-    // para quem chamou o método e assim tratá-lo
   }
 
 }

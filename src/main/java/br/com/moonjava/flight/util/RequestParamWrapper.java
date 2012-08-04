@@ -27,7 +27,7 @@ import org.joda.time.DateTime;
  */
 public class RequestParamWrapper implements RequestParam {
 
-  private Map<String, Object> map;
+  private final Map<String, Object> map;
 
   public RequestParamWrapper() {
     this.map = new HashMap<String, Object>();
@@ -58,9 +58,10 @@ public class RequestParamWrapper implements RequestParam {
   public String stringParam(String param) {
     return (String) map.get(param);
   }
-  
-  public Boolean booleanParam(String param){
-	  return (Boolean) map.get(param);
+
+  @Override
+  public Boolean booleanParam(String param) {
+    return (Boolean) map.get(param);
   }
 
 }

@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>br.com.moonjava</groupId>
-  <version>0.0.3</version>  
+  <version>0.0.4</version>  
   <artifactId>moonjava-flight</artifactId>
   
-  <name>moonjava: flight</name>
+  <name>moonjava :: flight</name>
   
   	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

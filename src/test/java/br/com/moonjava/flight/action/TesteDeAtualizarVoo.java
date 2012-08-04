@@ -45,13 +45,13 @@ public class TesteDeAtualizarVoo {
     VooAction action = new VooAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    Voo antes = action.consultarPorCodigo(1);
+    int id = 1;
+    Voo antes = action.consultarPorId(1);
     assertThat(antes.getCodigo(), equalTo(1));
     assertThat(antes.getDataDePartida(), equalTo(new DateTime(2012, 1, 1, 0, 0)));
     assertThat(antes.getDataDeChegada(), equalTo(new DateTime(2012, 1, 1, 6, 0)));
     assertThat(antes.getObservacao(), equalTo(null));
 
-    int id = 1;
     DateTime partida = new DateTime(2012, 1, 1, 0, 30);
     DateTime chegada = new DateTime(2012, 1, 1, 7, 0);
     String observacao = "nova observacao";
@@ -65,7 +65,7 @@ public class TesteDeAtualizarVoo {
 
     action.atualizar(voo);
 
-    Voo res = action.consultarPorCodigo(1);
+    Voo res = action.consultarPorId(1);
     assertThat(res.getCodigo(), equalTo(1));
     assertThat(res.getDataDePartida(), equalTo(partida));
     assertThat(res.getDataDeChegada(), equalTo(chegada));

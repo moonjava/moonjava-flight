@@ -55,13 +55,15 @@ public interface Voo {
 
     List<Voo> consultar(RequestParam request);
 
-    Voo consultarPorCodigo(int codigo);
-    
+    Voo consultarPorId(int id);
+
     List<Voo> consultarPorAeronaveId(RequestParam request);
 
     void atualizar(Voo voo);
 
     void deletar(int id);
+
+    void deletarPorAeronaveId(int id);
 
     void controlarStatus(Voo voo);
 

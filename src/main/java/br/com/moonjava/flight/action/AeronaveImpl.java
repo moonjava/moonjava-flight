@@ -23,10 +23,10 @@ package br.com.moonjava.flight.action;
 public class AeronaveImpl implements Aeronave {
 
   private int id;
-  private int codigo;
-  private String nome;
-  private int qtdDeAssento;
-  private boolean mapa;
+  private final int codigo;
+  private final String nome;
+  private final int qtdDeAssento;
+  private final boolean mapa;
 
   public AeronaveImpl(Builder builder) {
     this.codigo = builder.getCodigo();

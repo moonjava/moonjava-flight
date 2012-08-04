@@ -50,16 +50,16 @@ public class TesteDeControlarStatus {
     request.set("id", id);
     request.set("status", status);
 
-    Voo antes = action.consultarPorCodigo(4);
-    assertThat(antes.getCodigo(), equalTo(4));
+    Voo antes = action.consultarPorId(id);
+    assertThat(antes.getId(), equalTo(4));
     assertThat(antes.getStatus(), equalTo(Status.DISPONIVEL));
 
     Voo voo = new VooUpdate(request).createInstance();
 
     action.controlarStatus(voo);
 
-    Voo res = action.consultarPorCodigo(4);
-    assertThat(res.getCodigo(), equalTo(4));
+    Voo res = action.consultarPorId(id);
+    assertThat(antes.getId(), equalTo(4));
     assertThat(res.getStatus(), equalTo(Status.ATRASADO));
   }
 

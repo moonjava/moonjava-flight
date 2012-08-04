@@ -34,23 +34,21 @@ public interface Aeronave {
 
     int getQtdDeAssento();
 
-    int mapa();
+    boolean isMapa();
 
   }
-  
-  interface Jdbc{
-	  
-	  void criar(Aeronave aeronave);
-	  
-	  List<Aeronave> listaTodasAeronaves();
-	  
-	  List<Aeronave> consultar(RequestParam request);
-	  
-	  Aeronave consultarPorCodigo(int codigo);
-	  
-	  void atualizar(Aeronave aeronave);
-	  
-	  void deletar(int id);
+
+  interface Jdbc {
+
+    void criar(Aeronave aeronave);
+
+    List<Aeronave> consultar(RequestParam request);
+
+    Aeronave consultarPorId(int id);
+
+    void atualizar(Aeronave aeronave);
+
+    void deletar(int id);
   }
 
   int getId();
@@ -61,6 +59,6 @@ public interface Aeronave {
 
   int getQtdDeAssento();
 
-  int mapa();
+  boolean isMapa();
 
 }

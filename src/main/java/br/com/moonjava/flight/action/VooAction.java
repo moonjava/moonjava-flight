@@ -74,7 +74,6 @@ public class VooAction implements Voo.Jdbc {
     String origem = request.stringParam("origem");
     String destino = request.stringParam("destino");
 
-    
     return query()
 
         .with("where 1 = 1")
@@ -83,31 +82,30 @@ public class VooAction implements Voo.Jdbc {
         .with("and VOO.DATA_CHEGADA <= ?", chegada)
         .with("and VOO.ORIGEM = ?", origem)
         .with("and VOO.DESTINO = ?", destino)
- 
+
         .with("order by VOO.DATA_PARTIDA asc")
 
         .andList();
   }
 
   @Override
-  public Voo consultarPorCodigo(int codigo) {
+  public Voo consultarPorId(int id) {
     return query()
 
-        .with("where VOO.CODIGO = ?", codigo)
+        .with("where VOO.ID = ?", id)
 
         .andGet();
   }
-  
+
   @Override
-  public List<Voo> consultarPorIdAeronave(RequestParam request){
-	  
-	  int idAeronave = request.intParam("idAeronave");
-	  
-	  return query()
+  public List<Voo> consultarPorAeronaveId(RequestParam request) {
+    int idAeronave = request.intParam("aeronaveId");
 
-		  .with("where VOO.AERONAVE_ID = ?", idAeronave)
+    return query()
 
-		  .andList();
+        .with("where VOO.AERONAVE_ID = ?", idAeronave)
+
+        .andList();
   }
 
   @Override
@@ -132,6 +130,17 @@ public class VooAction implements Voo.Jdbc {
 
         .with("delete from FLIGHT.VOO")
         .with("where ID = ?", id)
+
+        .andExecute();
+  }
+
+  @Override
+  public void deletarPorAeronaveId(int id) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("delete from FLIGHT.VOO")
+        .with("where AERONAVE_ID = ?", id)
 
         .andExecute();
   }

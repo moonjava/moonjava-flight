@@ -1,41 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="7" passed="7">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="94" started-at="2012-07-28T01:59:13Z" finished-at="2012-07-28T01:59:14Z">
+  <suite name="Default suite" duration-ms="1160" started-at="2012-08-04T01:46:21Z" finished-at="2012-08-04T01:46:22Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="94" started-at="2012-07-28T01:59:13Z" finished-at="2012-07-28T01:59:14Z">
-      <class name="br.com.moonjava.flight.util.TesteDeParam">
-        <test-method status="PASS" signature="object_deve_ter_casting_de_String()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_String" duration-ms="15" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:13Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_String -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_boolean()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_boolean" duration-ms="0" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:13Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_boolean -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_date_time()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_date_time" duration-ms="63" started-at="2012-07-27T22:59:13Z" finished-at="2012-07-27T22:59:14Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_date_time -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_long()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_long" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_long -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_double()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_double" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_double -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_integer()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_integer" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_integer -->
-        <test-method status="PASS" signature="object_deve_ter_casting_de_local_date()[pri:0, instance:br.com.moonjava.flight.util.TesteDeParam@798be602]" name="object_deve_ter_casting_de_local_date" duration-ms="0" started-at="2012-07-27T22:59:14Z" finished-at="2012-07-27T22:59:14Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- object_deve_ter_casting_de_local_date -->
-      </class> <!-- br.com.moonjava.flight.util.TesteDeParam -->
+    <test name="Default test" duration-ms="1160" started-at="2012-08-04T01:46:21Z" finished-at="2012-08-04T01:46:22Z">
+      <class name="br.com.moonjava.flight.action.TesteDeDeletarAeronave">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:br.com.moonjava.flight.action.TesteDeDeletarAeronave@15bdc50]" name="beforeClass" is-config="true" duration-ms="809" started-at="2012-08-04T01:46:21Z" finished-at="2012-08-04T01:46:22Z">
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="deletar()[pri:0, instance:br.com.moonjava.flight.action.TesteDeDeletarAeronave@15bdc50]" name="deletar" duration-ms="336" started-at="2012-08-04T01:46:22Z" finished-at="2012-08-04T01:46:22Z">
+        </test-method> <!-- deletar -->
+      </class> <!-- br.com.moonjava.flight.action.TesteDeDeletarAeronave -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

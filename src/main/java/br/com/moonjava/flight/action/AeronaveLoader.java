@@ -27,7 +27,7 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
  */
 public class AeronaveLoader implements ResultSetJdbcLoader<Aeronave> {
 
-  private String alias;
+  private final String alias;
 
   public AeronaveLoader() {
     this.alias = "AERONAVE";
@@ -70,8 +70,8 @@ public class AeronaveLoader implements ResultSetJdbcLoader<Aeronave> {
     }
 
     @Override
-    public int mapa() {
-      return rs.getInt("MAPA");
+    public boolean isMapa() {
+      return rs.getBoolean("MAPA");
     }
 
   }

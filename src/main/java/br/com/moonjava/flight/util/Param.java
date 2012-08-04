@@ -25,7 +25,7 @@ import org.joda.time.LocalDate;
  */
 public class Param<T> {
 
-  private T value;
+  private final T value;
 
   public Param(T value) {
     this.value = value;

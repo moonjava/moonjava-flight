@@ -1,6 +1,7 @@
 package br.com.moonjava.flight.action;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -14,44 +15,45 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
 
 @Test
 public class TesteDeCriarAeronave {
-	
+
   @BeforeClass
   public void beforeClass() {
-	    DbUnit dbUnit = new DbUnit();
-	    dbUnit.load(new DbUnitFlightXml());
+    DbUnit dbUnit = new DbUnit();
+    dbUnit.load(new DbUnitFlightXml());
   }
 
-
-  @Test
   public void criar_aeronave() {
-    
-	  String nome = "Teste 1";
-	  int codigo = 3;
-	  int qtdAssentos = 50;
-	  int mapa = 1;
-	  
-	  AeronaveAction action = new AeronaveAction();
-	  RequestParamWrapper request = new RequestParamWrapper();
-	  
-	  List<Aeronave> test1 = action.listaTodasAeronaves();
-	  assertThat(test1.size(), equalTo(2));
-	  
-	  request.set("nome", nome);
-	  request.set("codigo", codigo);
-	  request.set("qtdDeAssento", qtdAssentos);
-	  request.set("mapa", mapa);
-	  
-	  Aeronave aeronave = new AeronaveCreate(request).createInstance();
-	  action.criar(aeronave);
+    String nome = "Teste 1";
+    int codigo = 3;
+    int qtdAssentos = 50;
+    boolean mapa = true;
 
-	  List<Aeronave> test2 = action.listaTodasAeronaves();
-	  assertThat(test2.size(), equalTo(3));
-	  
-	  Aeronave test3 = action.consultarPorCodigo(codigo);
-	  assertThat(test3.getCodigo(), equalTo(codigo));
-	  assertThat(test3.getNome(), equalTo(nome));
-	  assertThat(test3.getQtdDeAssento(), equalTo(qtdAssentos));
-	  assertThat(test3.mapa(), equalTo(1));	  
-	  
+    AeronaveAction action = new AeronaveAction();
+    RequestParamWrapper request = new RequestParamWrapper();
+    RequestParamWrapper req = new RequestParamWrapper();
+
+    String nome1 = "";
+    req.set("nome", nome1);
+
+    List<Aeronave> antes = action.consultar(req);
+    assertThat(antes.size(), equalTo(2));
+
+    request.set("nome", nome);
+    request.set("codigo", codigo);
+    request.set("qtdDeAssento", qtdAssentos);
+    request.set("mapa", mapa);
+
+    Aeronave aeronave = new AeronaveCreate(request).createInstance();
+    action.criar(aeronave);
+
+    List<Aeronave> res = action.consultar(req);
+    assertThat(res.size(), equalTo(3));
+
+    Aeronave res2 = action.consultarPorCodigo(codigo);
+    assertThat(res2.getCodigo(), equalTo(codigo));
+    assertThat(res2.getNome(), equalTo(nome));
+    assertThat(res2.getQtdDeAssento(), equalTo(qtdAssentos));
+    assertThat(res2.isMapa(), equalTo(true));
+
   }
 }

@@ -58,5 +58,9 @@ public class RequestParamWrapper implements RequestParam {
   public String stringParam(String param) {
     return (String) map.get(param);
   }
+  
+  public Boolean booleanParam(String param){
+	  return (Boolean) map.get(param);
+  }
 
 }

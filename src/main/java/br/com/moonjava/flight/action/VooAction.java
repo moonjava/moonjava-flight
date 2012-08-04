@@ -99,8 +99,7 @@ public class VooAction implements Voo.Jdbc {
   }
   
   @Override
-  public List<Voo> consultarPorIdAeronave(RequestParam request){
-	  
+  public List<Voo> consultarPorAeronaveId(RequestParam request){	  
 	  int idAeronave = request.intParam("idAeronave");
 	  
 	  return query()

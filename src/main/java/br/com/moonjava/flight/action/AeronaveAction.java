@@ -28,93 +28,93 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public class AeronaveAction implements Aeronave.Jdbc {
 
-	private SqlStatement query() {
-		return new SqlStatementWrapper()
-			.prepare()
+  private SqlStatement query() {
+    return new SqlStatementWrapper()
+        .prepare()
 
-			.with("select *")
-			.with("from FLIGHT.AERONAVE as AERONAVE")
+        .with("select *")
 
-			.load(new AeronaveLoader());
-	}
+        .with("from FLIGHT.AERONAVE as AERONAVE")
 
-	@Override
-	public void criar(Aeronave aeronave) {
-		new SqlStatementWrapper()
-			.prepare()
+        .load(new AeronaveLoader());
+  }
 
-			.with("insert into FLIGHT.AERONAVE")
-			.with("(NOME, CODIGO, QTD_ASSENTO, MAPA)")
+  @Override
+  public void criar(Aeronave aeronave) {
+    new SqlStatementWrapper()
+        .prepare()
 
-			.with("values (").with("?,", aeronave.getNome())
-			.with("?,", aeronave.getCodigo())
-			.with("?,", aeronave.getQtdDeAssento())
-			.with("?)", aeronave.mapa())
+        .with("insert into FLIGHT.AERONAVE")
 
-			.andExecute();
-	}
-	
-	@Override
-	public List<Aeronave> listaTodasAeronaves(){
-		
-		return query()
+        .with("(NOME, CODIGO, QTD_ASSENTO, MAPA)")
 
-				.with("where 1 = 1")
-				.with("order by AERONAVE.CODIGO asc")
+        .with("values (").with("?,", aeronave.getNome())
 
-				.andList();
-	}
+        .with("?,", aeronave.getCodigo())
 
-	@Override
-	public List<Aeronave> consultar(RequestParam request) {
-		String nome = String.valueOf("%"+request.stringParam("nome")+"%");
+        .with("?,", aeronave.getQtdDeAssento())
 
-		
-		return query()
+        .with("?)", aeronave.isMapa())
 
-			.with("where 1 = 1")
-			.with("and AERONAVE.NOME like ?", nome)
+        .andExecute();
+  }
 
-			.with("order by AERONAVE.CODIGO asc")
+  @Override
+  public List<Aeronave> consultar(RequestParam request) {
+    String nome = request.stringParam("nome");
 
-			.andList();
-	}
+    return query()
 
-	@Override
-	public Aeronave consultarPorCodigo(int codigo) {
+        .with("where 1 = 1")
 
-		return query()
+        .with("and AERONAVE.NOME like concat ('%',?,'%')", nome)
 
-		.with("where AERONAVE.CODIGO = ?", codigo)
+        .with("order by AERONAVE.CODIGO asc")
 
-		.andGet();
-	}
+        .andList();
+  }
 
-	@Override
-	public void atualizar(Aeronave aeronave) {
-		new SqlStatementWrapper()
-			.prepare()
-			
-			.with("update FLIGHT.AERONAVE AS AERONAVE SET")
-			
-			.with("AERONAVE.NOME = ?,", aeronave.getNome())
-			.with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
-			
-			.with("where AERONAVE.ID = ?", aeronave.getId())
-			
-			.andExecute();
-	}
+  @Override
+  public Aeronave consultarPorCodigo(int codigo) {
+    return query()
 
-	@Override
-	public void deletar(int id) {
-	    new SqlStatementWrapper()   
-        .prepare()                            //Esta operação a grandes possibilidades de lançar uma exception
-        									  //pois pode haver um vôo relacionado com a aeronave que deseja deletar
-        .with("delete from FLIGHT.AERONAVE")  //sugestão de solução: caso a exception seja lançada retornar a mesma para 
-        .with("where AERONAVE.ID = ?", id)    //quem chamou o método e assim tratá-lo
+        .with("where AERONAVE.CODIGO = ?", codigo)
+
+        .andGet();
+  }
+
+  @Override
+  public void atualizar(Aeronave aeronave) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.AERONAVE AS AERONAVE set")
+
+        .with("AERONAVE.NOME = ?,", aeronave.getNome())
+
+        .with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
+
+        .with("where AERONAVE.ID = ?", aeronave.getId())
+
+        .andExecute();
+  }
+
+  @Override
+  public void deletar(int id) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("delete from FLIGHT.AERONAVE")
+
+        .with("where AERONAVE.ID = ?", id)
 
         .andExecute();
 
-	}
+    // Esta operação a grandes possibilidades de lançar uma
+    // exception
+    // pois pode haver um vôo relacionado com a aeronave que deseja deletar
+    // sugestão de solução: caso a exception seja lançada retornar a mesma
+    // para quem chamou o método e assim tratá-lo
+  }
 
 }

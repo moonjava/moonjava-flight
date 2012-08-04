@@ -24,44 +24,36 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public class AeronaveCreate implements Aeronave.Builder {
 
-	private final RequestParam request;
+  private final RequestParam request;
 
-	public AeronaveCreate(RequestParam request) {
-		this.request = request;
-	}
+  public AeronaveCreate(RequestParam request) {
+    this.request = request;
+  }
 
-	@Override
-	public Aeronave createInstance() {
+  @Override
+  public Aeronave createInstance() {
+    return new AeronaveImpl(this);
+  }
 
-		return new AeronaveImpl(this);
-	}
+  @Override
+  public int getCodigo() {
+    return request.intParam("codigo");
+  }
 
-	@Override
-	public int getCodigo() {
+  @Override
+  public String getNome() {
+    return request.stringParam("nome");
+  }
 
-		return request.intParam("codigo");
-	}
+  @Override
+  public int getQtdDeAssento() {
+    return request.intParam("qtdDeAssento");
+  }
 
-	@Override
-	public String getNome() {
+  @Override
+  public boolean isMapa() {
+    return request.booleanParam("mapa");
 
-		return request.stringParam("nome");
-	}
-
-	@Override
-	public int getQtdDeAssento() {
-
-		return request.intParam("qtdDeAssento");
-	}
-
-	@Override
-	public int mapa() {
-		int valor = request.intParam("mapa");
-		if (valor == 1) { 
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+  }
 
 }

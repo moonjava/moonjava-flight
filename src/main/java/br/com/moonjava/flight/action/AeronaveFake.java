@@ -43,7 +43,7 @@ public class AeronaveFake implements Aeronave {
   }
 
   @Override
-  public int mapa() {
+  public boolean isMapa() {
     throw new UnsupportedOperationException();
   }
 

@@ -13,34 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
+package br.com.moonjava.flight.base;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+import java.util.List;
+
+import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public interface Aeronave {
 
-  void set(String string, Object object);
+  interface Builder extends br.com.moonjava.flight.util.Builder<Aeronave> {
 
-  Integer intParam(String param);
+    int getCodigo();
 
-  Long longParam(String param);
+    String getNome();
 
-  Double doubleParam(String param);
+    int getQtdDeAssento();
 
-  DateTime dateTimeParam(String param);
+    boolean isMapa();
 
-  LocalDate localDateParam(String param);
+  }
 
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
+  interface Jdbc {
 
-  String stringParam(String param);
+    void criar(Aeronave aeronave);
 
-  Boolean booleanParam(String param);
+    List<Aeronave> consultar(RequestParam request);
+
+    Aeronave consultarPorId(int id);
+
+    void atualizar(Aeronave aeronave);
+
+    void deletar(int id);
+  }
+
+  int getId();
+
+  int getCodigo();
+
+  String getNome();
+
+  int getQtdDeAssento();
+
+  boolean isMapa();
 
 }

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
+package br.com.moonjava.flight.financeiro;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 /**
@@ -23,24 +22,35 @@ import org.joda.time.LocalDate;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public interface Cartao extends Pagamento {
 
-  void set(String string, Object object);
+  interface Builder extends Pagamento.Builder,
+      br.com.moonjava.flight.util.Builder<Cartao> {
 
-  Integer intParam(String param);
+    String getTitular();
 
-  Long longParam(String param);
+    long getNumero();
 
-  Double doubleParam(String param);
+    LocalDate getDataDeValidade();
 
-  DateTime dateTimeParam(String param);
+    Bandeira getBandeira();
 
-  LocalDate localDateParam(String param);
+  }
 
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
+  interface jdbc {
 
-  String stringParam(String param);
+    boolean debitar();
 
-  Boolean booleanParam(String param);
+    boolean creditar(Cartao cartao);
+
+  }
+
+  String getTitular();
+
+  long getNumero();
+
+  LocalDate getDataDeValidade();
+
+  Bandeira getBandeira();
 
 }

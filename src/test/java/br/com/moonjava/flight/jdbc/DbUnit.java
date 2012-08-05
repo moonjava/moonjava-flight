@@ -66,7 +66,7 @@ public class DbUnit {
       throw new RuntimeException("Your connection with DbUnit has been failed");
 
     } catch (Exception e) {
-      throw new RuntimeException("Error to execute Insert/Delete");
+      throw new RuntimeException(e);
     }
 
   }

@@ -29,7 +29,7 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * 
  */
 @Test
-public class TesteDeCheque {
+public class TesteDePagamentoCheque {
 
   public void cheque_deve_ser_criado() {
     RequestParamWrapper request = new RequestParamWrapper();

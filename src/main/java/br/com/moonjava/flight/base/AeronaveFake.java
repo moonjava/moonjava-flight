@@ -13,34 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
+package br.com.moonjava.flight.base;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public class AeronaveFake implements Aeronave {
 
-  void set(String string, Object object);
+  @Override
+  public int getId() {
+    throw new UnsupportedOperationException();
+  }
 
-  Integer intParam(String param);
+  @Override
+  public int getCodigo() {
+    throw new UnsupportedOperationException();
+  }
 
-  Long longParam(String param);
+  @Override
+  public String getNome() {
+    throw new UnsupportedOperationException();
+  }
 
-  Double doubleParam(String param);
+  @Override
+  public int getQtdDeAssento() {
+    throw new UnsupportedOperationException();
+  }
 
-  DateTime dateTimeParam(String param);
-
-  LocalDate localDateParam(String param);
-
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
-
-  String stringParam(String param);
-
-  Boolean booleanParam(String param);
+  @Override
+  public boolean isMapa() {
+    throw new UnsupportedOperationException();
+  }
 
 }

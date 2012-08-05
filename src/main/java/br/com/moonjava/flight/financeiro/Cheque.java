@@ -13,34 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+package br.com.moonjava.flight.financeiro;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public interface Cheque extends Pagamento {
 
-  void set(String string, Object object);
+  interface Builder extends Pagamento.Builder,
+      br.com.moonjava.flight.util.Builder<Cheque> {
 
-  Integer intParam(String param);
+    String getTitular();
 
-  Long longParam(String param);
+    int getNumero();
 
-  Double doubleParam(String param);
+    int getBanco();
 
-  DateTime dateTimeParam(String param);
+    int getAgencia();
 
-  LocalDate localDateParam(String param);
+    int getConta();
 
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
+  }
 
-  String stringParam(String param);
+  String getTitular();
 
-  Boolean booleanParam(String param);
+  int getNumero();
+
+  int getBanco();
+
+  int getAgencia();
+
+  int getConta();
 
 }

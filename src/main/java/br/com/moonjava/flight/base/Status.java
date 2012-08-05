@@ -13,34 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+package br.com.moonjava.flight.base;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public enum Status {
 
-  void set(String string, Object object);
-
-  Integer intParam(String param);
-
-  Long longParam(String param);
-
-  Double doubleParam(String param);
-
-  DateTime dateTimeParam(String param);
-
-  LocalDate localDateParam(String param);
-
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
-
-  String stringParam(String param);
-
-  Boolean booleanParam(String param);
+  DISPONIVEL,
+  INDISPONIVEL,
+  CONFIRMADO,
+  CANCELADO,
+  ATRASADO,
+  EMBARQUE,
+  FINALIZADO
 
 }

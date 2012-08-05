@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -44,8 +45,23 @@ public class RequestParamWrapper implements RequestParam {
   }
 
   @Override
+  public Long longParam(String param) {
+    return (Long) map.get(param);
+  }
+
+  @Override
+  public Double doubleParam(String param) {
+    return (Double) map.get(param);
+  }
+
+  @Override
   public DateTime dateTimeParam(String param) {
     return (DateTime) map.get(param);
+  }
+
+  @Override
+  public LocalDate localDateParam(String param) {
+    return (LocalDate) map.get(param);
   }
 
   @SuppressWarnings("unchecked")

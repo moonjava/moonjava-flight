@@ -13,34 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.util;
+package br.com.moonjava.flight.financeiro;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface RequestParam {
+public class PagamentoImpl implements Pagamento {
 
-  void set(String string, Object object);
+  private final double valor;
+  private final DateTime dataDeCriacao;
 
-  Integer intParam(String param);
+  public PagamentoImpl(Builder builder) {
+    this.valor = builder.getValor();
+    this.dataDeCriacao = builder.getDataDeCriacao();
+  }
 
-  Long longParam(String param);
+  @Override
+  public double getValor() {
+    return valor;
+  }
 
-  Double doubleParam(String param);
-
-  DateTime dateTimeParam(String param);
-
-  LocalDate localDateParam(String param);
-
-  <E extends Enum<E>> E enumParam(Class<E> enumClass, String param);
-
-  String stringParam(String param);
-
-  Boolean booleanParam(String param);
+  @Override
+  public DateTime getDataDeCriacao() {
+    return dataDeCriacao;
+  }
 
 }

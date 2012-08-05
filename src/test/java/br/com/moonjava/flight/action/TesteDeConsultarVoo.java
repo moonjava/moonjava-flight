@@ -52,7 +52,7 @@ public class TesteDeConsultarVoo {
     request.set("status", status);
 
     List<Voo> res = action.consultar(request);
-    assertThat(res.size(), equalTo(3));
+    assertThat(res.size(), equalTo(2));
 
     Voo r0 = res.get(0);
     Voo r1 = res.get(1);

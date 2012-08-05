@@ -19,8 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 import org.testng.annotations.Test;
 
@@ -32,9 +30,9 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * 
  */
 @Test
-public class TesteDeOperadoraDeCartao {
+public class TesteDePagementoCartao {
 
-  public void ler_arquivo_texto_de_operadora() {
+  public void pagamento_com_cartao_credito_deve_funcionar() {
     RequestParamWrapper request = new RequestParamWrapper();
 
     String titular = "Titular3";
@@ -56,25 +54,10 @@ public class TesteDeOperadoraDeCartao {
     assertThat(cartao.getBandeira(), equalTo(Bandeira.AMERICAN_EXPRESS));
     assertThat(cartao.getValor(), equalTo(500.50));
 
-    OperadoraDeCartao operadora = new OperadoraDeCartao();
-    operadora.openFile();
+    CartaoAction action = new CartaoAction();
+    boolean isValid = action.creditar(cartao);
 
-    List<Cartao> res = operadora.readFile();
-    assertThat(res.size(), equalTo(3));
-
-    boolean valid = false;
-
-    for (Cartao card : res) {
-      if (card.getTitular().equals(cartao.getTitular())
-          && card.getNumero() == cartao.getNumero()
-          && card.getDataDeValidade().isEqual(cartao.getDataDeValidade())
-          && card.getBandeira() == cartao.getBandeira()) {
-        valid = true;
-      }
-    }
-    assertThat(valid, equalTo(true));
-
-    operadora.closeFile();
+    assertThat(isValid, equalTo(true));
   }
 
 }

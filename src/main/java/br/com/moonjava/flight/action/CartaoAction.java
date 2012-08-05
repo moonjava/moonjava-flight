@@ -15,42 +15,38 @@
  */
 package br.com.moonjava.flight.action;
 
-import org.joda.time.LocalDate;
+import java.util.List;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface Cartao extends Pagamento {
+public class CartaoAction implements Cartao.jdbc {
 
-  interface Builder extends Pagamento.Builder,
-      br.com.moonjava.flight.util.Builder<Cartao> {
-
-    String getTitular();
-
-    long getNumero();
-
-    LocalDate getDataDeValidade();
-
-    Bandeira getBandeira();
-
+  @Override
+  public boolean debitar() {
+    return false;
   }
 
-  interface jdbc {
+  @Override
+  public boolean creditar(Cartao cartao) {
+    OperadoraDeCartao operadora = new OperadoraDeCartao();
+    operadora.openFile();
+    List<Cartao> cartoes = operadora.readFile();
 
-    boolean debitar();
+    boolean valid = false;
 
-    boolean creditar(Cartao cartao);
-
+    for (Cartao card : cartoes) {
+      if (card.getTitular().equals(cartao.getTitular())
+          && card.getNumero() == cartao.getNumero()
+          && card.getDataDeValidade().isEqual(cartao.getDataDeValidade())
+          && card.getBandeira() == cartao.getBandeira()) {
+        valid = true;
+      }
+    }
+    operadora.closeFile();
+    return valid;
   }
-
-  String getTitular();
-
-  long getNumero();
-
-  LocalDate getDataDeValidade();
-
-  Bandeira getBandeira();
 
 }

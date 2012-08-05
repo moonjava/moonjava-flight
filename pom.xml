@@ -7,6 +7,11 @@
   
   <name>moonjava :: flight</name>
   
+  	<scm>
+		<connection>scm:git:git@github.com:moonjava/moonjava-flight.git</connection>
+		<developerConnection>scm:git:git@github.com:moonjava/moonjava-flight.git</developerConnection>
+	</scm>
+  
   	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<joda-time.version>2.1</joda-time.version>
@@ -65,5 +70,5 @@
 			</plugin>
 		</plugins>
 	</build>
-  
+
 </project>

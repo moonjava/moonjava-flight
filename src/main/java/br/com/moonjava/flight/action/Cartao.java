@@ -41,7 +41,7 @@ public interface Cartao extends Pagamento {
 
     void debitar();
 
-    void creditar();
+    void creditar(Cartao cartao);
 
   }
 

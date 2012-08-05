@@ -16,30 +16,56 @@
 package br.com.moonjava.flight.action;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
+import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class PagamentoImpl implements Pagamento {
+public class CartaoCreate implements Cartao.Builder {
 
-  private final double valor;
-  private final DateTime dataDeCriacao;
+  private final RequestParam request;
 
-  public PagamentoImpl(Builder builder) {
-    this.valor = builder.getValor();
-    this.dataDeCriacao = builder.getDataDeCriacao();
+  public CartaoCreate(RequestParam request) {
+    this.request = request;
+  }
+
+  @Override
+  public Cartao createInstance() {
+    return new CartaoImpl(this);
+  }
+
+  @Override
+  public String getTitular() {
+    return request.stringParam("titular");
+  }
+
+  @Override
+  public long getNumero() {
+    return request.longParam("numero");
+  }
+
+  @Override
+  public LocalDate getDataDeValidade() {
+    return request.localDateParam("validade");
+  }
+
+  @Override
+  public Bandeira getBandeira() {
+    return request.enumParam(Bandeira.class, "bandeira");
   }
 
   @Override
   public double getValor() {
-    return valor;
+    return request.doubleParam("valor");
   }
 
   @Override
   public DateTime getDataDeCriacao() {
-    return dataDeCriacao;
+    return new DateTime();
   }
 
 }

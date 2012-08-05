@@ -31,8 +31,6 @@ public interface Pagamento {
     DateTime getDataDeCriacao();
   }
 
-  int getId();
-
   double getValor();
 
   DateTime getDataDeCriacao();

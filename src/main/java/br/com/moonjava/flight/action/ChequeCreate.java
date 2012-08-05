@@ -17,29 +17,59 @@ package br.com.moonjava.flight.action;
 
 import org.joda.time.DateTime;
 
+import br.com.moonjava.flight.util.RequestParam;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class PagamentoImpl implements Pagamento {
+public class ChequeCreate implements Cheque.Builder {
 
-  private final double valor;
-  private final DateTime dataDeCriacao;
+  private final RequestParam request;
 
-  public PagamentoImpl(Builder builder) {
-    this.valor = builder.getValor();
-    this.dataDeCriacao = builder.getDataDeCriacao();
+  public ChequeCreate(RequestParam request) {
+    this.request = request;
+  }
+
+  @Override
+  public Cheque createInstance() {
+    return new ChequeImpl(this);
+  }
+
+  @Override
+  public String getTitular() {
+    return request.stringParam("titular");
+  }
+
+  @Override
+  public int getNumero() {
+    return request.intParam("numero");
+  }
+
+  @Override
+  public int getBanco() {
+    return request.intParam("banco");
+  }
+
+  @Override
+  public int getAgencia() {
+    return request.intParam("agencia");
+  }
+
+  @Override
+  public int getConta() {
+    return request.intParam("conta");
   }
 
   @Override
   public double getValor() {
-    return valor;
+    return request.doubleParam("valor");
   }
 
   @Override
   public DateTime getDataDeCriacao() {
-    return dataDeCriacao;
+    return new DateTime();
   }
 
 }

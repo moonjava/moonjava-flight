@@ -19,23 +19,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.PessoaFisica;
+import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarPessoaFisica {
+public class TesteDeCriarReembolso {
 
   @BeforeClass
   public void limparTabela() {
@@ -43,28 +41,30 @@ public class TesteDeDeletarPessoaFisica {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar_pf_por_id() {
-    PessoaFisicaAction action = new PessoaFisicaAction();
-    UsuarioAction usuarioAction = new UsuarioAction();
-    ReembolsoAction bancoAction = new ReembolsoAction();
-
+  public void teste_criar_reembolso() {
+    ReembolsoAction action = new ReembolsoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    request.set("nome", "Nome");
-    int id = 2;
+    int pessoaFisica = 1;
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999955556;
 
-    PessoaFisica pessoaFisica = action.consultarPorId(id);
+    Reembolso antes = action.consultarPorPessoaFisica(pessoaFisica);
+    assertThat(antes, equalTo(null));
 
-    int pfId = pessoaFisica.getId();
+    request.set("pessoaFisica", pessoaFisica);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    List<PessoaFisica> antes = action.consultar(request);
-    assertThat(antes.size(), equalTo(4));
+    Reembolso reembolso = new ReembolsoCreate(request).createInstance();
 
-    usuarioAction.deletarPorPessoaFisicaId(pfId);
-    bancoAction.deletarPorPessoaFisicaId(pfId);
-    action.deletar(id);
+    action.criar(reembolso);
 
-    List<PessoaFisica> res = action.consultar(request);
-    assertThat(res.size(), equalTo(3));
+    Reembolso res = action.consultarPorPessoaFisica(pessoaFisica);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
 }

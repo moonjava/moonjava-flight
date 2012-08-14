@@ -19,23 +19,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.PessoaFisica;
+import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarPessoaFisica {
+public class TesteDeAtualizarReembolso {
 
   @BeforeClass
   public void limparTabela() {
@@ -43,28 +41,33 @@ public class TesteDeDeletarPessoaFisica {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar_pf_por_id() {
-    PessoaFisicaAction action = new PessoaFisicaAction();
-    UsuarioAction usuarioAction = new UsuarioAction();
-    ReembolsoAction bancoAction = new ReembolsoAction();
-
+  public void teste_atualizar_reembolso() {
+    ReembolsoAction action = new ReembolsoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    request.set("nome", "Nome");
-    int id = 2;
+    int id = 1;
 
-    PessoaFisica pessoaFisica = action.consultarPorId(id);
+    Reembolso antes = action.consultarPorId(id);
+    assertThat(antes.getBanco(), equalTo(11));
+    assertThat(antes.getAgencia(), equalTo(111));
+    assertThat(antes.getConta(), equalTo(222255558));
 
-    int pfId = pessoaFisica.getId();
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999999999;
 
-    List<PessoaFisica> antes = action.consultar(request);
-    assertThat(antes.size(), equalTo(4));
+    request.set("id", id);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    usuarioAction.deletarPorPessoaFisicaId(pfId);
-    bancoAction.deletarPorPessoaFisicaId(pfId);
-    action.deletar(id);
+    Reembolso reembolso = new ReembolsoUpdate(request).createInstance();
 
-    List<PessoaFisica> res = action.consultar(request);
-    assertThat(res.size(), equalTo(3));
+    action.atualizar(reembolso);
+
+    Reembolso res = action.consultarPorId(id);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
 }

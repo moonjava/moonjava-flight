@@ -19,23 +19,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.PessoaFisica;
+import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarPessoaFisica {
+public class TesteDeConsultarReembolso {
 
   @BeforeClass
   public void limparTabela() {
@@ -43,28 +40,26 @@ public class TesteDeDeletarPessoaFisica {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar_pf_por_id() {
-    PessoaFisicaAction action = new PessoaFisicaAction();
-    UsuarioAction usuarioAction = new UsuarioAction();
-    ReembolsoAction bancoAction = new ReembolsoAction();
+  public void teste_de_consulta_por_id() {
+    ReembolsoAction action = new ReembolsoAction();
 
-    RequestParamWrapper request = new RequestParamWrapper();
-
-    request.set("nome", "Nome");
     int id = 2;
 
-    PessoaFisica pessoaFisica = action.consultarPorId(id);
+    Reembolso res = action.consultarPorId(id);
+    assertThat(res.getBanco(), equalTo(22));
+    assertThat(res.getAgencia(), equalTo(222));
+    assertThat(res.getConta(), equalTo(333366669));
+  }
 
-    int pfId = pessoaFisica.getId();
+  public void teste_de_consulta_por_pf() {
+    ReembolsoAction action = new ReembolsoAction();
 
-    List<PessoaFisica> antes = action.consultar(request);
-    assertThat(antes.size(), equalTo(4));
+    int pf = 2;
 
-    usuarioAction.deletarPorPessoaFisicaId(pfId);
-    bancoAction.deletarPorPessoaFisicaId(pfId);
-    action.deletar(id);
+    Reembolso res = action.consultarPorPessoaFisica(pf);
 
-    List<PessoaFisica> res = action.consultar(request);
-    assertThat(res.size(), equalTo(3));
+    assertThat(res.getBanco(), equalTo(11));
+    assertThat(res.getAgencia(), equalTo(111));
+    assertThat(res.getConta(), equalTo(222255558));
   }
 }

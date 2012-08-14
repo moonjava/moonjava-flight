@@ -24,50 +24,39 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.Status;
-import br.com.moonjava.flight.base.Voo;
+import br.com.moonjava.flight.base.Usuario;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarAeronave {
+public class TesteDeDeletarUsuario {
 
   @BeforeClass
-  public void beforeClass() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar() {
-    VooAction actionVoo = new VooAction();
-    AeronaveAction actionAeronave = new AeronaveAction();
+  public void teste_deletar_usuario_por_id() {
+    UsuarioAction action = new UsuarioAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    request.set("status", Status.DISPONIVEL);
-
     int id = 1;
+    request.set("login", "teste");
 
-    List<Voo> antesVoo = actionVoo.consultar(request);
-    assertThat(antesVoo.size(), equalTo(3));
+    List<Usuario> antes = action.consultar(request);
+    assertThat(antes.size(), equalTo(2));
 
-    List<Aeronave> antesAeronave = actionAeronave.consultar(request);
-    assertThat(antesAeronave.size(), equalTo(2));
+    action.deletar(id);
 
-    actionVoo.deletarPorAeronaveId(id);
-    actionAeronave.deletar(id);
+    List<Usuario> res = action.consultar(request);
+    assertThat(res.size(), equalTo(1));
 
-    List<Voo> resVoo = actionVoo.consultar(request);
-    assertThat(resVoo.size(), equalTo(1));
-
-    List<Aeronave> resAeronave = actionAeronave.consultar(request);
-    assertThat(resAeronave.size(), equalTo(1));
   }
-
 }

@@ -19,55 +19,52 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.Status;
-import br.com.moonjava.flight.base.Voo;
+import br.com.moonjava.flight.base.Banco;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarAeronave {
+public class TesteDeCriarBanco {
 
   @BeforeClass
-  public void beforeClass() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar() {
-    VooAction actionVoo = new VooAction();
-    AeronaveAction actionAeronave = new AeronaveAction();
+  public void teste_criar_banco() {
+    BancoAction action = new BancoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    request.set("status", Status.DISPONIVEL);
+    int pessoaFisica = 1;
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999955556;
 
-    int id = 1;
+    Banco antes = action.consultarPorPessoaFisica(pessoaFisica);
+    assertThat(antes, equalTo(null));
 
-    List<Voo> antesVoo = actionVoo.consultar(request);
-    assertThat(antesVoo.size(), equalTo(3));
+    request.set("pessoaFisica", pessoaFisica);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    List<Aeronave> antesAeronave = actionAeronave.consultar(request);
-    assertThat(antesAeronave.size(), equalTo(2));
+    Banco objBanco = new BancoCreate(request).createInstance();
 
-    actionVoo.deletarPorAeronaveId(id);
-    actionAeronave.deletar(id);
+    action.criar(objBanco);
 
-    List<Voo> resVoo = actionVoo.consultar(request);
-    assertThat(resVoo.size(), equalTo(1));
-
-    List<Aeronave> resAeronave = actionAeronave.consultar(request);
-    assertThat(resAeronave.size(), equalTo(1));
+    Banco res = action.consultarPorPessoaFisica(pessoaFisica);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
-
 }

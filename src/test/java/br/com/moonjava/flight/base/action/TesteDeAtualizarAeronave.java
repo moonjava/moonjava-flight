@@ -23,8 +23,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.action.AeronaveAction;
-import br.com.moonjava.flight.base.action.AeronaveUpdate;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -48,7 +46,7 @@ public class TesteDeAtualizarAeronave {
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
-    Aeronave antes = action.consultarPorId(1);
+    Aeronave antes = action.consultarPorId(id);
     assertThat(antes.getCodigo(), equalTo(1));
     assertThat(antes.getNome(), equalTo("nave A"));
 

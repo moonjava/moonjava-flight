@@ -13,32 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
-
-import java.sql.ResultSet;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+package br.com.moonjava.flight.base;
 
 /**
- * @version 1.0 Apr 10, 2012
- * @contact tiago.aguiar@moonjava.com.br
+ * @version 1.0, Aug 10, 2012
+ * @contact miqueias@moonjava.com.br
  * 
  */
-public interface ResultSetJdbc {
+public enum Perfil {
 
-  ResultSet getResultSet();
-
-  String getString(String columnLabel);
-
-  int getInt(String columnLabel);
-
-  boolean getBoolean(String columnLabel);
-
-  DateTime getDateTime(String columnLabel);
-
-  LocalDate getLocalDate(String columnLabel);
-
-  long getLong(String columnLabel);
+  ATENDENTE,
+  SUPERVISOR
 
 }

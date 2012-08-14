@@ -19,55 +19,47 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.Status;
-import br.com.moonjava.flight.base.Voo;
+import br.com.moonjava.flight.base.Banco;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarAeronave {
+public class TesteDeConsultarBanco {
 
   @BeforeClass
-  public void beforeClass() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar() {
-    VooAction actionVoo = new VooAction();
-    AeronaveAction actionAeronave = new AeronaveAction();
-    RequestParamWrapper request = new RequestParamWrapper();
+  public void teste_de_consulta_por_id() {
+    BancoAction action = new BancoAction();
 
-    request.set("status", Status.DISPONIVEL);
+    int id = 2;
 
-    int id = 1;
-
-    List<Voo> antesVoo = actionVoo.consultar(request);
-    assertThat(antesVoo.size(), equalTo(3));
-
-    List<Aeronave> antesAeronave = actionAeronave.consultar(request);
-    assertThat(antesAeronave.size(), equalTo(2));
-
-    actionVoo.deletarPorAeronaveId(id);
-    actionAeronave.deletar(id);
-
-    List<Voo> resVoo = actionVoo.consultar(request);
-    assertThat(resVoo.size(), equalTo(1));
-
-    List<Aeronave> resAeronave = actionAeronave.consultar(request);
-    assertThat(resAeronave.size(), equalTo(1));
+    Banco res = action.consultarPorId(id);
+    assertThat(res.getBanco(), equalTo(22));
+    assertThat(res.getAgencia(), equalTo(222));
+    assertThat(res.getConta(), equalTo(333366669));
   }
 
+  public void teste_de_consulta_por_pf() {
+    BancoAction action = new BancoAction();
+
+    int pf = 2;
+
+    Banco res = action.consultarPorPessoaFisica(pf);
+
+    assertThat(res.getBanco(), equalTo(11));
+    assertThat(res.getAgencia(), equalTo(111));
+    assertThat(res.getConta(), equalTo(222255558));
+  }
 }

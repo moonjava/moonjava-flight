@@ -19,55 +19,55 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.Status;
-import br.com.moonjava.flight.base.Voo;
+import br.com.moonjava.flight.base.Banco;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeDeletarAeronave {
+public class TesteDeAtualizarBanco {
 
   @BeforeClass
-  public void beforeClass() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar() {
-    VooAction actionVoo = new VooAction();
-    AeronaveAction actionAeronave = new AeronaveAction();
+  public void teste_atualizar_banco() {
+    BancoAction action = new BancoAction();
     RequestParamWrapper request = new RequestParamWrapper();
-
-    request.set("status", Status.DISPONIVEL);
 
     int id = 1;
 
-    List<Voo> antesVoo = actionVoo.consultar(request);
-    assertThat(antesVoo.size(), equalTo(3));
+    Banco antes = action.consultarPorId(id);
+    assertThat(antes.getBanco(), equalTo(11));
+    assertThat(antes.getAgencia(), equalTo(111));
+    assertThat(antes.getConta(), equalTo(222255558));
 
-    List<Aeronave> antesAeronave = actionAeronave.consultar(request);
-    assertThat(antesAeronave.size(), equalTo(2));
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999999999;
 
-    actionVoo.deletarPorAeronaveId(id);
-    actionAeronave.deletar(id);
+    request.set("id", id);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    List<Voo> resVoo = actionVoo.consultar(request);
-    assertThat(resVoo.size(), equalTo(1));
+    Banco objBanco = new BancoUpdate(request).createInstance();
 
-    List<Aeronave> resAeronave = actionAeronave.consultar(request);
-    assertThat(resAeronave.size(), equalTo(1));
+    action.atualizar(objBanco);
+
+    Banco res = action.consultarPorId(id);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
-
 }

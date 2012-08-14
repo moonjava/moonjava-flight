@@ -90,4 +90,13 @@ public class ResultSetJdbcWrapper implements ResultSetJdbc {
     }
   }
 
+  @Override
+  public long getLong(String columnLabel) {
+    try {
+      return rs.getLong(alias + "." + columnLabel);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

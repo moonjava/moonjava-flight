@@ -25,8 +25,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.action.AeronaveAction;
-import br.com.moonjava.flight.base.action.AeronaveCreate;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;

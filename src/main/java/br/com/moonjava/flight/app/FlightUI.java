@@ -34,6 +34,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.app.aeronave.AeronaveHandler;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -41,10 +43,10 @@ import javax.swing.JPanel;
  */
 public class FlightUI {
 
-  private final ResourceBundle bundle;
   private JFrame frame;
   private JPanel body;
   private JPanel conteudo;
+  private final ResourceBundle bundle;
 
   public FlightUI(ResourceBundle bundle) {
     this.bundle = bundle;
@@ -80,7 +82,7 @@ public class FlightUI {
     flight.setFont(new Font("Arial Bold", 0, 14));
 
     menuBar.setBounds(new Rectangle(Integer.MAX_VALUE, 30));
-    rodape.setBounds(50, 650, 500, 40);
+    rodape.setBounds(50, 630, 500, 40);
 
     aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
 
@@ -110,7 +112,6 @@ public class FlightUI {
 
     ImageIcon imageIcon = new ImageIcon(image);
     JLabel imagem = new JLabel(imageIcon);
-    imagem.setBackground(Color.DARK_GRAY);
     JButton voo = new JButton(bundle.getString("menubar.voo"));
     JButton passagem = new JButton(bundle.getString("menubar.passagem"));
     JButton checkin = new JButton(bundle.getString("menubar.checkin"));
@@ -123,6 +124,7 @@ public class FlightUI {
     aeronave.setBounds(50, 290, 200, 50);
     usuario.setBounds(50, 360, 200, 50);
     imagem.setBounds(50, 50, 1100, 600);
+    imagem.setBackground(Color.DARK_GRAY);
 
     aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
 

@@ -37,14 +37,14 @@ import javax.swing.JPanel;
  */
 public class IdiomaUI implements MouseListener {
 
-  private JLabel portugues;
-  private JLabel ingles;
-  private JLabel espanhol;
-
-  private ResourceBundle bundle;
   private JFrame idioma;
   private JPanel body;
   private JPanel conteudo;
+  private ResourceBundle bundle;
+
+  private JLabel portugues;
+  private JLabel ingles;
+  private JLabel espanhol;
 
   public IdiomaUI() {
     window();
@@ -53,39 +53,37 @@ public class IdiomaUI implements MouseListener {
 
   private void window() {
     idioma = new JFrame("FLIGHT :: FLIGHT");
-
     body = new JPanel(null);
-    body.setBackground(Color.WHITE);
-
     conteudo = new JPanel(null);
 
-    idioma.getContentPane().add(body);
-    conteudo.setBounds(0, 30, 600, 300);
+    body.setBackground(Color.WHITE);
     conteudo.setBackground(Color.WHITE);
+
+    conteudo.setBounds(0, 30, 600, 300);
+    idioma.getContentPane().add(body);
 
     ImageIcon imageBrasil = new ImageIcon("flags/brazil.gif");
     ImageIcon imageUSA = new ImageIcon("flags/usa.gif");
     ImageIcon imageEspanha = new ImageIcon("flags/spain.gif");
 
     portugues = new JLabel(imageBrasil);
-    portugues.setBounds(10, 0, 180, 135);
-
     ingles = new JLabel(imageUSA);
-    ingles.setBounds(190, 0, 180, 135);
-
     espanhol = new JLabel(imageEspanha);
+
+    portugues.setBounds(10, 0, 180, 135);
+    ingles.setBounds(190, 0, 180, 135);
     espanhol.setBounds(370, 0, 180, 135);
 
     JLabel entrar = new JLabel("ENTRAR");
-    entrar.setFont(new Font("Arial Bold", 0, 14));
-    entrar.setBounds(60, 100, 180, 135);
-
     JLabel enter = new JLabel("ENTER");
-    enter.setFont(new Font("Arial Bold", 0, 14));
-    enter.setBounds(240, 100, 180, 135);
-
     JLabel _entrar = new JLabel("ENTRAR");
+
+    entrar.setFont(new Font("Arial Bold", 0, 14));
+    enter.setFont(new Font("Arial Bold", 0, 14));
     _entrar.setFont(new Font("Arial Bold", 0, 14));
+
+    entrar.setBounds(60, 100, 180, 135);
+    enter.setBounds(240, 100, 180, 135);
     _entrar.setBounds(420, 100, 180, 135);
 
     conteudo.add(portugues);
@@ -126,8 +124,8 @@ public class IdiomaUI implements MouseListener {
     if (e.getSource() == espanhol) {
       bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
     }
-    new FlightUI(bundle);
     idioma.setVisible(false);
+    new FlightUI(bundle);
   }
 
   @Override

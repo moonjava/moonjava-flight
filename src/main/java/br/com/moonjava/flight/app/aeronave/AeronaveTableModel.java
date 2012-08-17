@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.app;
+package br.com.moonjava.flight.app.aeronave;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -27,12 +28,14 @@ import br.com.moonjava.flight.base.Aeronave;
  * 
  */
 @SuppressWarnings("serial")
-public class TabelaDeAeronave extends AbstractTableModel {
+public class AeronaveTableModel extends AbstractTableModel {
 
   private final List<Aeronave> list;
+  private final ResourceBundle bundle;
 
-  public TabelaDeAeronave(List<Aeronave> list) {
+  public AeronaveTableModel(List<Aeronave> list, ResourceBundle bundle) {
     this.list = list;
+    this.bundle = bundle;
   }
 
   @Override
@@ -54,11 +57,11 @@ public class TabelaDeAeronave extends AbstractTableModel {
   public String getColumnName(int column) {
     switch (column) {
     case 0:
-      return "NOME";
+      return bundle.getString("consultar.aeronave.coluna.0");
     case 1:
-      return "CÓDIGO";
+      return bundle.getString("consultar.aeronave.coluna.1");
     case 2:
-      return "QTD DE ASSENTOS";
+      return bundle.getString("consultar.aeronave.coluna.2");
     }
     return null;
   }

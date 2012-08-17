@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.app;
+package br.com.moonjava.flight.app.aeronave;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -44,10 +44,12 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CriarAeronaveUI implements ActionListener {
+class CriarAeronaveUI implements ActionListener {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private final JButton atualizar;
+  private final JButton deletar;
   private final AeronaveAction action;
   private final RequestParamWrapper request;
 
@@ -56,15 +58,21 @@ public class CriarAeronaveUI implements ActionListener {
   private JTextField assento;
   private JLabel imagem;
 
-  public CriarAeronaveUI(JPanel conteudo, ResourceBundle bundle) {
+  private String fileName;
+
+  public CriarAeronaveUI(JPanel conteudo, ResourceBundle bundle, JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+    this.atualizar = atualizar;
+    this.deletar = deletar;
     action = new AeronaveAction();
     request = new RequestParamWrapper();
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    atualizar.setEnabled(false);
+    deletar.setEnabled(false);
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -73,6 +81,10 @@ public class CriarAeronaveUI implements ActionListener {
     JLabel tituloCodigo = new JLabel(bundle.getString("criar.aeronave.titulo.codigo"));
     JLabel tituloAssento = new JLabel(bundle.getString("criar.aeronave.titulo.assento"));
     JLabel tituloMapa = new JLabel(bundle.getString("criar.aeronave.titulo.mapa"));
+
+    JLabel alertaCodigo = new JLabel(bundle.getString("alerta.numero"));
+    JLabel alertaAssento = new JLabel(bundle.getString("alerta.numero"));
+    JLabel alertaMapa = new JLabel(bundle.getString("criar.aeronave.alerta.mapa"));
 
     InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
     Image image = null;
@@ -94,32 +106,39 @@ public class CriarAeronaveUI implements ActionListener {
     JButton cadastrar = new JButton(bundle.getString("criar.aeronave.botao.cadastrar"));
 
     tituloNome.setBounds(60, 70, 200, 30);
-    nome.setBounds(180, 70, 300, 30);
-
     tituloCodigo.setBounds(60, 110, 200, 30);
-    codigo.setBounds(180, 110, 300, 30);
-
     tituloAssento.setBounds(60, 150, 200, 30);
-    assento.setBounds(180, 150, 150, 30);
-
     tituloMapa.setBounds(60, 190, 200, 30);
+
+    alertaCodigo.setBounds(500, 110, 200, 30);
+    alertaAssento.setBounds(360, 150, 200, 30);
+    alertaMapa.setBounds(360, 190, 500, 30);
+
+    nome.setBounds(180, 70, 300, 30);
+    codigo.setBounds(180, 110, 300, 30);
+    assento.setBounds(180, 150, 150, 30);
     mapa.setBounds(180, 190, 150, 30);
-
-    imagem.setBounds(290, 190, 130, 30);
-
     cadastrar.setBounds(180, 240, 150, 30);
 
+    imagem.setBounds(280, 190, 130, 30);
+
     mapa.addActionListener(new LoadFile());
-    cadastrar.addActionListener(new Cadastro());
+    cadastrar.addActionListener(new CadastrarHandler());
 
     conteudo.add(tituloNome);
-    conteudo.add(nome);
     conteudo.add(tituloCodigo);
-    conteudo.add(codigo);
     conteudo.add(tituloAssento);
-    conteudo.add(assento);
     conteudo.add(tituloMapa);
+
+    conteudo.add(alertaCodigo);
+    conteudo.add(alertaAssento);
+    conteudo.add(alertaMapa);
+
+    conteudo.add(nome);
+    conteudo.add(codigo);
+    conteudo.add(assento);
     conteudo.add(mapa);
+
     conteudo.add(cadastrar);
 
     conteudo.repaint();
@@ -138,7 +157,7 @@ public class CriarAeronaveUI implements ActionListener {
 
         File file = caixa.getSelectedFile();
         String absolutePath = file.getAbsolutePath();
-        String name = file.getName();
+        fileName = file.getName();
 
         File folder = new File("airplanes");
 
@@ -149,12 +168,13 @@ public class CriarAeronaveUI implements ActionListener {
 
         int _codigo = 0;
         int _assento = 0;
-        boolean mapa = false;
 
         try {
           _codigo = Integer.parseInt(codigo.getText());
           _assento = Integer.parseInt(assento.getText());
-          mapa = CopyFile.copyfile(absolutePath, folder.getName() + "/" + name);
+
+          boolean mapa = CopyFile.copyfile(absolutePath, folder.getName() + "/" + fileName);
+
           request.set("nome", nome.getText());
           request.set("codigo", _codigo);
           request.set("qtdDeAssento", _assento);
@@ -174,24 +194,31 @@ public class CriarAeronaveUI implements ActionListener {
     }
   }
 
-  private class Cadastro implements ActionListener {
+  private class CadastrarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
+      String res = nome.getText() + ".jpg";
 
-      Aeronave pojo = new AeronaveCreate(request).createInstance();
+      if (fileName.equals(res)) {
+        Aeronave pojo = new AeronaveCreate(request).createInstance();
+        action.criar(pojo);
 
-      action.criar(pojo);
+        JOptionPane.showMessageDialog(null,
+            bundle.getString("criar.joption.ok"),
+            bundle.getString("criar.joption.titulo"),
+            JOptionPane.INFORMATION_MESSAGE);
 
-      JOptionPane
-          .showMessageDialog(null,
-              bundle.getString("criar.joption.ok"),
-              bundle.getString("criar.joption.titulo"),
-              JOptionPane.INFORMATION_MESSAGE);
+        conteudo.removeAll();
+        conteudo.validate();
+        conteudo.repaint();
 
-      conteudo.removeAll();
-      conteudo.validate();
-      conteudo.repaint();
-
+      } else {
+        JOptionPane.showMessageDialog(null,
+            bundle.getString("criar.joption.err"),
+            bundle.getString("criar.joption.titulo"),
+            JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
+
 }

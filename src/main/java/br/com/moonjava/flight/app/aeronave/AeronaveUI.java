@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.app;
+package br.com.moonjava.flight.app.aeronave;
 
 import java.awt.Font;
 import java.util.ResourceBundle;
@@ -34,38 +34,38 @@ public class AeronaveUI {
 
   public AeronaveUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
-    this.conteudo.removeAll();
-    this.conteudo.validate();
-    this.conteudo.repaint();
     this.bundle = bundle;
 
     mainMenu();
   }
 
   private void mainMenu() {
+    conteudo.removeAll();
+    conteudo.validate();
+    conteudo.repaint();
+
     JLabel titulo = new JLabel(bundle.getString("aeronave.titulo"));
     JButton consultar = new JButton(bundle.getString("aeronave.consultar"));
     JButton cadastrar = new JButton(bundle.getString("aeronave.cadastrar"));
     JButton atualizar = new JButton(bundle.getString("aeronave.atualizar"));
     JButton deletar = new JButton(bundle.getString("aeronave.deletar"));
+    JPanel subConteudo = new JPanel(null);
 
-    titulo.setEnabled(false);
     titulo.setFont(new Font("Arial Bold", 0, 14));
 
-    atualizar.setEnabled(false);
+    titulo.setEnabled(false);
     deletar.setEnabled(false);
+    atualizar.setEnabled(false);
 
     titulo.setBounds(0, 30, 100, 30);
     consultar.setBounds(0, 70, 200, 50);
     cadastrar.setBounds(0, 140, 200, 50);
     atualizar.setBounds(0, 210, 200, 50);
     deletar.setBounds(0, 280, 200, 50);
-
-    JPanel subConteudo = new JPanel(null);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    consultar.addActionListener(new ConsultarAeronaveUI(subConteudo));
-    cadastrar.addActionListener(new CriarAeronaveUI(subConteudo, bundle));
+    consultar.addActionListener(new ConsultarAeronaveUI(subConteudo, bundle, atualizar, deletar));
+    cadastrar.addActionListener(new CriarAeronaveUI(subConteudo, bundle, atualizar, deletar));
 
     conteudo.add(titulo);
     conteudo.add(consultar);
@@ -74,4 +74,5 @@ public class AeronaveUI {
     conteudo.add(deletar);
     conteudo.add(subConteudo);
   }
+
 }

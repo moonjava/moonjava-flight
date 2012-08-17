@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.app;
+package br.com.moonjava.flight.app.aeronave;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

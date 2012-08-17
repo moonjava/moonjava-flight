@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import br.com.moonjava.flight.util.Param;
 
 /**
@@ -137,7 +139,13 @@ public class SqlStatementWrapper implements SqlStatement {
       stm.close();
       connection.close();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      JOptionPane
+          .showMessageDialog(null,
+              "Error with database!\n" + e.getMessage()
+                  + "\nContact the administrator\nThe system will close!",
+              "Error",
+              JOptionPane.ERROR_MESSAGE);
+      System.exit(1);
     }
   }
 

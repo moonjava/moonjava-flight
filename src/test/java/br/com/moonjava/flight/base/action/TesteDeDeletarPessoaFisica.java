@@ -46,7 +46,6 @@ public class TesteDeDeletarPessoaFisica {
   public void deletar_pf_por_id() {
     PessoaFisicaAction action = new PessoaFisicaAction();
     UsuarioAction usuarioAction = new UsuarioAction();
-    ReembolsoAction bancoAction = new ReembolsoAction();
 
     RequestParamWrapper request = new RequestParamWrapper();
 
@@ -61,7 +60,6 @@ public class TesteDeDeletarPessoaFisica {
     assertThat(antes.size(), equalTo(4));
 
     usuarioAction.deletarPorPessoaFisicaId(pfId);
-    bancoAction.deletarPorPessoaFisicaId(pfId);
     action.deletar(id);
 
     List<PessoaFisica> res = action.consultar(request);

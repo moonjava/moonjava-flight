@@ -28,7 +28,7 @@ public class ReembolsoFake implements Reembolso {
   }
 
   @Override
-  public PessoaFisica getPessoaFisica() {
+  public Passagem getPassagem() {
     throw new UnsupportedOperationException();
   }
 

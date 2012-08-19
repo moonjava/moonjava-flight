@@ -17,8 +17,6 @@ package br.com.moonjava.flight.base.action;
 
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.base.ReembolsoImpl;
-import br.com.moonjava.flight.base.PessoaFisica;
-import br.com.moonjava.flight.base.PessoaFisicaFake;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
@@ -40,11 +38,11 @@ public class ReembolsoCreate implements Reembolso.Builder {
   }
 
   @Override
-  public PessoaFisica getPessoaFisica() {
-    return new PessoaFisicaFake() {
+  public Passsagem getPassagem() {
+    return new PassagemFake() {
       @Override
       public int getId() {
-        return request.intParam("pessoaFisica");
+        return request.intParam("passagem");
       }
     };
   }

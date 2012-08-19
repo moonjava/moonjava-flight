@@ -23,13 +23,13 @@ package br.com.moonjava.flight.base;
 public class ReembolsoImpl implements Reembolso {
 
   private int id;
-  private PessoaFisica pessoaFisica;
+  private Passagem passagem;
   private int banco;
   private int agencia;
   private int conta;
 
   public ReembolsoImpl(Builder builder) {
-    this.pessoaFisica = builder.getPessoaFisica();
+    this.passagem = builder.getPassagem();
     this.banco = builder.getBanco();
     this.agencia = builder.getAgencia();
     this.conta = builder.getConta();
@@ -45,8 +45,8 @@ public class ReembolsoImpl implements Reembolso {
   }
 
   @Override
-  public PessoaFisica getPessoaFisica() {
-    return pessoaFisica;
+  public Passagem getPassagem() {
+    return passagem;
   }
 
   @Override

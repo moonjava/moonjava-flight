@@ -24,7 +24,7 @@ public interface Reembolso {
 
   interface Builder extends br.com.moonjava.flight.util.Builder<Reembolso> {
 
-    PessoaFisica getPessoaFisica();
+    Passagem getPassagem();
 
     int getBanco();
 
@@ -37,7 +37,7 @@ public interface Reembolso {
 
     void criar(Reembolso reembolso);
 
-    Reembolso consultarPorPessoaFisica(int pessoaFisicaId);
+    Reembolso consultarPorPassagemId(int passagemId);
 
     Reembolso consultarPorId(int id);
 
@@ -45,12 +45,12 @@ public interface Reembolso {
 
     void deletar(int id);
 
-    void deletarPorPessoaFisicaId(int pessoaFisica);
+    void deletarPorPassagemId(int passagemId);
   }
 
   int getID();
 
-  PessoaFisica getPessoaFisica();
+  Passagem getPassagem();
 
   int getBanco();
 

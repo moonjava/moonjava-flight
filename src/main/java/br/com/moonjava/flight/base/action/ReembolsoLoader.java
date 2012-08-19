@@ -17,7 +17,6 @@ package br.com.moonjava.flight.base.action;
 
 import java.sql.ResultSet;
 
-import br.com.moonjava.flight.base.PessoaFisica;
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.base.ReembolsoImpl;
 import br.com.moonjava.flight.jdbc.ResultSetJdbc;
@@ -40,14 +39,14 @@ public class ReembolsoLoader implements ResultSetJdbcLoader<Reembolso> {
   @Override
   public Reembolso get(ResultSet resultSet) {
     ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, alias);
-    return new BancoBuilder(rs).createInstance();
+    return new ReembolsoBuilder(rs).createInstance();
   }
 
-  private class BancoBuilder implements Reembolso.Builder {
+  private class ReembolsoBuilder implements Reembolso.Builder {
 
     private final ResultSetJdbc rs;
 
-    public BancoBuilder(ResultSetJdbc rs) {
+    public ReembolsoBuilder(ResultSetJdbc rs) {
       this.rs = rs;
     }
 
@@ -59,9 +58,9 @@ public class ReembolsoLoader implements ResultSetJdbcLoader<Reembolso> {
     }
 
     @Override
-    public PessoaFisica getPessoaFisica() {
+    public Passagem getPassagem() {
       ResultSet resultSet = rs.getResultSet();
-      return new PessoaFisicaLoader().get(resultSet);
+      return new PassagemLoader().get(resultSet);
     }
 
     @Override

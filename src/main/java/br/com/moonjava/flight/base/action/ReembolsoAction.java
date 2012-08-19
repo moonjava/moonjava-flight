@@ -15,7 +15,6 @@
  */
 package br.com.moonjava.flight.base.action;
 
-import br.com.moonjava.flight.base.PessoaFisica;
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
@@ -32,26 +31,26 @@ public class ReembolsoAction implements Reembolso.Jdbc {
         .prepare()
 
         .with("select * from")
-        .with("FLIGHT.BANCO as BANCO")
+        .with("FLIGHT.REEMBOLSO as REEMBOLSO")
 
-        .with("join FLIGHT.PESSOAFISICA as PESSOAFISICA")
-        .with("on PESSOAFISICA_ID = BANCO.PESSOAFISICA_ID")
+        .with("join FLIGHT.PASSAGEM as PASSAGEM")
+        .with("on PASSAGEM_ID = REEMBOLSO.PASSAGEM_ID")
 
         .load(new ReembolsoLoader());
   }
 
   @Override
   public void criar(Reembolso reembolso) {
-    PessoaFisica pessoaFisica = reembolso.getPessoaFisica();
+    Passagem passagem = reembolso.getPassagem();
     new SqlStatementWrapper()
         .prepare()
 
-        .with("insert into FLIGHT.BANCO")
-        .with("(ID, PESSOAFISICA_ID, BANCO, AGENCIA, CONTA)")
+        .with("insert into FLIGHT.REEMBOLSO")
+        .with("(ID, PASSAGEM_ID, BANCO, AGENCIA, CONTA)")
 
         .with("values (")
         .with("?,", reembolso.getID())
-        .with("?,", pessoaFisica.getId())
+        .with("?,", passagem.getId())
         .with("?,", reembolso.getBanco())
         .with("?,", reembolso.getAgencia())
         .with("?)", reembolso.getConta())
@@ -60,11 +59,11 @@ public class ReembolsoAction implements Reembolso.Jdbc {
   }
 
   @Override
-  public Reembolso consultarPorPessoaFisica(int pessoaFisicaId) {
+  public Reembolso consultarPorPassagemId(int passagemId) {
     return query()
 
         .with("where 1=1")
-        .with("and BANCO.PESSOAFISICA_ID = ?", pessoaFisicaId)
+        .with("and REEMBOLSO.PASSAGEM_ID = ?", passagemId)
 
         .andGet();
   }
@@ -74,7 +73,7 @@ public class ReembolsoAction implements Reembolso.Jdbc {
     return query()
 
         .with("where 1=1")
-        .with("and BANCO.ID = ?", id)
+        .with("and REEMBOLSO.ID = ?", id)
 
         .andGet();
   }
@@ -84,7 +83,7 @@ public class ReembolsoAction implements Reembolso.Jdbc {
     new SqlStatementWrapper()
         .prepare()
 
-        .with("update FLIGHT.BANCO set")
+        .with("update FLIGHT.REEMBOLSO set")
 
         .with("BANCO = ?,", reembolso.getBanco())
         .with("AGENCIA = ?,", reembolso.getAgencia())
@@ -100,18 +99,18 @@ public class ReembolsoAction implements Reembolso.Jdbc {
     new SqlStatementWrapper()
         .prepare()
 
-        .with("delete from FLIGHT.BANCO")
+        .with("delete from FLIGHT.REEMBOLSO")
         .with("where ID = ?", id)
 
         .andExecute();
   }
 
-  public void deletarPorPessoaFisicaId(int pessoaFisica) {
+  public void deletarPorPassagemId(int passagemId) {
     new SqlStatementWrapper()
         .prepare()
 
-        .with("delete from FLIGHT.BANCO")
-        .with("where PESSOAFISICA_ID = ?", pessoaFisica)
+        .with("delete from FLIGHT.REEMBOLSO")
+        .with("where PASSAGEM_ID = ?", passagemId)
 
         .andExecute();
   }

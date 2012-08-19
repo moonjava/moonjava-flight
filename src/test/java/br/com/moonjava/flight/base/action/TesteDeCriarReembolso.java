@@ -45,15 +45,15 @@ public class TesteDeCriarReembolso {
     ReembolsoAction action = new ReembolsoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    int pessoaFisica = 1;
+    int passagem = 1;
     int banco = 99;
     int agencia = 999;
     int conta = 999955556;
 
-    Reembolso antes = action.consultarPorPessoaFisica(pessoaFisica);
+    Reembolso antes = action.consultarPorPassagemId(passagem);
     assertThat(antes, equalTo(null));
 
-    request.set("pessoaFisica", pessoaFisica);
+    request.set("passagem", passagem);
     request.set("banco", banco);
     request.set("agencia", agencia);
     request.set("conta", conta);
@@ -62,7 +62,7 @@ public class TesteDeCriarReembolso {
 
     action.criar(reembolso);
 
-    Reembolso res = action.consultarPorPessoaFisica(pessoaFisica);
+    Reembolso res = action.consultarPorPassagemId(passagem);
     assertThat(res.getBanco(), equalTo(banco));
     assertThat(res.getAgencia(), equalTo(agencia));
     assertThat(res.getConta(), equalTo(conta));

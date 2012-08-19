@@ -51,12 +51,12 @@ public class TesteDeConsultarReembolso {
     assertThat(res.getConta(), equalTo(333366669));
   }
 
-  public void teste_de_consulta_por_pf() {
+  public void teste_de_consulta_por_passagem() {
     ReembolsoAction action = new ReembolsoAction();
 
-    int pf = 2;
+    int passagem = 2;
 
-    Reembolso res = action.consultarPorPessoaFisica(pf);
+    Reembolso res = action.consultarPorPassagemId(passagem);
 
     assertThat(res.getBanco(), equalTo(11));
     assertThat(res.getAgencia(), equalTo(111));

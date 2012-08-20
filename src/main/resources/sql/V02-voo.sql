@@ -5,7 +5,7 @@ drop table if exists FLIGHT.VOO;
 create table FLIGHT.VOO (
 ID integer not null auto_increment,
 AERONAVE_ID integer not null,
-CODIGO integer not null,
+CODIGO varchar(40) not null,
 ORIGEM varchar(40) not null,
 DESTINO varchar(40) not null,
 ESCALA varchar(40) null,

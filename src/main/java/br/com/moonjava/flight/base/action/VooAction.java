@@ -83,8 +83,8 @@ public class VooAction implements Voo.Jdbc {
         .with("and VOO.STATUS = ?", status.ordinal())
         .with("and VOO.DATA_PARTIDA >= ?", partida)
         .with("and VOO.DATA_CHEGADA <= ?", chegada)
-        .with("and VOO.ORIGEM = ?", origem)
-        .with("and VOO.DESTINO = ?", destino)
+        .with("and VOO.ORIGEM like concat ('%', ?, '%')", origem)
+        .with("and VOO.DESTINO like concat ('%', ?, '%')", destino)
 
         .with("order by VOO.DATA_PARTIDA asc")
 

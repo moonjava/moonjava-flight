@@ -64,4 +64,9 @@ public class AeronaveImpl implements Aeronave {
     return mapa;
   }
 
+  @Override
+  public String toString() {
+    return nome;
+  }
+
 }

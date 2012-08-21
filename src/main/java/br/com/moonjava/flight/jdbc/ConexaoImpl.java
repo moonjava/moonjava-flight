@@ -15,8 +15,9 @@
  */
 package br.com.moonjava.flight.jdbc;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,9 +38,11 @@ public class ConexaoImpl implements Conexao {
   @Override
   public Connection getConexao() {
     try {
-      FileInputStream input = new FileInputStream("src/main/resources/jdbc.properties");
+      BufferedReader reader = new BufferedReader(
+          new InputStreamReader(getClass().getResourceAsStream("/jdbc.properties")));
+
       Properties properties = new Properties();
-      properties.load(input);
+      properties.load(reader);
 
       driverClass = properties.getProperty("driver");
       url = properties.getProperty("url");

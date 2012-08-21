@@ -71,10 +71,10 @@ class AeronaveTableHandler implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     JButton mapa = new JButton(bundle.getString("consultar.aeronave.botao.mapa"));
     RequestParam request = new RequestParamWrapper();
-    list = new AeronaveAction().consultar(request);
-
-    mapa.setBounds(730, 70, 150, 30);
     request.set("nome", nome.getText());
+
+    list = new AeronaveAction().consultar(request);
+    mapa.setBounds(730, 70, 150, 30);
 
     AeronaveTableModel aeronaves = new AeronaveTableModel(list, bundle);
     tabela.setModel(aeronaves);

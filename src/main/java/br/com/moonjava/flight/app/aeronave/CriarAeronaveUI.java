@@ -37,6 +37,7 @@ import br.com.moonjava.flight.base.Aeronave;
 import br.com.moonjava.flight.base.action.AeronaveAction;
 import br.com.moonjava.flight.base.action.AeronaveCreate;
 import br.com.moonjava.flight.util.CopyFile;
+import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -101,6 +102,10 @@ class CriarAeronaveUI implements ActionListener {
     nome = new JTextField();
     codigo = new JTextField();
     assento = new JTextField();
+
+    nome.setDocument(new JTextFieldLimit(40));
+    codigo.setDocument(new JTextFieldLimit(9));
+    assento.setDocument(new JTextFieldLimit(3));
 
     JButton mapa = new JButton(bundle.getString("criar.aeronave.botao.mapa"));
     JButton cadastrar = new JButton(bundle.getString("criar.aeronave.botao.cadastrar"));

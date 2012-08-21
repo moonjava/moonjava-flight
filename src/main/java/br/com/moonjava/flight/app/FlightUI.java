@@ -21,6 +21,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ResourceBundle;
@@ -33,8 +35,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import org.joda.time.DateTime;
 
 import br.com.moonjava.flight.app.aeronave.AeronaveHandler;
+import br.com.moonjava.flight.app.voo.VooHandler;
+import br.com.moonjava.flight.util.FormatDateTime;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -43,10 +50,12 @@ import br.com.moonjava.flight.app.aeronave.AeronaveHandler;
  */
 public class FlightUI {
 
+  private final ResourceBundle bundle;
+
   private JFrame frame;
   private JPanel body;
   private JPanel conteudo;
-  private final ResourceBundle bundle;
+  private JMenu relogio;
 
   public FlightUI(ResourceBundle bundle) {
     this.bundle = bundle;
@@ -75,6 +84,13 @@ public class FlightUI {
     JMenu usuario = new JMenu(bundle.getString("menubar.usuario"));
     JMenu sobre = new JMenu(bundle.getString("menubar.sobre"));
     JMenu sair = new JMenu(bundle.getString("menubar.sair"));
+    relogio = new JMenu();
+
+    String country = bundle.getLocale().getCountry();
+
+    Timer timer = new Timer(1000, new Clock(country));
+    timer.start();
+
     JMenuBar menuBar = new JMenuBar();
     JLabel rodape = new JLabel(bundle.getString("rodape"));
 
@@ -84,6 +100,7 @@ public class FlightUI {
     menuBar.setBounds(new Rectangle(Integer.MAX_VALUE, 30));
     rodape.setBounds(50, 630, 500, 40);
 
+    voo.addMenuListener(new VooHandler(conteudo, bundle));
     aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
 
     menuBar.add(flight);
@@ -94,6 +111,7 @@ public class FlightUI {
     menuBar.add(usuario);
     menuBar.add(sobre);
     menuBar.add(sair);
+    menuBar.add(relogio);
 
     body.add(menuBar);
     body.add(conteudo);
@@ -126,6 +144,7 @@ public class FlightUI {
     imagem.setBounds(50, 50, 1100, 600);
     imagem.setBackground(Color.DARK_GRAY);
 
+    voo.addActionListener(new VooHandler(conteudo, bundle));
     aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
 
     conteudo.add(voo);
@@ -149,6 +168,27 @@ public class FlightUI {
     frame.setSize(1200, 700);
     frame.setResizable(false);
     frame.setVisible(true);
+  }
+
+  private class Clock implements ActionListener {
+
+    private final String country;
+
+    public Clock(String country) {
+      this.country = country;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      long currentTimeMillis = System.currentTimeMillis();
+      String time = new DateTime(currentTimeMillis).toString();
+
+      String newTime = FormatDateTime.parseToString(time, country);
+      relogio.setText(newTime);
+      body.repaint();
+      body.validate();
+    }
+
   }
 
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.app.aeronave;
+package br.com.moonjava.flight.app.voo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,45 +24,43 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 
-import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.action.AeronaveAction;
+import br.com.moonjava.flight.base.Voo;
 import br.com.moonjava.flight.base.action.VooAction;
 
 /**
- * @version 1.0 Aug 16, 2012
+ * @version 1.0 Aug 21, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class DeletarAeronaveUI implements ActionListener {
+class DeletarVooUI implements ActionListener {
 
   // Singleton
-  private static final DeletarAeronaveUI ui = new DeletarAeronaveUI();
-  private boolean result;
+  private static final DeletarVooUI ui = new DeletarVooUI();
 
   private JButton atualizar;
   private JButton deletar;
   private JTable tabela;
-  private List<Aeronave> list;
+  private List<Voo> list;
   private JPanel conteudo;
   private ResourceBundle bundle;
 
-  private DeletarAeronaveUI() {
+  private boolean result;
+
+  private DeletarVooUI() {
   }
 
-  public static DeletarAeronaveUI getInstance() {
+  public static DeletarVooUI getInstance() {
     return ui;
   }
 
   public void setResult(boolean result) {
     this.result = result;
   }
-
   public void setAttributes(JButton atualizar,
                             JButton deletar,
                             JTable tabela,
-                            List<Aeronave> list,
+                            List<Voo> list,
                             JPanel conteudo,
                             ResourceBundle bundle) {
     this.atualizar = atualizar;
@@ -79,37 +77,20 @@ class DeletarAeronaveUI implements ActionListener {
     atualizar.setEnabled(false);
     if (!result) {
       result = true;
-      UIManager.put("OptionPane.cancelButtonText", bundle.getString("cancelar"));
 
-      int result = JOptionPane.
-          showConfirmDialog(null,
-              bundle.getString("deletar.joption.msg"),
-              bundle.getString("deletar.joption.titulo"),
-              JOptionPane.OK_CANCEL_OPTION,
-              JOptionPane.INFORMATION_MESSAGE);
+      int[] rows = tabela.getSelectedRows();
+      VooAction action = new VooAction();
 
-      if (result == 0) {
-        int[] rows = tabela.getSelectedRows();
-        VooAction vooAction = new VooAction();
-        AeronaveAction aeronaveAction = new AeronaveAction();
-
-        for (int i = 0; i < rows.length; i++) {
-          Aeronave pojo = list.get(rows[i]);
-          vooAction.deletarPorAeronaveId(pojo.getId());
-          aeronaveAction.deletar(pojo.getId());
-        }
-
-        JOptionPane.showMessageDialog(null, bundle.getString("deletar.joption.ok"));
-
-        conteudo.removeAll();
-        conteudo.repaint();
-        conteudo.validate();
-
-      } else {
-        conteudo.removeAll();
-        conteudo.repaint();
-        conteudo.validate();
+      for (int i = 0; i < rows.length; i++) {
+        Voo pojo = list.get(rows[i]);
+        action.deletar(pojo.getId());
       }
+
+      JOptionPane.showMessageDialog(null, bundle.getString("deletar.voo.joption.ok"));
+
+      conteudo.removeAll();
+      conteudo.repaint();
+      conteudo.validate();
     }
   }
 

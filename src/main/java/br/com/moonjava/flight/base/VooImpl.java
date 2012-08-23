@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 public class VooImpl implements Voo {
 
   private int id;
-  private final int codigo;
+  private final String codigo;
   private final Aeronave aeronave;
   private final String origem;
   private final String destino;
@@ -34,6 +34,7 @@ public class VooImpl implements Voo {
   private final DateTime dataDeChegada;
   private final String observacao;
   private final Status status;
+  private final int assentoLivre;
 
   public VooImpl(Builder builder) {
     this.codigo = builder.getCodigo();
@@ -45,6 +46,7 @@ public class VooImpl implements Voo {
     this.dataDeChegada = builder.getDataDeChegada();
     this.observacao = builder.getObservacao();
     this.status = builder.getStatus();
+    this.assentoLivre = builder.getAssentoLivre();
   }
 
   @Override
@@ -57,7 +59,7 @@ public class VooImpl implements Voo {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     return codigo;
   }
 
@@ -99,6 +101,11 @@ public class VooImpl implements Voo {
   @Override
   public Status getStatus() {
     return status;
+  }
+
+  @Override
+  public int getAssentoLivre() {
+    return assentoLivre;
   }
 
 }

@@ -57,8 +57,8 @@ public class AeronaveLoader implements ResultSetJdbcLoader<Aeronave> {
     }
 
     @Override
-    public int getCodigo() {
-      return rs.getInt("CODIGO");
+    public String getCodigo() {
+      return rs.getString("CODIGO");
     }
 
     @Override

@@ -55,7 +55,6 @@ class CriarAeronaveUI implements ActionListener {
   private final RequestParamWrapper request;
 
   private JTextField nome;
-  private JTextField codigo;
   private JTextField assento;
   private JLabel imagem;
 
@@ -79,11 +78,9 @@ class CriarAeronaveUI implements ActionListener {
     conteudo.repaint();
 
     JLabel tituloNome = new JLabel(bundle.getString("criar.aeronave.titulo.nome"));
-    JLabel tituloCodigo = new JLabel(bundle.getString("criar.aeronave.titulo.codigo"));
     JLabel tituloAssento = new JLabel(bundle.getString("criar.aeronave.titulo.assento"));
     JLabel tituloMapa = new JLabel(bundle.getString("criar.aeronave.titulo.mapa"));
 
-    JLabel alertaCodigo = new JLabel(bundle.getString("alerta.numero"));
     JLabel alertaAssento = new JLabel(bundle.getString("alerta.numero"));
     JLabel alertaMapa = new JLabel(bundle.getString("criar.aeronave.alerta.mapa"));
 
@@ -100,27 +97,22 @@ class CriarAeronaveUI implements ActionListener {
     imagem = new JLabel(icon);
 
     nome = new JTextField();
-    codigo = new JTextField();
     assento = new JTextField();
 
     nome.setDocument(new JTextFieldLimit(40));
-    codigo.setDocument(new JTextFieldLimit(9));
     assento.setDocument(new JTextFieldLimit(3));
 
     JButton mapa = new JButton(bundle.getString("criar.aeronave.botao.mapa"));
     JButton cadastrar = new JButton(bundle.getString("criar.aeronave.botao.cadastrar"));
 
-    tituloNome.setBounds(60, 70, 200, 30);
-    tituloCodigo.setBounds(60, 110, 200, 30);
+    tituloNome.setBounds(60, 110, 200, 30);
     tituloAssento.setBounds(60, 150, 200, 30);
     tituloMapa.setBounds(60, 190, 200, 30);
 
-    alertaCodigo.setBounds(500, 110, 200, 30);
     alertaAssento.setBounds(360, 150, 200, 30);
     alertaMapa.setBounds(360, 190, 500, 30);
 
-    nome.setBounds(180, 70, 300, 30);
-    codigo.setBounds(180, 110, 300, 30);
+    nome.setBounds(180, 110, 300, 30);
     assento.setBounds(180, 150, 150, 30);
     mapa.setBounds(180, 190, 150, 30);
     cadastrar.setBounds(180, 240, 150, 30);
@@ -131,16 +123,13 @@ class CriarAeronaveUI implements ActionListener {
     cadastrar.addActionListener(new CadastrarHandler());
 
     conteudo.add(tituloNome);
-    conteudo.add(tituloCodigo);
     conteudo.add(tituloAssento);
     conteudo.add(tituloMapa);
 
-    conteudo.add(alertaCodigo);
     conteudo.add(alertaAssento);
     conteudo.add(alertaMapa);
 
     conteudo.add(nome);
-    conteudo.add(codigo);
     conteudo.add(assento);
     conteudo.add(mapa);
 
@@ -171,17 +160,14 @@ class CriarAeronaveUI implements ActionListener {
           folder.setWritable(true, true);
         }
 
-        int _codigo = 0;
         int _assento = 0;
 
         try {
-          _codigo = Integer.parseInt(codigo.getText());
           _assento = Integer.parseInt(assento.getText());
 
           boolean mapa = CopyFile.copyfile(absolutePath, folder.getName() + "/" + fileName);
 
           request.set("nome", nome.getText());
-          request.set("codigo", _codigo);
           request.set("qtdDeAssento", _assento);
           request.set("mapa", mapa);
 

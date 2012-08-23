@@ -30,7 +30,7 @@ public interface Voo {
 
   interface Builder extends br.com.moonjava.flight.util.Builder<Voo> {
 
-    int getCodigo();
+    String getCodigo();
 
     Aeronave getAeronave();
 
@@ -47,6 +47,8 @@ public interface Voo {
     String getObservacao();
 
     Status getStatus();
+
+    int getAssentoLivre();
   }
 
   interface Jdbc {
@@ -71,7 +73,7 @@ public interface Voo {
 
   int getId();
 
-  int getCodigo();
+  String getCodigo();
 
   Aeronave getAeronave();
 
@@ -88,5 +90,7 @@ public interface Voo {
   String getObservacao();
 
   Status getStatus();
+
+  int getAssentoLivre();
 
 }

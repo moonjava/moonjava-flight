@@ -28,7 +28,7 @@ public interface Aeronave {
 
   interface Builder extends br.com.moonjava.flight.util.Builder<Aeronave> {
 
-    int getCodigo();
+    String getCodigo();
 
     String getNome();
 
@@ -53,7 +53,7 @@ public interface Aeronave {
 
   int getId();
 
-  int getCodigo();
+  String getCodigo();
 
   String getNome();
 

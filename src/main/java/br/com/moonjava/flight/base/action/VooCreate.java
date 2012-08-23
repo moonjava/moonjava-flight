@@ -43,8 +43,8 @@ public class VooCreate implements Voo.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return request.intParam("codigo");
+  public String getCodigo() {
+    return request.stringParam("codigo");
   }
 
   @Override
@@ -90,6 +90,11 @@ public class VooCreate implements Voo.Builder {
   @Override
   public Status getStatus() {
     return Status.DISPONIVEL;
+  }
+
+  @Override
+  public int getAssentoLivre() {
+    return request.intParam("assentoLivre");
   }
 
 }

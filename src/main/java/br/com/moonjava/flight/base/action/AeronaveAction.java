@@ -83,8 +83,7 @@ public class AeronaveAction implements Aeronave.Jdbc {
         .prepare()
 
         .with("update FLIGHT.AERONAVE AS AERONAVE set")
-        .with("AERONAVE.NOME = ?,", aeronave.getNome())
-        .with("AERONAVE.CODIGO = ?", aeronave.getCodigo())
+        .with("AERONAVE.NOME = ?", aeronave.getNome())
         .with("where AERONAVE.ID = ?", aeronave.getId())
 
         .andExecute();

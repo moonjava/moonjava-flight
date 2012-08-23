@@ -28,8 +28,6 @@ import javax.swing.UIManager;
 import br.com.moonjava.flight.base.Status;
 import br.com.moonjava.flight.base.Voo;
 import br.com.moonjava.flight.base.action.VooAction;
-import br.com.moonjava.flight.base.action.VooUpdate;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Aug 17, 2012
@@ -71,23 +69,17 @@ class ControlarStatusVooUI implements ActionListener {
     if (!result) {
       result = true;
       UIManager.put("OptionPane.cancelButtonText", bundle.getString("cancelar"));
-
-      VooAction action = new VooAction();
-      RequestParamWrapper request = new RequestParamWrapper();
-
       Status status = (Status) JOptionPane.showInputDialog(null, "Status:", "Status", 1, null,
           Status.values(), Status.ATRASADO);
+
+      VooAction action = new VooAction();
 
       if (status != null) {
         int[] rows = tabela.getSelectedRows();
         for (int i = 0; i < rows.length; i++) {
           Voo pojo = list.get(rows[i]);
 
-          request.set("id", pojo.getId());
-          request.set("status", status);
-
-          Voo voo = new VooUpdate(request).createInstance();
-          action.controlarStatus(voo);
+          action.controlarStatus(pojo.getId(), status);
         }
 
         JOptionPane.showMessageDialog(null, bundle.getString("status.voo.joption.ok"));

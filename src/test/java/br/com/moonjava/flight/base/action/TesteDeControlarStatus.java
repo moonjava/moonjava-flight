@@ -24,11 +24,8 @@ import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Status;
 import br.com.moonjava.flight.base.Voo;
-import br.com.moonjava.flight.base.action.VooAction;
-import br.com.moonjava.flight.base.action.VooUpdate;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -46,21 +43,15 @@ public class TesteDeControlarStatus {
 
   public void status_deve_ser_atualizado() {
     VooAction action = new VooAction();
-    RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 4;
     Status status = Status.ATRASADO;
-
-    request.set("id", id);
-    request.set("status", status);
 
     Voo antes = action.consultarPorId(id);
     assertThat(antes.getId(), equalTo(4));
     assertThat(antes.getStatus(), equalTo(Status.DISPONIVEL));
 
-    Voo voo = new VooUpdate(request).createInstance();
-
-    action.controlarStatus(voo);
+    action.controlarStatus(id, status);
 
     Voo res = action.consultarPorId(id);
     assertThat(antes.getId(), equalTo(4));

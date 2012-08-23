@@ -67,7 +67,7 @@ public interface Voo {
 
     void deletarPorAeronaveId(int id);
 
-    void controlarStatus(Voo voo);
+    void controlarStatus(int id, Status status);
 
   }
 

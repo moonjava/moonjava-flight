@@ -54,6 +54,7 @@ class CriarVooUI implements ActionListener {
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
+  private final JButton status;
   private final VooAction vooAction;
   private final AeronaveAction aeronaveAction;
   private final RequestParamWrapper request;
@@ -67,11 +68,17 @@ class CriarVooUI implements ActionListener {
   private JComboBox timePartida;
   private JComboBox timeChegada;
 
-  public CriarVooUI(JPanel conteudo, ResourceBundle bundle, JButton atualizar, JButton deletar) {
+  public CriarVooUI(JPanel conteudo,
+                    ResourceBundle bundle,
+                    JButton atualizar,
+                    JButton deletar,
+                    JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
+    this.status = status;
+
     vooAction = new VooAction();
     aeronaveAction = new AeronaveAction();
     request = new RequestParamWrapper();
@@ -81,6 +88,7 @@ class CriarVooUI implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
+    status.setEnabled(false);
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();

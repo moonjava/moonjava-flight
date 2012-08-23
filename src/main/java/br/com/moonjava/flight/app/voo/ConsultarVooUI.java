@@ -53,21 +53,25 @@ class ConsultarVooUI implements ActionListener {
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
+  private final JButton controlarStatus;
 
   public ConsultarVooUI(JPanel conteudo,
                         ResourceBundle bundle,
                         JButton atualizar,
-                        JButton deletar) {
+                        JButton deletar,
+                        JButton controlarStatus) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
+    this.controlarStatus = controlarStatus;
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
+    controlarStatus.setEnabled(false);
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -133,7 +137,7 @@ class ConsultarVooUI implements ActionListener {
     status.setBounds(630, 70, 150, 30);
 
     VooTableHandler vooHandler = new VooTableHandler(tabela, origem, destino, partida, chegada,
-        status, bundle, conteudo, atualizar, deletar);
+        status, bundle, conteudo, atualizar, deletar, controlarStatus);
 
     filtrar.setBounds(800, 70, 80, 30);
     filtrar.addActionListener(vooHandler);

@@ -68,9 +68,16 @@ class ControlarStatusVooUI implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     if (!result) {
       result = true;
+
+      Status[] values = Status.values();
+      String[] nomes = new String[values.length];
+      for (int i = 0; i < values.length; i++) {
+        nomes[i] = values[i].setBundle(bundle);
+      }
+
       UIManager.put("OptionPane.cancelButtonText", bundle.getString("cancelar"));
-      Status status = (Status) JOptionPane.showInputDialog(null, "Status:", "Status", 1, null,
-          Status.values(), Status.ATRASADO);
+      String status = (String) JOptionPane.showInputDialog(null, "Status:", "Status", 1, null,
+          nomes, Status.DISPONIVEL);
 
       VooAction action = new VooAction();
 
@@ -78,8 +85,7 @@ class ControlarStatusVooUI implements ActionListener {
         int[] rows = tabela.getSelectedRows();
         for (int i = 0; i < rows.length; i++) {
           Voo pojo = list.get(rows[i]);
-
-          action.controlarStatus(pojo.getId(), status);
+          action.controlarStatus(pojo.getId(), Status.fromString(status));
         }
 
         JOptionPane.showMessageDialog(null, bundle.getString("status.voo.joption.ok"));

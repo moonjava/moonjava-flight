@@ -101,7 +101,12 @@ class ConsultarVooUI implements ActionListener {
     }
 
     Status[] values = Status.values();
-    DefaultComboBoxModel model = new DefaultComboBoxModel(values);
+    String[] nomes = new String[values.length];
+    for (int i = 0; i < values.length; i++) {
+      nomes[i] = values[i].setBundle(bundle);
+    }
+
+    DefaultComboBoxModel model = new DefaultComboBoxModel(nomes);
     status.setModel(model);
 
     JLabel tituloOrigem = new JLabel(bundle.getString("consultar.voo.titulo.origem"));

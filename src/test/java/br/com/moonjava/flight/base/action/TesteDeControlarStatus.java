@@ -57,5 +57,4 @@ public class TesteDeControlarStatus {
     assertThat(antes.getId(), equalTo(4));
     assertThat(res.getStatus(), equalTo(Status.ATRASADO));
   }
-
 }

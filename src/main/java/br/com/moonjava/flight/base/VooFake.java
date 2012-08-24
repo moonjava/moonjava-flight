@@ -79,4 +79,9 @@ public class VooFake implements Voo {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public double getPreco() {
+    throw new UnsupportedOperationException();
+  }
+
 }

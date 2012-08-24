@@ -93,4 +93,9 @@ public class VooUpdate implements Voo.Builder {
     return 0;
   }
 
+  @Override
+  public double getPreco() {
+    return 0;
+  }
+
 }

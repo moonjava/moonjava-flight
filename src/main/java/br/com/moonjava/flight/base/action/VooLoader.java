@@ -114,6 +114,11 @@ public class VooLoader implements ResultSetJdbcLoader<Voo> {
       return rs.getInt("ASSENTO_LIVRE");
     }
 
+    @Override
+    public double getPreco() {
+      return rs.getDouble("PRECO");
+    }
+
   }
 
 }

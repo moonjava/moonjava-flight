@@ -97,4 +97,9 @@ public class VooCreate implements Voo.Builder {
     return request.intParam("assentoLivre");
   }
 
+  @Override
+  public double getPreco() {
+    return request.doubleParam("preco");
+  }
+
 }

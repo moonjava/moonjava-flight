@@ -49,6 +49,9 @@ public interface Voo {
     Status getStatus();
 
     int getAssentoLivre();
+
+    double getPreco();
+
   }
 
   interface Jdbc {
@@ -92,5 +95,7 @@ public interface Voo {
   Status getStatus();
 
   int getAssentoLivre();
+
+  double getPreco();
 
 }

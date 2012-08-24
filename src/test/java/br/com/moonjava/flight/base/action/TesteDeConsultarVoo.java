@@ -177,6 +177,8 @@ public class TesteDeConsultarVoo {
     assertThat(voo.getDataDeChegada(), equalTo(new DateTime(2012, 3, 1, 6, 0, 0)));
     assertThat(voo.getObservacao(), equalTo(null));
     assertThat(voo.getStatus(), equalTo(Status.DISPONIVEL));
+    assertThat(voo.getAssentoLivre(), equalTo(200));
+    assertThat(voo.getPreco(), equalTo(550.50));
   }
 
 }

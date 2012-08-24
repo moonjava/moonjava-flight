@@ -35,6 +35,7 @@ public class VooImpl implements Voo {
   private final String observacao;
   private final Status status;
   private final int assentoLivre;
+  private final double preco;
 
   public VooImpl(Builder builder) {
     this.codigo = builder.getCodigo();
@@ -47,6 +48,7 @@ public class VooImpl implements Voo {
     this.observacao = builder.getObservacao();
     this.status = builder.getStatus();
     this.assentoLivre = builder.getAssentoLivre();
+    this.preco = builder.getPreco();
   }
 
   @Override
@@ -106,6 +108,11 @@ public class VooImpl implements Voo {
   @Override
   public int getAssentoLivre() {
     return assentoLivre;
+  }
+
+  @Override
+  public double getPreco() {
+    return preco;
   }
 
 }

@@ -56,8 +56,6 @@ class AtualizarAeronaveUI implements ActionListener {
 
   private JTextField nome;
 
-  private JTextField codigo;
-
   private AtualizarAeronaveUI() {
   }
 
@@ -99,34 +97,21 @@ class AtualizarAeronaveUI implements ActionListener {
         conteudo.validate();
 
         JLabel tituloNome = new JLabel(bundle.getString("criar.aeronave.titulo.nome"));
-        JLabel tituloCodigo = new JLabel(bundle.getString("criar.aeronave.titulo.codigo"));
-        JLabel alertaCodigo = new JLabel(bundle.getString("alerta.numero"));
-
         nome = new JTextField();
-        codigo = new JTextField();
-
         nome.setDocument(new JTextFieldLimit(40));
-        codigo.setDocument(new JTextFieldLimit(9));
 
         JButton atualizar =
             new JButton(bundle.getString("atualizar.aeronave.botao.atualizar"));
 
         tituloNome.setBounds(100, 70, 200, 30);
-        tituloCodigo.setBounds(100, 110, 200, 30);
-        alertaCodigo.setBounds(500, 110, 200, 30);
 
         nome.setBounds(180, 70, 300, 30);
-        codigo.setBounds(180, 110, 300, 30);
-        atualizar.setBounds(180, 150, 150, 30);
+        atualizar.setBounds(180, 110, 150, 30);
 
         atualizar.addActionListener(new Atualizar());
 
         conteudo.add(tituloNome);
-        conteudo.add(tituloCodigo);
-        conteudo.add(alertaCodigo);
-
         conteudo.add(nome);
-        conteudo.add(codigo);
         conteudo.add(atualizar);
 
         conteudo.repaint();
@@ -152,32 +137,22 @@ class AtualizarAeronaveUI implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       RequestParam request = new RequestParamWrapper();
       AeronaveAction action = new AeronaveAction();
-      try {
-        int _codigo = Integer.parseInt(codigo.getText());
 
-        request.set("id", pojo.getId());
-        request.set("nome", nome.getText());
-        request.set("codigo", _codigo);
+      request.set("id", pojo.getId());
+      request.set("nome", nome.getText());
 
-        Aeronave aeronave = new AeronaveUpdate(request).createInstance();
-        action.atualizar(aeronave);
+      Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+      action.atualizar(aeronave);
 
-        File oldFile = new File("airplanes/" + pojo.getNome() + ".jpg");
-        File newFile = new File("airplanes/" + nome.getText() + ".jpg");
-        oldFile.renameTo(newFile);
+      File oldFile = new File("airplanes/" + pojo.getNome() + ".jpg");
+      File newFile = new File("airplanes/" + nome.getText() + ".jpg");
+      oldFile.renameTo(newFile);
 
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("atualizar.joption.ok"),
-            bundle.getString("atualizar.joption.titulo"),
-            JOptionPane.INFORMATION_MESSAGE);
+      JOptionPane.showMessageDialog(null,
+          bundle.getString("atualizar.joption.ok"),
+          bundle.getString("atualizar.joption.titulo"),
+          JOptionPane.INFORMATION_MESSAGE);
 
-      } catch (Exception e2) {
-        JOptionPane
-            .showMessageDialog(null,
-                bundle.getString("atualizar.joption.erro"),
-                bundle.getString("atualizar.joption.titulo"),
-                JOptionPane.ERROR_MESSAGE);
-      }
       conteudo.removeAll();
       conteudo.repaint();
       conteudo.validate();

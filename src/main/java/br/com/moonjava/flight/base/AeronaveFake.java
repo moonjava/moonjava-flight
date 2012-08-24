@@ -15,7 +15,6 @@
  */
 package br.com.moonjava.flight.base;
 
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -29,7 +28,7 @@ public class AeronaveFake implements Aeronave {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     throw new UnsupportedOperationException();
   }
 

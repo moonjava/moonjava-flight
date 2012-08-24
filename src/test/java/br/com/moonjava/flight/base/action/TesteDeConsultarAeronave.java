@@ -25,7 +25,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Aeronave;
-import br.com.moonjava.flight.base.action.AeronaveAction;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -55,12 +54,12 @@ public class TesteDeConsultarAeronave {
     Aeronave aero2 = res.get(1);
 
     assertThat(aero1.getId(), equalTo(1));
-    assertThat(aero1.getCodigo(), equalTo(1));
+    assertThat(aero1.getCodigo(), equalTo("A1001"));
     assertThat(aero1.getNome(), equalTo("nave A"));
     assertThat(aero1.getQtdDeAssento(), equalTo(100));
 
     assertThat(aero2.getId(), equalTo(2));
-    assertThat(aero2.getCodigo(), equalTo(2));
+    assertThat(aero2.getCodigo(), equalTo("A1002"));
     assertThat(aero2.getNome(), equalTo("nave B"));
     assertThat(aero2.getQtdDeAssento(), equalTo(200));
   }
@@ -77,7 +76,7 @@ public class TesteDeConsultarAeronave {
 
     Aeronave aero1 = res.get(0);
 
-    assertThat(aero1.getCodigo(), equalTo(1));
+    assertThat(aero1.getCodigo(), equalTo("A1001"));
     assertThat(aero1.getNome(), equalTo("nave A"));
     assertThat(aero1.getQtdDeAssento(), equalTo(100));
   }

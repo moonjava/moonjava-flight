@@ -149,14 +149,14 @@ public class VooAction implements Voo.Jdbc {
   }
 
   @Override
-  public void controlarStatus(Voo voo) {
+  public void controlarStatus(int id, Status status) {
     new SqlStatementWrapper()
         .prepare()
 
         .with("update FLIGHT.VOO set")
-        .with("STATUS = ?", voo.getStatus().ordinal())
+        .with("STATUS = ?", status.ordinal())
 
-        .with("where ID = ?", voo.getId())
+        .with("where ID = ?", id)
 
         .andExecute();
   }

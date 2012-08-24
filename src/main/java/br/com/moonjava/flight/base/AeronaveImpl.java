@@ -23,7 +23,7 @@ package br.com.moonjava.flight.base;
 public class AeronaveImpl implements Aeronave {
 
   private int id;
-  private final int codigo;
+  private final String codigo;
   private final String nome;
   private final int qtdDeAssento;
   private final boolean mapa;
@@ -45,7 +45,7 @@ public class AeronaveImpl implements Aeronave {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     return codigo;
   }
 

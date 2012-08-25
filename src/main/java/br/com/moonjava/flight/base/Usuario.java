@@ -28,7 +28,7 @@ public interface Usuario {
 
   interface Builder extends br.com.moonjava.flight.util.Builder<Usuario> {
 
-    int getCodigo();
+    String getCodigo();
 
     PessoaFisica getPessoaFisica();
 
@@ -49,6 +49,8 @@ public interface Usuario {
 
     Usuario consultarPorCodigo(int codigo);
 
+    Usuario consultarPorCpf(long cpf);
+
     void atualizar(Usuario usuario);
 
     void deletar(int id);
@@ -59,7 +61,7 @@ public interface Usuario {
 
   int getId();
 
-  int getCodigo();
+  String getCodigo();
 
   PessoaFisica getPessoaFisica();
 

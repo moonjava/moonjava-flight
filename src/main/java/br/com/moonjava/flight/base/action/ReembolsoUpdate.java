@@ -15,6 +15,7 @@
  */
 package br.com.moonjava.flight.base.action;
 
+import br.com.moonjava.flight.base.Passagem;
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.base.ReembolsoImpl;
 import br.com.moonjava.flight.util.RequestParam;

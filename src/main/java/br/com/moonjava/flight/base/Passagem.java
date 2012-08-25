@@ -16,45 +16,12 @@
 package br.com.moonjava.flight.base;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0 Aug 24, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public interface Reembolso {
-
-  interface Builder extends br.com.moonjava.flight.util.Builder<Reembolso> {
-
-    Passagem getPassagem();
-
-    int getBanco();
-
-    int getAgencia();
-
-    int getConta();
-  }
-
-  interface Jdbc {
-
-    void criar(Reembolso reembolso);
-
-    Reembolso consultarPorPassagemId(int passagemId);
-
-    Reembolso consultarPorId(int id);
-
-    void atualizar(Reembolso reembolso);
-
-    void deletar(int id);
-
-    void deletarPorPassagemId(int passagemId);
-  }
+public interface Passagem {
 
   int getId();
 
-  Passagem getPassagem();
-
-  int getBanco();
-
-  int getAgencia();
-
-  int getConta();
 }

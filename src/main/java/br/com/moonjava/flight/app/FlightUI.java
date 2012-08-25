@@ -40,6 +40,7 @@ import javax.swing.Timer;
 import org.joda.time.DateTime;
 
 import br.com.moonjava.flight.app.aeronave.AeronaveHandler;
+import br.com.moonjava.flight.app.usuario.UsuarioHandler;
 import br.com.moonjava.flight.app.voo.VooHandler;
 import br.com.moonjava.flight.util.FormatDateTime;
 
@@ -102,6 +103,7 @@ public class FlightUI {
 
     voo.addMenuListener(new VooHandler(conteudo, bundle));
     aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
 
     menuBar.add(flight);
     menuBar.add(voo);
@@ -146,6 +148,7 @@ public class FlightUI {
 
     voo.addActionListener(new VooHandler(conteudo, bundle));
     aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
 
     conteudo.add(voo);
     conteudo.add(passagem);
@@ -183,7 +186,7 @@ public class FlightUI {
       long currentTimeMillis = System.currentTimeMillis();
       String time = new DateTime(currentTimeMillis).toString();
 
-      String newTime = FormatDateTime.parseToString(time, country);
+      String newTime = FormatDateTime.parseToStringDateTime(time, country);
       relogio.setText(newTime);
       body.repaint();
       body.validate();

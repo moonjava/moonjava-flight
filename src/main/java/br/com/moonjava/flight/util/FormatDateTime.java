@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -31,7 +32,7 @@ public class FormatDateTime {
   private FormatDateTime() {
   }
 
-  public static DateTime parseToDate(String value, String country) {
+  public static DateTime parseToDateTime(String value, String country) {
     try {
       Date date = null;
       if (country.equals("US")) {
@@ -47,7 +48,7 @@ public class FormatDateTime {
     }
   }
 
-  public static String parseToString(String value, String country) {
+  public static String parseToStringDateTime(String value, String country) {
     try {
       String time = null;
       Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(value);
@@ -56,6 +57,38 @@ public class FormatDateTime {
       }
       if (country.equals("BR") || country.equals("ES")) {
         time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+      }
+      return time;
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static LocalDate parseToLocalDate(String value, String country) {
+    try {
+      Date date = null;
+      if (country.equals("US")) {
+        date = new SimpleDateFormat("MM/dd/yyyy").parse(value);
+      }
+      if (country.equals("BR") || country.equals("ES")) {
+        date = new SimpleDateFormat("dd/MM/yyyy").parse(value);
+      }
+      String format = new SimpleDateFormat("yyyy-MM-dd").format(date);
+      return LocalDate.parse(format);
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static String parseToStringLocalDate(String value, String country) {
+    try {
+      String time = null;
+      Date date = new SimpleDateFormat("yyyy-MM-dd").parse(value);
+      if (country.equals("US")) {
+        time = new SimpleDateFormat("MM/dd/yyyy").format(date);
+      }
+      if (country.equals("BR") || country.equals("ES")) {
+        time = new SimpleDateFormat("dd/MM/yyyy").format(date);
       }
       return time;
     } catch (ParseException e) {

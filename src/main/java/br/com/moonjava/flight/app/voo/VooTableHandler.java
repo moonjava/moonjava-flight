@@ -51,14 +51,14 @@ class VooTableHandler implements ActionListener {
   private final JTextField destino;
   private final JFormattedTextField partida;
   private final JFormattedTextField chegada;
-  private final JComboBox status;
+  private final JComboBox<Status> status;
   private final ResourceBundle bundle;
   private final JPanel conteudo;
   private final JButton atualizar;
   private final JButton deletar;
 
-  private JComboBox timePartida;
-  private JComboBox timeChegada;
+  private JComboBox<String> timePartida;
+  private JComboBox<String> timeChegada;
   private List<Voo> list;
 
   public VooTableHandler(JTable tabela,
@@ -66,7 +66,7 @@ class VooTableHandler implements ActionListener {
                          JTextField destino,
                          JFormattedTextField partida,
                          JFormattedTextField chegada,
-                         JComboBox status,
+                         JComboBox<Status> status,
                          ResourceBundle bundle,
                          JPanel conteudo,
                          JButton atualizar,
@@ -83,7 +83,7 @@ class VooTableHandler implements ActionListener {
     this.deletar = deletar;
   }
 
-  public void setAmPm(JComboBox timePartida, JComboBox timeChegada) {
+  public void setAmPm(JComboBox<String> timePartida, JComboBox<String> timeChegada) {
     this.timePartida = timePartida;
     this.timeChegada = timeChegada;
   }
@@ -111,11 +111,11 @@ class VooTableHandler implements ActionListener {
     DateTime dataChegada = null;
 
     if (!_partida.startsWith(maskEmpty)) {
-      dataPartida = FormatDateTime.parseToDate(_partida, country);
+      dataPartida = FormatDateTime.parseToDateTime(_partida, country);
     }
 
     if (!_chegada.startsWith(maskEmpty)) {
-      dataChegada = FormatDateTime.parseToDate(_chegada, country);
+      dataChegada = FormatDateTime.parseToDateTime(_chegada, country);
     }
 
     RequestParam request = new RequestParamWrapper();

@@ -6,11 +6,11 @@ create table FLIGHT.PASSAGEM(
 ID integer(11) not null auto_increment,
 VOO_ID integer(11) not null,
 PESSOAFISICA_ID integer(11) not null,
-COD_BILHETE integer(11) not null,
+COD_BILHETE varchar(11) not null,
 ASSENTO varchar(5) not null,
 
 primary key(ID),
-unique key(VOO_ID),
+unique key(COD_BILHETE),
 unique key(PESSOAFISICA_ID),
 
 constraint foreign key FK_VOO_PASSAGEM (VOO_ID)

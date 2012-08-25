@@ -23,7 +23,7 @@ package br.com.moonjava.flight.base;
 public class ReembolsoFake implements Reembolso {
 
   @Override
-  public int getID() {
+  public int getId() {
     throw new UnsupportedOperationException();
   }
 

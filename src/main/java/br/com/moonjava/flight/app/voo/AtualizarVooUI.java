@@ -63,8 +63,8 @@ class AtualizarVooUI implements ActionListener {
   private JFormattedTextField chegada;
   private JFormattedTextField partida;
   private JTextField observacao;
-  private JComboBox timePartida;
-  private JComboBox timeChegada;
+  private JComboBox<String> timePartida;
+  private JComboBox<String> timeChegada;
 
   private AtualizarVooUI() {
   }
@@ -78,11 +78,11 @@ class AtualizarVooUI implements ActionListener {
   }
 
   public void setAttributes(JButton atualizar,
-                            JButton deletar,
-                            JTable tabela,
-                            List<Voo> list,
-                            JPanel conteudo,
-                            ResourceBundle bundle) {
+      JButton deletar,
+      JTable tabela,
+      List<Voo> list,
+      JPanel conteudo,
+      ResourceBundle bundle) {
     this.atualizar = atualizar;
     this.deletar = deletar;
     this.tabela = tabela;
@@ -151,9 +151,10 @@ class AtualizarVooUI implements ActionListener {
           alertaPartida.setBounds(520, 70, 500, 30);
 
           String[] ampm = {
-              "AM", "PM" };
-          timePartida = new JComboBox(ampm);
-          timeChegada = new JComboBox(ampm);
+            "AM",
+            "PM" };
+          timePartida = new JComboBox<String>(ampm);
+          timeChegada = new JComboBox<String>(ampm);
 
           timePartida.setBounds(455, 75, 60, 20);
           timeChegada.setBounds(455, 115, 60, 20);
@@ -199,8 +200,8 @@ class AtualizarVooUI implements ActionListener {
         dataChegada = chegada.getText();
       }
 
-      DateTime _partida = FormatDateTime.parseToDate(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDate(dataChegada, country);
+      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
 
       if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
         request.set("id", pojo.getId());

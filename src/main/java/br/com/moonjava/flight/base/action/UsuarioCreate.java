@@ -41,8 +41,8 @@ public class UsuarioCreate implements Usuario.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return request.intParam("codigo");
+  public String getCodigo() {
+    return request.stringParam("codigo");
   }
 
   @Override
@@ -57,7 +57,7 @@ public class UsuarioCreate implements Usuario.Builder {
 
   @Override
   public Perfil getPerfil() {
-    return request.enumParam(Perfil.class, "cargo");
+    return request.enumParam(Perfil.class, "perfil");
   }
 
   @Override

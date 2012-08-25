@@ -28,7 +28,7 @@ public class UsuarioFake implements Usuario {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     throw new UnsupportedOperationException();
   }
 

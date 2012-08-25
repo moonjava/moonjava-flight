@@ -15,6 +15,7 @@
  */
 package br.com.moonjava.flight.base.action;
 
+import br.com.moonjava.flight.base.Passagem;
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
@@ -49,7 +50,7 @@ public class ReembolsoAction implements Reembolso.Jdbc {
         .with("(ID, PASSAGEM_ID, BANCO, AGENCIA, CONTA)")
 
         .with("values (")
-        .with("?,", reembolso.getID())
+        .with("?,", reembolso.getId())
         .with("?,", passagem.getId())
         .with("?,", reembolso.getBanco())
         .with("?,", reembolso.getAgencia())
@@ -89,7 +90,7 @@ public class ReembolsoAction implements Reembolso.Jdbc {
         .with("AGENCIA = ?,", reembolso.getAgencia())
         .with("CONTA = ?", reembolso.getConta())
 
-        .with("where ID = ?", reembolso.getID())
+        .with("where ID = ?", reembolso.getId())
 
         .andExecute();
   }

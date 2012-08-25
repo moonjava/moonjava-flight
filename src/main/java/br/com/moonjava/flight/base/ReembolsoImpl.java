@@ -40,7 +40,7 @@ public class ReembolsoImpl implements Reembolso {
   }
 
   @Override
-  public int getID() {
+  public int getId() {
     return id;
   }
 

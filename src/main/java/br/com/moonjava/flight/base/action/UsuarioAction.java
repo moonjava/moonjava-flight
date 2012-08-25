@@ -96,6 +96,15 @@ public class UsuarioAction implements Usuario.Jdbc {
   }
 
   @Override
+  public Usuario consultarPorCpf(long cpf) {
+    return query()
+
+        .with("where PESSOAFISICA.CPF = ?", cpf)
+
+        .andGet();
+  }
+
+  @Override
   public void atualizar(Usuario usuario) {
     new SqlStatementWrapper()
         .prepare()
@@ -110,6 +119,7 @@ public class UsuarioAction implements Usuario.Jdbc {
 
         .andExecute();
   }
+
   @Override
   public void deletar(int id) {
     new SqlStatementWrapper()

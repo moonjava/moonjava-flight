@@ -17,6 +17,7 @@ package br.com.moonjava.flight.base.action;
 
 import java.sql.ResultSet;
 
+import br.com.moonjava.flight.base.Passagem;
 import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.base.ReembolsoImpl;
 import br.com.moonjava.flight.jdbc.ResultSetJdbc;

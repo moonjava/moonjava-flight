@@ -15,6 +15,6 @@ TEL_CELULAR integer(15) null,
 EMAIL varchar(100) null,
 
 primary key (ID),
-unique key (CPF)
+unique key(CPF)
 
 )Engine=InnoDB;

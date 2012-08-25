@@ -87,7 +87,7 @@ class ConsultarVooUI implements ActionListener {
     JTextField destino = new JTextField();
     JFormattedTextField partida = null;
     JFormattedTextField chegada = null;
-    JComboBox status = new JComboBox();
+    JComboBox<Status> status = new JComboBox<Status>();
 
     try {
       partida = new JFormattedTextField(new MaskFormatter("##/##/#### ##:##"));
@@ -97,7 +97,7 @@ class ConsultarVooUI implements ActionListener {
     }
 
     Status[] values = Status.values();
-    DefaultComboBoxModel model = new DefaultComboBoxModel(values);
+    DefaultComboBoxModel<Status> model = new DefaultComboBoxModel<Status>(values);
     status.setModel(model);
 
     JLabel tituloOrigem = new JLabel(bundle.getString("consultar.voo.titulo.origem"));
@@ -157,9 +157,10 @@ class ConsultarVooUI implements ActionListener {
     if (bundle.getLocale().getCountry().equals("US")) {
 
       String[] ampm = {
-          "AM", "PM" };
-      JComboBox timePartida = new JComboBox(ampm);
-      JComboBox timeChegada = new JComboBox(ampm);
+        "AM",
+        "PM" };
+      JComboBox<String> timePartida = new JComboBox<String>(ampm);
+      JComboBox<String> timeChegada = new JComboBox<String>(ampm);
 
       tituloPartida.setBounds(350, 25, 130, 30);
       tituloChegada.setBounds(490, 25, 130, 30);

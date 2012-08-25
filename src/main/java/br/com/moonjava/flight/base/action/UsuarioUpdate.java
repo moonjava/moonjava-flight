@@ -42,8 +42,8 @@ public class UsuarioUpdate implements Usuario.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return 0;
+  public String getCodigo() {
+    return "";
   }
 
   @Override
@@ -53,7 +53,7 @@ public class UsuarioUpdate implements Usuario.Builder {
 
   @Override
   public Perfil getPerfil() {
-    return request.enumParam(Perfil.class, "cargo");
+    return request.enumParam(Perfil.class, "perfil");
   }
 
   @Override

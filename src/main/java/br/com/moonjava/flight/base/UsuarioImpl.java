@@ -23,7 +23,7 @@ package br.com.moonjava.flight.base;
 public class UsuarioImpl implements Usuario {
 
   private int id;
-  private int codigo;
+  private String codigo;
   private PessoaFisica pessoaFisica;
   private Perfil cargo;
   private String login;
@@ -47,7 +47,7 @@ public class UsuarioImpl implements Usuario {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     return codigo;
   }
 

@@ -270,7 +270,21 @@ public class CriarUsuarioUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-      if (!cpf.getText().equals("   .   .   -  ")) {
+      if (!nome.getText().equals(bundle.getString("criar.pessoafisica.antes.nome"))
+          &&
+          !sobrenome.getText().equals(bundle.getString("criar.pessoafisica.antes.sobrenome"))
+          &&
+          !nascimento.getText().equals("  /  /    ")
+          &&
+          !cpf.getText().equals("   .   .   -  ")
+          &&
+          !rg.getText().equals(bundle.getString("criar.pessoafisica.antes.rg"))
+          &&
+          !endereco.getText().equals(bundle.getString("criar.pessoafisica.antes.endereco"))
+          &&
+          !telResidencial.getText().equals(
+              bundle.getString("criar.pessoafisica.antes.telResidencial")) &&
+          !usuario.getText().equals(bundle.getString("criar.usuario.antes.senha"))) {
 
         CPF cpf2 = CPF.parse(cpf.getText());
         long pcpf = Long.parseLong(cpf2.toString());
@@ -294,11 +308,27 @@ public class CriarUsuarioUI implements ActionListener {
 
             JOptionPane.showMessageDialog(null,
                 bundle.getString("criar.usuario.sucesso"), "OK", JOptionPane.INFORMATION_MESSAGE);
+
           }
           else {
             LocalDate date = FormatDateTime.parseToLocalDate(nascimento.getText(), bundle
                 .getLocale()
                 .getCountry());
+            try {
+              Integer.parseInt(telCelular.getText());
+            } catch (Exception e) {
+              JOptionPane
+                  .showMessageDialog(null, bundle.getString("criar.usuario.erro.telCelular"));
+              return;
+            }
+            try {
+              Integer.parseInt(telResidencial.getText());
+            } catch (Exception e) {
+              JOptionPane.showMessageDialog(null,
+                  bundle.getString("criar.usuario.erro.telResidencial"));
+              return;
+            }
+
             request.set("nome", nome.getText());
             request.set("sobrenome", sobrenome.getText());
             request.set("nascimento", date);
@@ -324,6 +354,7 @@ public class CriarUsuarioUI implements ActionListener {
 
             JOptionPane.showMessageDialog(null,
                 bundle.getString("criar.usuario.sucesso"), "OK", JOptionPane.INFORMATION_MESSAGE);
+
           }
 
         }
@@ -480,6 +511,24 @@ public class CriarUsuarioUI implements ActionListener {
         usuario.setText(bundle.getString("criar.usuario.antes.usuario"));
         usuario.setFont(antes);
         usuario.setForeground(Color.GRAY);
+      }
+      if (e.getSource() == telResidencial
+          && !telResidencial.getText().equals("")
+          && !telResidencial.getText().equals(
+              bundle.getString("criar.pessoafisica.antes.telResidencial"))) {
+        try {
+          Integer.parseInt(telResidencial.getText());
+        } catch (Exception e2) {
+          JOptionPane.showMessageDialog(null, "Insira somente números no Campo Tel. Residnecial");
+        }
+      }
+      if (e.getSource() == telCelular && !telCelular.getText().equals("")
+          && !telCelular.getText().equals(bundle.getString("criar.pessoafisica.antes.telCelular"))) {
+        try {
+          Integer.parseInt(telCelular.getText());
+        } catch (Exception e2) {
+          JOptionPane.showMessageDialog(null, "Insira somente números no campo Tel. Celuar");
+        }
       }
 
     }

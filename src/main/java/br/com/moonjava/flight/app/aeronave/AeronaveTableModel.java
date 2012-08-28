@@ -71,9 +71,9 @@ public class AeronaveTableModel extends AbstractTableModel {
     Aeronave aeronave = list.get(linha);
     switch (coluna) {
     case 0:
-      return aeronave.getNome();
-    case 1:
       return aeronave.getCodigo();
+    case 1:
+      return aeronave.getNome();
     case 2:
       return aeronave.getQtdDeAssento();
     }

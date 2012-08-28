@@ -62,6 +62,15 @@ public class ResultSetJdbcWrapper implements ResultSetJdbc {
   }
 
   @Override
+  public double getDouble(String columnLabel) {
+    try {
+      return rs.getDouble(alias + "." + columnLabel);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   public boolean getBoolean(String columnLabel) {
     try {
       return rs.getBoolean(alias + "." + columnLabel);

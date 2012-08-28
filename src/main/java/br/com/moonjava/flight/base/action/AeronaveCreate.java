@@ -38,8 +38,8 @@ public class AeronaveCreate implements Aeronave.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return request.intParam("codigo");
+  public String getCodigo() {
+    return request.stringParam("codigo");
   }
 
   @Override

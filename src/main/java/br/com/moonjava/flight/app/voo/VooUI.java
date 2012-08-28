@@ -57,18 +57,21 @@ public class VooUI {
     titulo.setEnabled(false);
     deletar.setEnabled(false);
     atualizar.setEnabled(false);
+    status.setEnabled(false);
 
     titulo.setBounds(0, 30, 100, 30);
     consultar.setBounds(0, 70, 200, 50);
-    status.setBounds(0, 140, 200, 50);
-    cadastrar.setBounds(0, 210, 200, 50);
+    cadastrar.setBounds(0, 140, 200, 50);
+    status.setBounds(0, 210, 200, 50);
     atualizar.setBounds(0, 280, 200, 50);
     deletar.setBounds(0, 350, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    consultar.addActionListener(new ConsultarVooUI(subConteudo, bundle, atualizar, deletar));
-    status.addActionListener(new ControlarStatusVooUI(subConteudo, bundle, atualizar, deletar));
-    cadastrar.addActionListener(new CriarVooUI(subConteudo, bundle, atualizar, deletar));
+    consultar.addActionListener(
+        new ConsultarVooUI(subConteudo, bundle, atualizar, deletar, status));
+
+    cadastrar.addActionListener(
+        new CriarVooUI(subConteudo, bundle, atualizar, deletar, status));
 
     conteudo.add(titulo);
     conteudo.add(consultar);

@@ -27,8 +27,6 @@ import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Status;
 import br.com.moonjava.flight.base.Voo;
-import br.com.moonjava.flight.base.action.VooAction;
-import br.com.moonjava.flight.base.action.VooCreate;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -48,7 +46,6 @@ public class TesteDeCriarVoo {
   }
 
   public void voo_deve_ser_criado() {
-    int codigo = 5;
     int aeronave = 2;
     String origem = "nova origem";
     String destino = "novo destino";
@@ -64,7 +61,6 @@ public class TesteDeCriarVoo {
     List<Voo> antes = action.consultar(request);
     assertThat(antes.size(), equalTo(3));
 
-    request.set("codigo", codigo);
     request.set("aeronave", aeronave);
     request.set("origem", origem);
     request.set("destino", destino);
@@ -83,7 +79,6 @@ public class TesteDeCriarVoo {
     assertThat(res.size(), equalTo(4));
 
     Voo r3 = res.get(3);
-    assertThat(r3.getCodigo(), equalTo(codigo));
     assertThat(r3.getAeronave().getId(), equalTo(aeronave));
     assertThat(r3.getOrigem(), equalTo(origem));
     assertThat(r3.getDestino(), equalTo(destino));

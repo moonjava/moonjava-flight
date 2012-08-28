@@ -13,6 +13,8 @@ DATA_PARTIDA datetime not null,
 DATA_CHEGADA datetime not null,
 OBSERVACAO varchar(100) null,
 STATUS tinyint not null,
+ASSENTO_LIVRE integer not null,
+PRECO double not null,
 
 primary key (ID),
 unique key (CODIGO),

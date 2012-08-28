@@ -33,6 +33,8 @@ public interface ResultSetJdbc {
 
   int getInt(String columnLabel);
 
+  double getDouble(String columnLabel);
+
   boolean getBoolean(String columnLabel);
 
   DateTime getDateTime(String columnLabel);

@@ -46,15 +46,12 @@ public class TesteDeAtualizarAeronave {
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
-    Aeronave antes = action.consultarPorId(id);
-    assertThat(antes.getCodigo(), equalTo(1));
+    Aeronave antes = action.consultarPorId(1);
     assertThat(antes.getNome(), equalTo("nave A"));
 
-    int codigo = 3;
     String nome = "nova nave A";
 
     request.set("id", id);
-    request.set("codigo", codigo);
     request.set("nome", nome);
 
     Aeronave aeronave = new AeronaveUpdate(request).createInstance();
@@ -62,7 +59,6 @@ public class TesteDeAtualizarAeronave {
     action.atualizar(aeronave);
 
     Aeronave res = action.consultarPorId(id);
-    assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getNome(), equalTo(nome));
   }
 

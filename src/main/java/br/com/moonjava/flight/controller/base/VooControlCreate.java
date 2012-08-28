@@ -39,7 +39,12 @@ public class VooControlCreate implements Voo.Builder {
 
   @Override
   public Voo createInstance() {
-    return new VooModel(this);
+    if (getDataDePartida().isBefore(getDataDeChegada()) &&
+        getDataDePartida().isAfter(System.currentTimeMillis())) {
+      return new VooModel(this);
+    } else {
+      return null;
+    }
   }
 
   @Override

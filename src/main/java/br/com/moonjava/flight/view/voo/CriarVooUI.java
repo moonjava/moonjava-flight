@@ -40,6 +40,7 @@ import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.FormatDateTime;
+import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -59,6 +60,7 @@ class CriarVooUI implements ActionListener {
   private final AeronaveDAO aeronaveDAO;
   private final RequestParamWrapper request;
 
+  private JLabel codigo;
   private JTextField origem;
   private JTextField destino;
   private JTextField escala;
@@ -67,6 +69,7 @@ class CriarVooUI implements ActionListener {
   private JComboBox aeronave;
   private JComboBox timePartida;
   private JComboBox timeChegada;
+  private JTextField preco;
 
   public CriarVooUI(JPanel conteudo,
                     ResourceBundle bundle,
@@ -93,18 +96,23 @@ class CriarVooUI implements ActionListener {
     conteudo.validate();
     conteudo.repaint();
 
+    JLabel tituloCodigo = new JLabel(bundle.getString("criar.voo.titulo.codigo"));
     JLabel tituloOrigem = new JLabel(bundle.getString("criar.voo.titulo.origem"));
     JLabel tituloDestino = new JLabel(bundle.getString("criar.voo.titulo.destino"));
     JLabel tituloEscala = new JLabel(bundle.getString("criar.voo.titulo.escala"));
     JLabel tituloPartida = new JLabel(bundle.getString("criar.voo.titulo.partida"));
     JLabel tituloChegada = new JLabel(bundle.getString("criar.voo.titulo.chegada"));
     JLabel tituloAeronave = new JLabel(bundle.getString("criar.voo.titulo.aeronave"));
+    JLabel tituloPreco = new JLabel(bundle.getString("criar.voo.titulo.preco"));
 
     JLabel alertaPartida = new JLabel(bundle.getString("alerta.data"));
     JButton cadastrar = new JButton(bundle.getString("criar.voo.botao.cadastrar"));
 
+    String _codigo = new GerarCodigo("VOO").getCodigo();
+    codigo = new JLabel(_codigo);
     origem = new JTextField();
     destino = new JTextField();
+    preco = new JTextField();
     escala = new JTextField();
     aeronave = new JComboBox();
 
@@ -124,40 +132,49 @@ class CriarVooUI implements ActionListener {
     destino.setDocument(new JTextFieldLimit(40));
     escala.setDocument(new JTextFieldLimit(40));
 
+    tituloCodigo.setBounds(60, 70, 200, 30);
     tituloOrigem.setBounds(60, 110, 200, 30);
     tituloDestino.setBounds(60, 150, 200, 30);
     tituloEscala.setBounds(60, 190, 200, 30);
     tituloPartida.setBounds(60, 230, 200, 30);
     tituloChegada.setBounds(60, 270, 200, 30);
     tituloAeronave.setBounds(60, 310, 200, 30);
+    tituloPreco.setBounds(60, 350, 200, 30);
 
     alertaPartida.setBounds(400, 230, 500, 30);
 
+    codigo.setBounds(180, 70, 200, 30);
     origem.setBounds(180, 110, 200, 30);
     destino.setBounds(180, 150, 200, 30);
     escala.setBounds(180, 190, 200, 30);
     partida.setBounds(180, 230, 200, 30);
     chegada.setBounds(180, 270, 200, 30);
     aeronave.setBounds(180, 310, 200, 30);
-    cadastrar.setBounds(205, 350, 150, 30);
+    preco.setBounds(180, 350, 200, 30);
+    cadastrar.setBounds(205, 390, 150, 30);
 
     cadastrar.addActionListener(new CadastrarHandler());
 
+    conteudo.add(tituloCodigo);
     conteudo.add(tituloOrigem);
     conteudo.add(tituloDestino);
     conteudo.add(tituloEscala);
     conteudo.add(tituloPartida);
     conteudo.add(tituloChegada);
     conteudo.add(tituloAeronave);
+    conteudo.add(tituloPreco);
 
     conteudo.add(alertaPartida);
 
+    conteudo.add(codigo);
     conteudo.add(origem);
     conteudo.add(destino);
     conteudo.add(escala);
     conteudo.add(partida);
     conteudo.add(chegada);
     conteudo.add(aeronave);
+    conteudo.add(preco);
+
     conteudo.add(cadastrar);
 
     if (bundle.getLocale().getCountry().equals("US")) {
@@ -195,28 +212,39 @@ class CriarVooUI implements ActionListener {
         dataChegada = chegada.getText();
       }
 
-      int _aeronave = ((Aeronave) aeronave.getSelectedItem()).getId();
+      Aeronave _aeronave = ((Aeronave) aeronave.getSelectedItem());
       DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
       DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
 
-      if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
+      try {
+        double _preco = Double.parseDouble(preco.getText());
+        request.set("preco", _preco);
+        request.set("codigo", codigo.getText());
         request.set("origem", origem.getText());
         request.set("destino", destino.getText());
         request.set("escala", escala.getText());
         request.set("partida", _partida);
         request.set("chegada", _chegada);
-        request.set("aeronave", _aeronave);
+        request.set("aeronave", _aeronave.getId());
+        request.set("assentoLivre", _aeronave.getQtdDeAssento());
 
         Voo pojo = new VooControlCreate(request).createInstance();
-        vooDAO.criar(pojo);
+        boolean executed = vooDAO.criar(pojo);
 
+        if (executed) {
+          JOptionPane.showMessageDialog(null,
+              bundle.getString("criar.voo.joption.ok"),
+              bundle.getString("criar.voo.joption.titulo"),
+              JOptionPane.INFORMATION_MESSAGE);
+        } else {
+          JOptionPane.showMessageDialog(null,
+              bundle.getString("criar.voo.joption.tempo"),
+              bundle.getString("criar.voo.joption.titulo"),
+              JOptionPane.ERROR_MESSAGE);
+        }
+      } catch (NumberFormatException e2) {
         JOptionPane.showMessageDialog(null,
-            bundle.getString("criar.voo.joption.ok"),
-            bundle.getString("criar.voo.joption.titulo"),
-            JOptionPane.INFORMATION_MESSAGE);
-      } else {
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("criar.voo.joption.tempo"),
+            bundle.getString("alerta.numero"),
             bundle.getString("criar.voo.joption.titulo"),
             JOptionPane.ERROR_MESSAGE);
       }
@@ -224,8 +252,8 @@ class CriarVooUI implements ActionListener {
       conteudo.removeAll();
       conteudo.validate();
       conteudo.repaint();
-
     }
+
   }
 
 }

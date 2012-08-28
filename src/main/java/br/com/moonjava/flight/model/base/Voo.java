@@ -56,7 +56,7 @@ public interface Voo {
 
   interface Jdbc {
 
-    void criar(Voo voo);
+    boolean criar(Voo voo);
 
     List<Voo> consultar(RequestParam request);
 

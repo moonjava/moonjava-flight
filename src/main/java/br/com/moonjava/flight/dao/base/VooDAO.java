@@ -48,28 +48,32 @@ public class VooDAO implements Voo.Jdbc {
   }
 
   @Override
-  public void criar(Voo voo) {
-    Aeronave aeronave = voo.getAeronave();
-    new SqlStatementWrapper()
-        .prepare()
+  public boolean criar(Voo voo) {
+    boolean executed = false;
+    if (voo != null) {
+      Aeronave aeronave = voo.getAeronave();
+      executed = new SqlStatementWrapper()
+          .prepare()
 
-        .with("insert into FLIGHT.VOO")
-        .with("(AERONAVE_ID, CODIGO, ORIGEM, DESTINO, ESCALA,")
-        .with("DATA_PARTIDA, DATA_CHEGADA, STATUS, ASSENTO_LIVRE, PRECO)")
+          .with("insert into FLIGHT.VOO")
+          .with("(AERONAVE_ID, CODIGO, ORIGEM, DESTINO, ESCALA,")
+          .with("DATA_PARTIDA, DATA_CHEGADA, STATUS, ASSENTO_LIVRE, PRECO)")
 
-        .with("values (")
-        .with("?,", aeronave.getId())
-        .with("?,", voo.getCodigo())
-        .with("?,", voo.getOrigem())
-        .with("?,", voo.getDestino())
-        .with("?,", voo.getEscala())
-        .with("?,", voo.getDataDePartida())
-        .with("?,", voo.getDataDeChegada())
-        .with("?,", voo.getStatus().ordinal())
-        .with("?,", voo.getAssentoLivre())
-        .with("?)", voo.getPreco())
+          .with("values (")
+          .with("?,", aeronave.getId())
+          .with("?,", voo.getCodigo())
+          .with("?,", voo.getOrigem())
+          .with("?,", voo.getDestino())
+          .with("?,", voo.getEscala())
+          .with("?,", voo.getDataDePartida())
+          .with("?,", voo.getDataDeChegada())
+          .with("?,", voo.getStatus().ordinal())
+          .with("?,", voo.getAssentoLivre())
+          .with("?)", voo.getPreco())
 
-        .andExecute();
+          .andExecute();
+    }
+    return executed;
   }
 
   @Override

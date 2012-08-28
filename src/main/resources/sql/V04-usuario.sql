@@ -13,6 +13,7 @@ SENHA varchar(50) not null,
 primary key (ID),
 unique key(CODIGO),
 unique key(PESSOAFISICA_ID),
+unique key(LOGIN, SENHA),
 
 constraint foreign key FK_PESSOAFISICA_USUARIO (PESSOAFISICA_ID)
 references FLIGHT.PESSOAFISICA (ID)

@@ -19,7 +19,6 @@ import java.sql.ResultSet;
 
 import br.com.moonjava.flight.jdbc.ResultSetJdbcLoader;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
-import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 
 /**
@@ -29,108 +28,60 @@ import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
  */
 public class GerarCodigo {
 
-  private String tabela;
-  private String codigo;
+  private final String tabela;
 
   public GerarCodigo(String tabela) {
     this.tabela = tabela;
-    GerarCodigoAction action = new GerarCodigoAction();
-    GerarCodigoutil teste = action.gerarCodigo();
-    codigo = teste.gerarCcodigo();
   }
 
   public String getCodigo() {
-    return codigo;
-  }
-
-  private class GerarCodigoAction implements GerarCodigoutil.Jdbc {
-
-    private SqlStatement query() {
-      String linha1 = "select concat('" + tabela.substring(0, 1) + "',max(ID)+1000) CCODIGO";
-      String linha2 = "from FLIGHT." + tabela;
-
-      return new SqlStatementWrapper()
-          .prepare()
-
-          .with(linha1)
-          .with(linha2)
-
-          .load(new GerarCodigoLoader());
-    }
-
-    public GerarCodigoutil gerarCodigo() {
-      return query()
-
-          .with("where 1=1")
-
-          .andGet();
+    String res = query().getCodigo();
+    if (res != null) {
+      return res;
+    } else {
+      return tabela.substring(0, 1) + "1000";
     }
   }
 
-  private class GerarCodigoLoader implements ResultSetJdbcLoader<GerarCodigoutil> {
+  private GerarCodigoBuilder query() {
+    return new SqlStatementWrapper()
+        .prepare()
 
-    private final String alias;
+        .with("select concat('" + tabela.substring(0, 1) + "',max(ID)+1000) CODIGO")
+        .with("from FLIGHT." + tabela)
 
-    public GerarCodigoLoader() {
-      this.alias = "";
-    }
+        .load(new GerarCodigoLoader())
 
+        .andGet();
+  }
+
+  private class GerarCodigoLoader implements ResultSetJdbcLoader<GerarCodigoBuilder> {
     @Override
-    public GerarCodigoutil get(ResultSet resultSet) {
-      ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, alias);
+    public GerarCodigoBuilder get(ResultSet resultSet) {
+      ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, "");
       return new GerarCodigoBuilder(rs).createInstance();
     }
-
-    private class GerarCodigoBuilder implements GerarCodigoutil.Builder {
-
-      private final ResultSetJdbcWrapper rs;
-
-      public GerarCodigoBuilder(ResultSetJdbcWrapper rs) {
-        this.rs = rs;
-      }
-
-      @Override
-      public GerarCodigoutil createInstance() {
-        GerarCodigoImpl impl = new GerarCodigoImpl(this);
-        return impl;
-      }
-
-      @Override
-      public String gerarCodico() {
-        return rs.getString("CCODIGO");
-      }
-
-    }
-
   }
 
-  private class GerarCodigoImpl implements GerarCodigoutil {
+  private class GerarCodigoBuilder implements Builder<GerarCodigoBuilder> {
 
+    private final ResultSetJdbcWrapper rs;
     private String codigo;
 
-    public GerarCodigoImpl(Builder builder) {
-      this.codigo = builder.gerarCodico();
+    public GerarCodigoBuilder(ResultSetJdbcWrapper rs) {
+      this.rs = rs;
     }
+
     @Override
-    public String gerarCcodigo() {
+    public GerarCodigoBuilder createInstance() {
+      codigo = rs.getString("CODIGO");
+      return this;
+    }
+
+    public String getCodigo() {
       return codigo;
     }
 
-  }
-
-  private interface GerarCodigoutil {
-
-    interface Builder extends br.com.moonjava.flight.util.Builder<GerarCodigoutil> {
-
-      String gerarCodico();
-    }
-
-    interface Jdbc {
-
-      GerarCodigoutil gerarCodigo();
-    }
-
-    String gerarCcodigo();
   }
 
 }

@@ -36,6 +36,6 @@ public interface SqlStatement {
 
   <T> T andGet();
 
-  void andExecute();
+  boolean andExecute();
 
 }

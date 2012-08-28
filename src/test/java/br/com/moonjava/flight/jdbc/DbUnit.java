@@ -63,7 +63,7 @@ public class DbUnit {
       throw new RuntimeException("It's impossible to load the class");
 
     } catch (DatabaseUnitException e) {
-      throw new RuntimeException("Your connection with DbUnit has been failed");
+      throw new RuntimeException("Your connection with DbUnit has been failed" + e);
 
     } catch (Exception e) {
       throw new RuntimeException(e);

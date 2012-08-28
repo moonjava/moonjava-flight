@@ -51,14 +51,14 @@ class VooTableHandler implements ActionListener {
   private final JTextField destino;
   private final JFormattedTextField partida;
   private final JFormattedTextField chegada;
-  private final JComboBox<Status> status;
+  private final JComboBox status;
   private final ResourceBundle bundle;
   private final JPanel conteudo;
   private final JButton atualizar;
   private final JButton deletar;
 
-  private JComboBox<String> timePartida;
-  private JComboBox<String> timeChegada;
+  private JComboBox timePartida;
+  private JComboBox timeChegada;
   private List<Voo> list;
 
   public VooTableHandler(JTable tabela,
@@ -66,7 +66,7 @@ class VooTableHandler implements ActionListener {
                          JTextField destino,
                          JFormattedTextField partida,
                          JFormattedTextField chegada,
-                         JComboBox<Status> status,
+                         JComboBox status,
                          ResourceBundle bundle,
                          JPanel conteudo,
                          JButton atualizar,
@@ -83,7 +83,7 @@ class VooTableHandler implements ActionListener {
     this.deletar = deletar;
   }
 
-  public void setAmPm(JComboBox<String> timePartida, JComboBox<String> timeChegada) {
+  public void setAmPm(JComboBox timePartida, JComboBox timeChegada) {
     this.timePartida = timePartida;
     this.timeChegada = timeChegada;
   }

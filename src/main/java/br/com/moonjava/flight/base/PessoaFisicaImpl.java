@@ -25,15 +25,15 @@ import org.joda.time.LocalDate;
 public class PessoaFisicaImpl implements PessoaFisica {
 
   private int id;
-  private String nome;
-  private String sobrenome;
-  private LocalDate dataDeNascimento;
-  private long cpf;
-  private String rg;
-  private String endereco;
-  private int telResidencial;
-  private int telCelular;
-  private String email;
+  private final String nome;
+  private final String sobrenome;
+  private final LocalDate dataDeNascimento;
+  private final long cpf;
+  private final String rg;
+  private final String endereco;
+  private final int telResidencial;
+  private final int telCelular;
+  private final String email;
 
   public PessoaFisicaImpl(Builder builder) {
     this.nome = builder.getNome();

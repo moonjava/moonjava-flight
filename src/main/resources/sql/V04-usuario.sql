@@ -3,10 +3,10 @@ set foreign_key_checks=0;
 drop table if exists FLIGHT.USUARIO; 
 
 create table FLIGHT.USUARIO (
-ID integer(11) not null auto_increment,
-PESSOAFISICA_ID integer(11) not null,
+ID integer not null auto_increment,
+PESSOAFISICA_ID integer not null,
 CODIGO varchar(40) not null,
-CARGO tinyint not null,
+PERFIL tinyint not null,
 LOGIN varchar(50) not null,
 SENHA varchar(50) not null,
 

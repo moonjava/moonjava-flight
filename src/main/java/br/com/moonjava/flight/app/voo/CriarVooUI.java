@@ -65,8 +65,8 @@ class CriarVooUI implements ActionListener {
   private JTextField partida;
   private JTextField chegada;
   private JComboBox aeronave;
-  private JComboBox<String> timePartida;
-  private JComboBox<String> timeChegada;
+  private JComboBox timePartida;
+  private JComboBox timeChegada;
 
   public CriarVooUI(JPanel conteudo, ResourceBundle bundle, JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
@@ -167,8 +167,8 @@ class CriarVooUI implements ActionListener {
       alertaPartida.setBounds(450, 270, 500, 30);
 
       String[] ampm = {
-        "AM",
-        "PM" };
+          "AM",
+          "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 

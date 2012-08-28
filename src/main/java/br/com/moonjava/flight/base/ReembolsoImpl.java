@@ -23,10 +23,10 @@ package br.com.moonjava.flight.base;
 public class ReembolsoImpl implements Reembolso {
 
   private int id;
-  private Passagem passagem;
-  private int banco;
-  private int agencia;
-  private int conta;
+  private final Passagem passagem;
+  private final int banco;
+  private final int agencia;
+  private final int conta;
 
   public ReembolsoImpl(Builder builder) {
     this.passagem = builder.getPassagem();
@@ -63,4 +63,5 @@ public class ReembolsoImpl implements Reembolso {
   public int getConta() {
     return conta;
   }
+
 }

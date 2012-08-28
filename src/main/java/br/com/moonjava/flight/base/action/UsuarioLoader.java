@@ -32,7 +32,7 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
  */
 public class UsuarioLoader implements ResultSetJdbcLoader<Usuario> {
 
-  private String alias;
+  private final String alias;
 
   public UsuarioLoader() {
     this.alias = "USUARIO";
@@ -52,6 +52,7 @@ public class UsuarioLoader implements ResultSetJdbcLoader<Usuario> {
       this.rs = rs;
     }
 
+    @Override
     public Usuario createInstance() {
       UsuarioImpl impl = new UsuarioImpl(this);
       impl.setId(rs.getInt("ID"));
@@ -88,4 +89,5 @@ public class UsuarioLoader implements ResultSetJdbcLoader<Usuario> {
     }
 
   }
+
 }

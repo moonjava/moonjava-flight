@@ -47,18 +47,20 @@ public class TesteDeAtualizarUsuario {
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
+    String codigo = "U1000";
 
     Usuario antes = action.consultarPorId(id);
-    assertThat(antes.getCodigo(), equalTo(1));
+    assertThat(antes.getCodigo(), equalTo(codigo));
     assertThat(antes.getPerfil(), equalTo(Perfil.ATENDENTE));
     assertThat(antes.getLogin(), equalTo("teste1"));
+    assertThat(antes.getSenha(), equalTo("teste1"));
 
-    Perfil cargo = Perfil.SUPERVISOR;
+    Perfil perfil = Perfil.SUPERVISOR;
     String login = "testeDeUpdate";
     String senha = "testeDeUpdate";
 
     request.set("id", id);
-    request.set("cargo", cargo);
+    request.set("perfil", perfil);
     request.set("login", login);
     request.set("senha", senha);
 
@@ -67,10 +69,10 @@ public class TesteDeAtualizarUsuario {
     action.atualizar(usuario);
 
     Usuario res = action.consultarPorId(id);
-    assertThat(res.getCodigo(), equalTo(1));
+    assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getPerfil(), equalTo(Perfil.SUPERVISOR));
     assertThat(res.getLogin(), equalTo(login));
     assertThat(res.getSenha(), equalTo(senha));
-
   }
+
 }

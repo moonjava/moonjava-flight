@@ -43,7 +43,7 @@ public class UsuarioUpdate implements Usuario.Builder {
 
   @Override
   public String getCodigo() {
-    return "";
+    return null;
   }
 
   @Override

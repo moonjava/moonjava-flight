@@ -34,7 +34,6 @@ public class PessoaFisicaAction implements PessoaFisica.Jdbc {
         .prepare()
 
         .with("select *")
-
         .with("from FLIGHT.PESSOAFISICA as PESSOAFISICA")
 
         .load(new PessoaFisicaLoader());
@@ -70,7 +69,7 @@ public class PessoaFisicaAction implements PessoaFisica.Jdbc {
 
     return query()
 
-        .with("where 1=1")
+        .with("where 1 = 1")
         .with("and PESSOAFISICA.NOME like concat ('%',?,'%')", nome)
         .with("and PESSOAFISICA.SOBRENOME like concat ('%',?,'%')", sobrenome)
         .with("order by PESSOAFISICA.NOME asc")
@@ -87,6 +86,7 @@ public class PessoaFisicaAction implements PessoaFisica.Jdbc {
         .andGet();
   }
 
+  @Override
   public PessoaFisica consultarPorCpf(long cpf) {
     return query()
 

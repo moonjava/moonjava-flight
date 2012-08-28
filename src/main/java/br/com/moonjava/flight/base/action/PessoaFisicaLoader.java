@@ -32,7 +32,7 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
  */
 public class PessoaFisicaLoader implements ResultSetJdbcLoader<PessoaFisica> {
 
-  private String alias;
+  private final String alias;
 
   public PessoaFisicaLoader() {
     this.alias = "PESSOAFISICA";
@@ -44,7 +44,7 @@ public class PessoaFisicaLoader implements ResultSetJdbcLoader<PessoaFisica> {
     return new PessoaFisicaBuilder(rs).createInstance();
   }
 
-  public class PessoaFisicaBuilder implements PessoaFisica.Builder {
+  private class PessoaFisicaBuilder implements PessoaFisica.Builder {
 
     private final ResultSetJdbc rs;
 

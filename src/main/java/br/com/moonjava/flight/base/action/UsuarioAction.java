@@ -35,8 +35,8 @@ public class UsuarioAction implements Usuario.Jdbc {
     return new SqlStatementWrapper()
         .prepare()
 
-        .with("select * from")
-        .with("FLIGHT.USUARIO as USUARIO")
+        .with("select *")
+        .with("from FLIGHT.USUARIO as USUARIO")
 
         .with("join FLIGHT.PESSOAFISICA as PESSOAFISICA")
         .with("on PESSOAFISICA.ID = USUARIO.PESSOAFISICA_ID")
@@ -70,7 +70,7 @@ public class UsuarioAction implements Usuario.Jdbc {
 
     return query()
 
-        .with("where 1=1")
+        .with("where 1 = 1")
         .with("and USUARIO.LOGIN like concat ('%',?,'%')", login)
         .with("order by USUARIO.CODIGO asc")
 

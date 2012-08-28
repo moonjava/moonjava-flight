@@ -3,9 +3,9 @@ set foreign_key_checks=0;
 drop table if exists FLIGHT.PASSAGEM;
 
 create table FLIGHT.PASSAGEM(
-ID integer(11) not null auto_increment,
-VOO_ID integer(11) not null,
-PESSOAFISICA_ID integer(11) not null,
+ID integer not null auto_increment,
+VOO_ID integer not null,
+PESSOAFISICA_ID integer not null,
 COD_BILHETE varchar(11) not null,
 ASSENTO varchar(5) not null,
 

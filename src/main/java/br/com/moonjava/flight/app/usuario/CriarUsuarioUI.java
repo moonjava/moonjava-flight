@@ -79,7 +79,7 @@ public class CriarUsuarioUI implements ActionListener {
   private JTextField telCelular;
   private JTextField email;
 
-  private JComboBox<Perfil> perfil;
+  private JComboBox perfil;
   private JTextField usuario;
   private JPasswordField senha;
   private JLabel imagem;
@@ -168,7 +168,7 @@ public class CriarUsuarioUI implements ActionListener {
     email.setForeground(Color.GRAY);
 
     Perfil[] perfis = Perfil.values();
-    perfil = new JComboBox<Perfil>(perfis);
+    perfil = new JComboBox(perfis);
 
     usuario = new JTextField(bundle.getString("criar.usuario.antes.usuario"));
     usuario.setFont(antes);

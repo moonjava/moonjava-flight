@@ -40,8 +40,8 @@ public class AeronaveUpdate implements Aeronave.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return request.intParam("codigo");
+  public String getCodigo() {
+    return null;
   }
 
   @Override

@@ -17,7 +17,6 @@ package br.com.moonjava.flight.base;
 
 import org.joda.time.DateTime;
 
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -31,7 +30,7 @@ public class VooFake implements Voo {
   }
 
   @Override
-  public int getCodigo() {
+  public String getCodigo() {
     throw new UnsupportedOperationException();
   }
 
@@ -72,6 +71,16 @@ public class VooFake implements Voo {
 
   @Override
   public Status getStatus() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getAssentoLivre() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public double getPreco() {
     throw new UnsupportedOperationException();
   }
 

@@ -56,6 +56,7 @@ class VooTableHandler implements ActionListener {
   private final JPanel conteudo;
   private final JButton atualizar;
   private final JButton deletar;
+  private final JButton controlarStatus;
 
   private JComboBox timePartida;
   private JComboBox timeChegada;
@@ -70,7 +71,8 @@ class VooTableHandler implements ActionListener {
                          ResourceBundle bundle,
                          JPanel conteudo,
                          JButton atualizar,
-                         JButton deletar) {
+                         JButton deletar,
+                         JButton controlarStatus) {
     this.tabela = tabela;
     this.origem = origem;
     this.destino = destino;
@@ -81,6 +83,7 @@ class VooTableHandler implements ActionListener {
     this.conteudo = conteudo;
     this.atualizar = atualizar;
     this.deletar = deletar;
+    this.controlarStatus = controlarStatus;
   }
 
   public void setAmPm(JComboBox timePartida, JComboBox timeChegada) {
@@ -153,6 +156,7 @@ class VooTableHandler implements ActionListener {
     public void mouseClicked(MouseEvent e) {
       atualizar.setEnabled(true);
       deletar.setEnabled(true);
+      controlarStatus.setEnabled(true);
 
       // Singleton Object doesn't allow duplicate events
       AtualizarVooUI update = AtualizarVooUI.getInstance();
@@ -164,7 +168,13 @@ class VooTableHandler implements ActionListener {
       delete.setAttributes(atualizar, deletar, tabela, list, conteudo, bundle);
       delete.setResult(false);
       deletar.addActionListener(delete);
+
+      ControlarStatusVooUI status = ControlarStatusVooUI.getInstance();
+      status.setAttributes(tabela, list, conteudo, bundle);
+      status.setResult(false);
+      controlarStatus.addActionListener(status);
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
     }

@@ -45,7 +45,6 @@ public class TesteDeCriarAeronave {
 
   public void criar_aeronave() {
     String nome = "Teste 1";
-    int codigo = 3;
     int qtdAssentos = 50;
     boolean mapa = true;
 
@@ -56,7 +55,6 @@ public class TesteDeCriarAeronave {
     assertThat(antes.size(), equalTo(2));
 
     request.set("nome", nome);
-    request.set("codigo", codigo);
     request.set("qtdDeAssento", qtdAssentos);
     request.set("mapa", mapa);
 
@@ -70,7 +68,6 @@ public class TesteDeCriarAeronave {
 
     Aeronave aero = res.get(2);
 
-    assertThat(aero.getCodigo(), equalTo(codigo));
     assertThat(aero.getNome(), equalTo(nome));
     assertThat(aero.getQtdDeAssento(), equalTo(qtdAssentos));
     assertThat(aero.isMapa(), equalTo(mapa));

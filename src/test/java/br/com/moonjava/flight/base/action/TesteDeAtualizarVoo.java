@@ -24,8 +24,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Voo;
-import br.com.moonjava.flight.base.action.VooAction;
-import br.com.moonjava.flight.base.action.VooUpdate;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -50,7 +48,7 @@ public class TesteDeAtualizarVoo {
 
     int id = 1;
     Voo antes = action.consultarPorId(1);
-    assertThat(antes.getCodigo(), equalTo(1));
+    assertThat(antes.getCodigo(), equalTo("V1001"));
     assertThat(antes.getDataDePartida(), equalTo(new DateTime(2012, 1, 1, 0, 0)));
     assertThat(antes.getDataDeChegada(), equalTo(new DateTime(2012, 1, 1, 6, 0)));
     assertThat(antes.getObservacao(), equalTo(null));
@@ -69,7 +67,7 @@ public class TesteDeAtualizarVoo {
     action.atualizar(voo);
 
     Voo res = action.consultarPorId(1);
-    assertThat(res.getCodigo(), equalTo(1));
+    assertThat(res.getCodigo(), equalTo("V1001"));
     assertThat(res.getDataDePartida(), equalTo(partida));
     assertThat(res.getDataDeChegada(), equalTo(chegada));
     assertThat(res.getObservacao(), equalTo(observacao));

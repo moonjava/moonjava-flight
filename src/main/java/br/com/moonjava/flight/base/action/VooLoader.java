@@ -62,8 +62,8 @@ public class VooLoader implements ResultSetJdbcLoader<Voo> {
     }
 
     @Override
-    public int getCodigo() {
-      return rs.getInt("CODIGO");
+    public String getCodigo() {
+      return rs.getString("CODIGO");
     }
 
     @Override
@@ -107,6 +107,16 @@ public class VooLoader implements ResultSetJdbcLoader<Voo> {
       int val = rs.getInt("STATUS");
       Status[] status = Status.values();
       return status[val];
+    }
+
+    @Override
+    public int getAssentoLivre() {
+      return rs.getInt("ASSENTO_LIVRE");
+    }
+
+    @Override
+    public double getPreco() {
+      return rs.getDouble("PRECO");
     }
 
   }

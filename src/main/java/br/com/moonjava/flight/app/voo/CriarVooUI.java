@@ -54,11 +54,11 @@ class CriarVooUI implements ActionListener {
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
+  private final JButton status;
   private final VooAction vooAction;
   private final AeronaveAction aeronaveAction;
   private final RequestParamWrapper request;
 
-  private JTextField codigo;
   private JTextField origem;
   private JTextField destino;
   private JTextField escala;
@@ -68,11 +68,17 @@ class CriarVooUI implements ActionListener {
   private JComboBox timePartida;
   private JComboBox timeChegada;
 
-  public CriarVooUI(JPanel conteudo, ResourceBundle bundle, JButton atualizar, JButton deletar) {
+  public CriarVooUI(JPanel conteudo,
+                    ResourceBundle bundle,
+                    JButton atualizar,
+                    JButton deletar,
+                    JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
+    this.status = status;
+
     vooAction = new VooAction();
     aeronaveAction = new AeronaveAction();
     request = new RequestParamWrapper();
@@ -82,11 +88,11 @@ class CriarVooUI implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
+    status.setEnabled(false);
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
 
-    JLabel tituloCodigo = new JLabel(bundle.getString("criar.voo.titulo.codigo"));
     JLabel tituloOrigem = new JLabel(bundle.getString("criar.voo.titulo.origem"));
     JLabel tituloDestino = new JLabel(bundle.getString("criar.voo.titulo.destino"));
     JLabel tituloEscala = new JLabel(bundle.getString("criar.voo.titulo.escala"));
@@ -94,11 +100,9 @@ class CriarVooUI implements ActionListener {
     JLabel tituloChegada = new JLabel(bundle.getString("criar.voo.titulo.chegada"));
     JLabel tituloAeronave = new JLabel(bundle.getString("criar.voo.titulo.aeronave"));
 
-    JLabel alertaCodigo = new JLabel(bundle.getString("alerta.numero"));
     JLabel alertaPartida = new JLabel(bundle.getString("alerta.data"));
     JButton cadastrar = new JButton(bundle.getString("criar.voo.botao.cadastrar"));
 
-    codigo = new JTextField();
     origem = new JTextField();
     destino = new JTextField();
     escala = new JTextField();
@@ -116,34 +120,29 @@ class CriarVooUI implements ActionListener {
     DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
     aeronave.setModel(model);
 
-    codigo.setDocument(new JTextFieldLimit(9));
     origem.setDocument(new JTextFieldLimit(40));
     destino.setDocument(new JTextFieldLimit(40));
     escala.setDocument(new JTextFieldLimit(40));
 
-    tituloCodigo.setBounds(60, 110, 200, 30);
-    tituloOrigem.setBounds(60, 150, 200, 30);
-    tituloDestino.setBounds(60, 190, 200, 30);
-    tituloEscala.setBounds(60, 230, 200, 30);
-    tituloPartida.setBounds(60, 270, 200, 30);
-    tituloChegada.setBounds(60, 310, 200, 30);
-    tituloAeronave.setBounds(60, 350, 200, 30);
+    tituloOrigem.setBounds(60, 110, 200, 30);
+    tituloDestino.setBounds(60, 150, 200, 30);
+    tituloEscala.setBounds(60, 190, 200, 30);
+    tituloPartida.setBounds(60, 230, 200, 30);
+    tituloChegada.setBounds(60, 270, 200, 30);
+    tituloAeronave.setBounds(60, 310, 200, 30);
 
-    alertaCodigo.setBounds(400, 110, 200, 30);
-    alertaPartida.setBounds(400, 270, 500, 30);
+    alertaPartida.setBounds(400, 230, 500, 30);
 
-    codigo.setBounds(180, 110, 200, 30);
-    origem.setBounds(180, 150, 200, 30);
-    destino.setBounds(180, 190, 200, 30);
-    escala.setBounds(180, 230, 200, 30);
-    partida.setBounds(180, 270, 200, 30);
-    chegada.setBounds(180, 310, 200, 30);
-    aeronave.setBounds(180, 350, 200, 30);
-    cadastrar.setBounds(205, 390, 150, 30);
+    origem.setBounds(180, 110, 200, 30);
+    destino.setBounds(180, 150, 200, 30);
+    escala.setBounds(180, 190, 200, 30);
+    partida.setBounds(180, 230, 200, 30);
+    chegada.setBounds(180, 270, 200, 30);
+    aeronave.setBounds(180, 310, 200, 30);
+    cadastrar.setBounds(205, 350, 150, 30);
 
     cadastrar.addActionListener(new CadastrarHandler());
 
-    conteudo.add(tituloCodigo);
     conteudo.add(tituloOrigem);
     conteudo.add(tituloDestino);
     conteudo.add(tituloEscala);
@@ -151,10 +150,8 @@ class CriarVooUI implements ActionListener {
     conteudo.add(tituloChegada);
     conteudo.add(tituloAeronave);
 
-    conteudo.add(alertaCodigo);
     conteudo.add(alertaPartida);
 
-    conteudo.add(codigo);
     conteudo.add(origem);
     conteudo.add(destino);
     conteudo.add(escala);
@@ -164,15 +161,15 @@ class CriarVooUI implements ActionListener {
     conteudo.add(cadastrar);
 
     if (bundle.getLocale().getCountry().equals("US")) {
-      alertaPartida.setBounds(450, 270, 500, 30);
+      alertaPartida.setBounds(450, 230, 500, 30);
 
       String[] ampm = {
           "AM", "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
-      timePartida.setBounds(385, 275, 60, 20);
-      timeChegada.setBounds(385, 315, 60, 20);
+      timePartida.setBounds(385, 235, 60, 20);
+      timeChegada.setBounds(385, 275, 60, 20);
 
       conteudo.add(timePartida);
       conteudo.add(timeChegada);
@@ -197,23 +194,11 @@ class CriarVooUI implements ActionListener {
         dataChegada = chegada.getText();
       }
 
-      int _codigo = 0;
-      try {
-        _codigo = Integer.parseInt(codigo.getText());
-
-      } catch (Exception e2) {
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("alerta.numero"),
-            bundle.getString("criar.joption.titulo"),
-            JOptionPane.ERROR_MESSAGE);
-      }
-
       int _aeronave = ((Aeronave) aeronave.getSelectedItem()).getId();
       DateTime _partida = FormatDateTime.parseToDate(dataPartida, country);
       DateTime _chegada = FormatDateTime.parseToDate(dataChegada, country);
 
       if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
-        request.set("codigo", _codigo);
         request.set("origem", origem.getText());
         request.set("destino", destino.getText());
         request.set("escala", escala.getText());

@@ -103,7 +103,7 @@ public class VooTableModel extends AbstractTableModel {
       }
       return chegada;
     case 6:
-      return voo.getStatus();
+      return voo.getStatus().setBundle(bundle);
     }
     return null;
   }

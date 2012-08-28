@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.base.Status;
 import br.com.moonjava.flight.base.Voo;
-import br.com.moonjava.flight.base.action.VooAction;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -61,13 +60,13 @@ public class TesteDeConsultarVoo {
     Voo r1 = res.get(1);
     Voo r2 = res.get(2);
 
-    assertThat(r0.getCodigo(), equalTo(1));
-    assertThat(r1.getCodigo(), equalTo(2));
-    assertThat(r2.getCodigo(), equalTo(4));
+    assertThat(r0.getCodigo(), equalTo("V1001"));
+    assertThat(r1.getCodigo(), equalTo("V1002"));
+    assertThat(r2.getCodigo(), equalTo("V1004"));
 
-    assertThat(r0.getAeronave().getCodigo(), equalTo(1));
-    assertThat(r1.getAeronave().getCodigo(), equalTo(1));
-    assertThat(r2.getAeronave().getCodigo(), equalTo(2));
+    assertThat(r0.getAeronave().getCodigo(), equalTo("A1001"));
+    assertThat(r1.getAeronave().getCodigo(), equalTo("A1001"));
+    assertThat(r2.getAeronave().getCodigo(), equalTo("A1002"));
   }
 
   public void filtro_por_status_e_data_de_partida() {
@@ -83,8 +82,8 @@ public class TesteDeConsultarVoo {
     List<Voo> res = action.consultar(request);
     assertThat(res.size(), equalTo(2));
 
-    assertThat(res.get(0).getCodigo(), equalTo(2));
-    assertThat(res.get(1).getCodigo(), equalTo(4));
+    assertThat(res.get(0).getCodigo(), equalTo("V1002"));
+    assertThat(res.get(1).getCodigo(), equalTo("V1004"));
   }
 
   public void filtro_por_status_e_data_de_chegada() {
@@ -100,8 +99,8 @@ public class TesteDeConsultarVoo {
     List<Voo> res = action.consultar(request);
     assertThat(res.size(), equalTo(2));
 
-    assertThat(res.get(0).getCodigo(), equalTo(1));
-    assertThat(res.get(1).getCodigo(), equalTo(2));
+    assertThat(res.get(0).getCodigo(), equalTo("V1001"));
+    assertThat(res.get(1).getCodigo(), equalTo("V1002"));
   }
 
   public void filtro_por_status_indisponivel() {
@@ -115,7 +114,7 @@ public class TesteDeConsultarVoo {
     List<Voo> res = action.consultar(request);
     assertThat(res.size(), equalTo(1));
 
-    assertThat(res.get(0).getCodigo(), equalTo(3));
+    assertThat(res.get(0).getCodigo(), equalTo("V1003"));
   }
 
   public void filtro_por_origem() {
@@ -131,7 +130,7 @@ public class TesteDeConsultarVoo {
     List<Voo> res = action.consultar(request);
     assertThat(res.size(), equalTo(1));
 
-    assertThat(res.get(0).getCodigo(), equalTo(4));
+    assertThat(res.get(0).getCodigo(), equalTo("V1004"));
   }
 
   public void filtro_por_destino() {
@@ -147,7 +146,7 @@ public class TesteDeConsultarVoo {
     List<Voo> res = action.consultar(request);
     assertThat(res.size(), equalTo(1));
 
-    assertThat(res.get(0).getCodigo(), equalTo(2));
+    assertThat(res.get(0).getCodigo(), equalTo("V1002"));
   }
 
   public void consulta_por_id() {
@@ -156,7 +155,7 @@ public class TesteDeConsultarVoo {
 
     Voo res = action.consultarPorId(id);
     assertThat(res.getId(), equalTo(id));
-    assertThat(res.getAeronave().getCodigo(), equalTo(1));
+    assertThat(res.getAeronave().getCodigo(), equalTo("A1001"));
   }
 
   public void consultar_por_aeronave() {
@@ -170,7 +169,7 @@ public class TesteDeConsultarVoo {
     assertThat(res.size(), equalTo(1));
 
     Voo voo = res.get(0);
-    assertThat(voo.getCodigo(), equalTo(4));
+    assertThat(voo.getCodigo(), equalTo("V1004"));
     assertThat(voo.getOrigem(), equalTo("origem D"));
     assertThat(voo.getDestino(), equalTo("destino D"));
     assertThat(voo.getEscala(), equalTo(null));
@@ -178,6 +177,8 @@ public class TesteDeConsultarVoo {
     assertThat(voo.getDataDeChegada(), equalTo(new DateTime(2012, 3, 1, 6, 0, 0)));
     assertThat(voo.getObservacao(), equalTo(null));
     assertThat(voo.getStatus(), equalTo(Status.DISPONIVEL));
+    assertThat(voo.getAssentoLivre(), equalTo(200));
+    assertThat(voo.getPreco(), equalTo(550.50));
   }
 
 }

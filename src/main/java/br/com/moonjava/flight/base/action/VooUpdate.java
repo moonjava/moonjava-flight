@@ -44,8 +44,8 @@ public class VooUpdate implements Voo.Builder {
   }
 
   @Override
-  public int getCodigo() {
-    return 0;
+  public String getCodigo() {
+    return null;
   }
 
   @Override
@@ -86,6 +86,16 @@ public class VooUpdate implements Voo.Builder {
   @Override
   public Status getStatus() {
     return request.enumParam(Status.class, "status");
+  }
+
+  @Override
+  public int getAssentoLivre() {
+    return 0;
+  }
+
+  @Override
+  public double getPreco() {
+    return 0;
   }
 
 }

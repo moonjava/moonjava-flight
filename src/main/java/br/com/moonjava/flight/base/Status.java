@@ -15,6 +15,8 @@
  */
 package br.com.moonjava.flight.base;
 
+import java.util.ResourceBundle;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -22,12 +24,48 @@ package br.com.moonjava.flight.base;
  */
 public enum Status {
 
-  DISPONIVEL,
-  INDISPONIVEL,
-  CONFIRMADO,
-  CANCELADO,
-  ATRASADO,
-  EMBARQUE,
-  FINALIZADO
+  DISPONIVEL("Disponível", "Available", "Disponible"),
+  INDISPONIVEL("Indisponível", "Unavailable", "Indisponible"),
+  CONFIRMADO("Confirmado", "Confirmed", "Confirmado"),
+  CANCELADO("Cancelado", "Canceled", "Cancelado"),
+  ATRASADO("Atrasado", "Late", "Retrasado"),
+  EMBARQUE("Embarque", "Boarding", "Embarque"),
+  FINALIZADO("Finalizado", "Finalized", "Finalizado");
+
+  private String br;
+  private String us;
+  private String es;
+
+  private Status(String br, String us, String es) {
+    this.br = br;
+    this.us = us;
+    this.es = es;
+  }
+
+  public String setBundle(ResourceBundle bundle) {
+    String country = bundle.getLocale().getCountry();
+    String res = null;
+    if (country.equals("BR")) {
+      res = br;
+    }
+    if (country.equals("ES")) {
+      res = es;
+    }
+    if (country.equals("US")) {
+      res = us;
+    }
+    return res;
+  }
+
+  public static Status fromString(String nome) {
+    if (nome != null) {
+      for (Status status : Status.values()) {
+        if (nome.equals(status.br) || nome.equals(status.us) || nome.equals(status.es)) {
+          return status;
+        }
+      }
+    }
+    return null;
+  }
 
 }

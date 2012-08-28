@@ -22,44 +22,52 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeAtualizarReembolso {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void teste_atualizar_reembolso() {
+    ReembolsoAction action = new ReembolsoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
 
-    String nome = "nova nave A";
+    Reembolso antes = action.consultarPorId(id);
+    assertThat(antes.getBanco(), equalTo(11));
+    assertThat(antes.getAgencia(), equalTo(111));
+    assertThat(antes.getConta(), equalTo(222255558));
+
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999999999;
 
     request.set("id", id);
-    request.set("nome", nome);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    Reembolso reembolso = new ReembolsoUpdate(request).createInstance();
 
-    action.atualizar(aeronave);
+    action.atualizar(reembolso);
 
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
+    Reembolso res = action.consultarPorId(id);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
-
 }

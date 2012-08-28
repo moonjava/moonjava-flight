@@ -22,44 +22,49 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.Reembolso;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 14, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeCriarReembolso {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void teste_criar_reembolso() {
+    ReembolsoAction action = new ReembolsoAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
+    int passagem = 1;
+    int banco = 99;
+    int agencia = 999;
+    int conta = 999955556;
 
-    String nome = "nova nave A";
+    Reembolso antes = action.consultarPorPassagemId(passagem);
+    assertThat(antes, equalTo(null));
 
-    request.set("id", id);
-    request.set("nome", nome);
+    request.set("passagem", passagem);
+    request.set("banco", banco);
+    request.set("agencia", agencia);
+    request.set("conta", conta);
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    Reembolso reembolso = new ReembolsoCreate(request).createInstance();
 
-    action.atualizar(aeronave);
+    action.criar(reembolso);
 
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
+    Reembolso res = action.consultarPorPassagemId(passagem);
+    assertThat(res.getBanco(), equalTo(banco));
+    assertThat(res.getAgencia(), equalTo(agencia));
+    assertThat(res.getConta(), equalTo(conta));
   }
-
 }

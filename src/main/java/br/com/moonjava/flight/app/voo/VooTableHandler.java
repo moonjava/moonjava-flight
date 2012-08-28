@@ -114,11 +114,11 @@ class VooTableHandler implements ActionListener {
     DateTime dataChegada = null;
 
     if (!_partida.startsWith(maskEmpty)) {
-      dataPartida = FormatDateTime.parseToDate(_partida, country);
+      dataPartida = FormatDateTime.parseToDateTime(_partida, country);
     }
 
     if (!_chegada.startsWith(maskEmpty)) {
-      dataChegada = FormatDateTime.parseToDate(_chegada, country);
+      dataChegada = FormatDateTime.parseToDateTime(_chegada, country);
     }
 
     RequestParam request = new RequestParamWrapper();

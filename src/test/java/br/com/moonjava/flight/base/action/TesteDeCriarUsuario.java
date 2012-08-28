@@ -19,47 +19,61 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.Perfil;
+import br.com.moonjava.flight.base.Usuario;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeCriarUsuario {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void criar_usuario() {
+    UsuarioAction action = new UsuarioAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
+    int pessoaFisica = 3;
+    int codigo = 3;
+    Perfil cargo = Perfil.ATENDENTE;
+    String login = "teste3";
+    String senha = "teste3";
 
-    String nome = "nova nave A";
+    request.set("login", "teste");
 
-    request.set("id", id);
-    request.set("nome", nome);
+    List<Usuario> antes = action.consultar(request);
+    assertThat(antes.size(), equalTo(2));
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    request.set("codigo", codigo);
+    request.set("pessoaFisica", pessoaFisica);
+    request.set("cargo", cargo);
+    request.set("login", login);
+    request.set("senha", senha);
 
-    action.atualizar(aeronave);
+    Usuario usuario = new UsuarioCreate(request).createInstance();
 
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
+    action.criar(usuario);
+
+    Usuario res = action.consultarPorCodigo(codigo);
+    assertThat(res.getCodigo(), equalTo(codigo));
+    assertThat(res.getPerfil(), equalTo(Perfil.ATENDENTE));
+    assertThat(res.getLogin(), equalTo(login));
+    assertThat(res.getSenha(), equalTo(senha));
+
   }
-
 }

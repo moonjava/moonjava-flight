@@ -166,7 +166,8 @@ class ConsultarVooUI implements ActionListener {
     if (bundle.getLocale().getCountry().equals("US")) {
 
       String[] ampm = {
-          "AM", "PM" };
+          "AM",
+          "PM" };
       JComboBox timePartida = new JComboBox(ampm);
       JComboBox timeChegada = new JComboBox(ampm);
 

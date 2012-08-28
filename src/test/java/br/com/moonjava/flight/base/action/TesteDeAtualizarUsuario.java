@@ -22,44 +22,57 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.Perfil;
+import br.com.moonjava.flight.base.Usuario;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeAtualizarUsuario {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void teste_atualizar_usuario() {
+    UsuarioAction action = new UsuarioAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
+    String codigo = "U1000";
 
-    String nome = "nova nave A";
+    Usuario antes = action.consultarPorId(id);
+    assertThat(antes.getCodigo(), equalTo(codigo));
+    assertThat(antes.getPerfil(), equalTo(Perfil.ATENDENTE));
+    assertThat(antes.getLogin(), equalTo("teste1"));
+    assertThat(antes.getSenha(), equalTo("teste1"));
+
+    Perfil perfil = Perfil.SUPERVISOR;
+    String login = "testeDeUpdate";
+    String senha = "testeDeUpdate";
 
     request.set("id", id);
-    request.set("nome", nome);
+    request.set("perfil", perfil);
+    request.set("login", login);
+    request.set("senha", senha);
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    Usuario usuario = new UsuarioUpdate(request).createInstance();
 
-    action.atualizar(aeronave);
+    action.atualizar(usuario);
 
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
+    Usuario res = action.consultarPorId(id);
+    assertThat(res.getCodigo(), equalTo(codigo));
+    assertThat(res.getPerfil(), equalTo(Perfil.SUPERVISOR));
+    assertThat(res.getLogin(), equalTo(login));
+    assertThat(res.getSenha(), equalTo(senha));
   }
 
 }

@@ -13,29 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
+package br.com.moonjava.flight.view;
 
-import java.util.List;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public class App {
 
-  SqlStatement prepare();
+  public static void main(String[] args) {
+    try {
+      UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (UnsupportedLookAndFeelException e) {
+      e.printStackTrace();
+    }
 
-  SqlStatement with(String syntax);
+    start();
+  }
 
-  SqlStatement with(String syntax, Object object);
-
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
-
-  <T> List<T> andList();
-
-  <T> T andGet();
-
-  boolean andExecute();
+  private static void start() {
+    new IdiomaUI();
+  }
 
 }

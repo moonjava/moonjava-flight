@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
+package br.com.moonjava.flight.model.financeiro;
 
-import java.util.List;
+import org.joda.time.DateTime;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public class PagamentoModel implements Pagamento {
 
-  SqlStatement prepare();
+  private final double valor;
+  private final DateTime dataDeCriacao;
 
-  SqlStatement with(String syntax);
+  public PagamentoModel(Builder builder) {
+    this.valor = builder.getValor();
+    this.dataDeCriacao = builder.getDataDeCriacao();
+  }
 
-  SqlStatement with(String syntax, Object object);
+  @Override
+  public double getValor() {
+    return valor;
+  }
 
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
-
-  <T> List<T> andList();
-
-  <T> T andGet();
-
-  boolean andExecute();
+  @Override
+  public DateTime getDataDeCriacao() {
+    return dataDeCriacao;
+  }
 
 }

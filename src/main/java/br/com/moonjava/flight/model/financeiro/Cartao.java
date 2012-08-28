@@ -13,29 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
+package br.com.moonjava.flight.model.financeiro;
 
-import java.util.List;
+import org.joda.time.LocalDate;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public interface Cartao extends Pagamento {
 
-  SqlStatement prepare();
+  interface Builder extends Pagamento.Builder,
+      br.com.moonjava.flight.util.Builder<Cartao> {
 
-  SqlStatement with(String syntax);
+    String getTitular();
 
-  SqlStatement with(String syntax, Object object);
+    long getNumero();
 
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
+    LocalDate getDataDeValidade();
 
-  <T> List<T> andList();
+    Bandeira getBandeira();
 
-  <T> T andGet();
+  }
 
-  boolean andExecute();
+  interface jdbc {
+
+    boolean debitar();
+
+    boolean creditar(Cartao cartao);
+
+  }
+
+  String getTitular();
+
+  long getNumero();
+
+  LocalDate getDataDeValidade();
+
+  Bandeira getBandeira();
 
 }

@@ -13,29 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
-
-import java.util.List;
+package br.com.moonjava.flight.model.base;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public class AeronaveFake implements Aeronave {
 
-  SqlStatement prepare();
+  @Override
+  public int getId() {
+    throw new UnsupportedOperationException();
+  }
 
-  SqlStatement with(String syntax);
+  @Override
+  public String getCodigo() {
+    throw new UnsupportedOperationException();
+  }
 
-  SqlStatement with(String syntax, Object object);
+  @Override
+  public String getNome() {
+    throw new UnsupportedOperationException();
+  }
 
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
+  @Override
+  public int getQtdDeAssento() {
+    throw new UnsupportedOperationException();
+  }
 
-  <T> List<T> andList();
-
-  <T> T andGet();
-
-  boolean andExecute();
+  @Override
+  public boolean isMapa() {
+    throw new UnsupportedOperationException();
+  }
 
 }

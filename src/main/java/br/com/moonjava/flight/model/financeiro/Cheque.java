@@ -13,29 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
-
-import java.util.List;
+package br.com.moonjava.flight.model.financeiro;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public interface Cheque extends Pagamento {
 
-  SqlStatement prepare();
+  interface Builder extends Pagamento.Builder,
+      br.com.moonjava.flight.util.Builder<Cheque> {
 
-  SqlStatement with(String syntax);
+    String getTitular();
 
-  SqlStatement with(String syntax, Object object);
+    int getNumero();
 
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
+    int getBanco();
 
-  <T> List<T> andList();
+    int getAgencia();
 
-  <T> T andGet();
+    int getConta();
 
-  boolean andExecute();
+  }
+
+  String getTitular();
+
+  int getNumero();
+
+  int getBanco();
+
+  int getAgencia();
+
+  int getConta();
 
 }

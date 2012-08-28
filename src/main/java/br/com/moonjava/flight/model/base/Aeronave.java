@@ -13,29 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
+package br.com.moonjava.flight.model.base;
 
 import java.util.List;
+
+import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public interface Aeronave {
 
-  SqlStatement prepare();
+  interface Builder extends br.com.moonjava.flight.util.Builder<Aeronave> {
 
-  SqlStatement with(String syntax);
+    String getCodigo();
 
-  SqlStatement with(String syntax, Object object);
+    String getNome();
 
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
+    int getQtdDeAssento();
 
-  <T> List<T> andList();
+    boolean isMapa();
 
-  <T> T andGet();
+  }
 
-  boolean andExecute();
+  interface Jdbc {
+
+    boolean criar(Aeronave aeronave);
+
+    List<Aeronave> consultar(RequestParam request);
+
+    Aeronave consultarPorId(int id);
+
+    boolean atualizar(Aeronave aeronave);
+
+    void deletar(int id);
+  }
+
+  int getId();
+
+  String getCodigo();
+
+  String getNome();
+
+  int getQtdDeAssento();
+
+  boolean isMapa();
 
 }

@@ -22,8 +22,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import br.com.moonjava.flight.util.Param;
 
 /**
@@ -130,7 +128,8 @@ public class SqlStatementWrapper implements SqlStatement {
   }
 
   @Override
-  public void andExecute() {
+  public boolean andExecute() {
+    boolean res = false;
     try {
       stm = connection.prepareStatement(this.syntax);
       SqlStatementExecute.setStmt(stm, params, value);
@@ -138,14 +137,11 @@ public class SqlStatementWrapper implements SqlStatement {
 
       stm.close();
       connection.close();
+      res = true;
+      return res;
     } catch (SQLException e) {
-      JOptionPane
-          .showMessageDialog(null,
-              "Error with database!\n" + e.getMessage()
-                  + "\nContact the administrator\nThe system will close!",
-              "Error",
-              JOptionPane.ERROR_MESSAGE);
-      System.exit(1);
+      e.printStackTrace();
+      return res;
     }
   }
 

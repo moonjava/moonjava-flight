@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.jdbc;
-
-import java.util.List;
+package br.com.moonjava.flight.model.financeiro;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public interface SqlStatement {
+public enum Bandeira {
 
-  SqlStatement prepare();
-
-  SqlStatement with(String syntax);
-
-  SqlStatement with(String syntax, Object object);
-
-  SqlStatement load(ResultSetJdbcLoader<?> loader);
-
-  <T> List<T> andList();
-
-  <T> T andGet();
-
-  boolean andExecute();
+  AMERICAN_EXPRESS,
+  AURA,
+  ELO,
+  HIPERCARD,
+  MASTERCARD,
+  SOROCRED,
+  VISA,
+  BNDES,
+  DINERS
 
 }

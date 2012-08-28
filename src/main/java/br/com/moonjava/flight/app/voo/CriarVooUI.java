@@ -164,7 +164,8 @@ class CriarVooUI implements ActionListener {
       alertaPartida.setBounds(450, 230, 500, 30);
 
       String[] ampm = {
-          "AM", "PM" };
+          "AM",
+          "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -195,8 +196,8 @@ class CriarVooUI implements ActionListener {
       }
 
       int _aeronave = ((Aeronave) aeronave.getSelectedItem()).getId();
-      DateTime _partida = FormatDateTime.parseToDate(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDate(dataChegada, country);
+      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
 
       if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
         request.set("origem", origem.getText());

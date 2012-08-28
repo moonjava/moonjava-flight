@@ -19,47 +19,50 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.PessoaFisica;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeDeletarPessoaFisica {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void deletar_pf_por_id() {
+    PessoaFisicaAction action = new PessoaFisicaAction();
+    UsuarioAction usuarioAction = new UsuarioAction();
+
     RequestParamWrapper request = new RequestParamWrapper();
 
-    int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
+    request.set("nome", "Nome");
+    int id = 2;
 
-    String nome = "nova nave A";
+    PessoaFisica pessoaFisica = action.consultarPorId(id);
 
-    request.set("id", id);
-    request.set("nome", nome);
+    int pfId = pessoaFisica.getId();
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    List<PessoaFisica> antes = action.consultar(request);
+    assertThat(antes.size(), equalTo(4));
 
-    action.atualizar(aeronave);
+    usuarioAction.deletarPorPessoaFisicaId(pfId);
+    action.deletar(id);
 
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
+    List<PessoaFisica> res = action.consultar(request);
+    assertThat(res.size(), equalTo(3));
   }
-
 }

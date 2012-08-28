@@ -19,47 +19,44 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.base.Aeronave;
+import br.com.moonjava.flight.base.Usuario;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
 @Test
-public class TesteDeAtualizarAeronave {
+public class TesteDeDeletarUsuario {
 
   @BeforeClass
-  public void limpaTabela() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_aeronave() {
-    AeronaveAction action = new AeronaveAction();
+  public void teste_deletar_usuario_por_id() {
+    UsuarioAction action = new UsuarioAction();
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 1;
-    Aeronave antes = action.consultarPorId(1);
-    assertThat(antes.getNome(), equalTo("nave A"));
+    request.set("login", "teste");
 
-    String nome = "nova nave A";
+    List<Usuario> antes = action.consultar(request);
+    assertThat(antes.size(), equalTo(2));
 
-    request.set("id", id);
-    request.set("nome", nome);
+    action.deletar(id);
 
-    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    List<Usuario> res = action.consultar(request);
+    assertThat(res.size(), equalTo(1));
 
-    action.atualizar(aeronave);
-
-    Aeronave res = action.consultarPorId(id);
-    assertThat(res.getNome(), equalTo(nome));
   }
-
 }

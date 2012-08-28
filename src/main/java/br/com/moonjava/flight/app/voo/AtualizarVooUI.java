@@ -151,7 +151,8 @@ class AtualizarVooUI implements ActionListener {
           alertaPartida.setBounds(520, 70, 500, 30);
 
           String[] ampm = {
-              "AM", "PM" };
+              "AM",
+              "PM" };
           timePartida = new JComboBox(ampm);
           timeChegada = new JComboBox(ampm);
 
@@ -199,8 +200,8 @@ class AtualizarVooUI implements ActionListener {
         dataChegada = chegada.getText();
       }
 
-      DateTime _partida = FormatDateTime.parseToDate(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDate(dataChegada, country);
+      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
 
       if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
         request.set("id", pojo.getId());

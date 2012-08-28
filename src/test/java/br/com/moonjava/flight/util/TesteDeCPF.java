@@ -21,9 +21,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.CPFInvalidException;
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br

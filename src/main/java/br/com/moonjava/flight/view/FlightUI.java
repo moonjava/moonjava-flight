@@ -88,7 +88,6 @@ public class FlightUI {
     relogio = new JMenu();
 
     String country = bundle.getLocale().getCountry();
-
     Timer timer = new Timer(1000, new Clock(country));
     timer.start();
 
@@ -101,10 +100,6 @@ public class FlightUI {
     menuBar.setBounds(new Rectangle(Integer.MAX_VALUE, 30));
     rodape.setBounds(50, 630, 500, 40);
 
-    voo.addMenuListener(new VooHandler(conteudo, bundle));
-    aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
-
     menuBar.add(flight);
     menuBar.add(voo);
     menuBar.add(passagem);
@@ -116,8 +111,12 @@ public class FlightUI {
     menuBar.add(relogio);
 
     body.add(menuBar);
-    body.add(conteudo);
     body.add(rodape);
+    body.add(conteudo);
+
+    voo.addMenuListener(new VooHandler(conteudo, bundle));
+    aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
   }
 
   private void mainMenu() {
@@ -146,16 +145,16 @@ public class FlightUI {
     imagem.setBounds(50, 50, 1100, 600);
     imagem.setBackground(Color.DARK_GRAY);
 
-    voo.addActionListener(new VooHandler(conteudo, bundle));
-    aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
-
     conteudo.add(voo);
     conteudo.add(passagem);
     conteudo.add(checkin);
     conteudo.add(aeronave);
     conteudo.add(usuario);
     conteudo.add(imagem);
+
+    voo.addActionListener(new VooHandler(conteudo, bundle));
+    aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
   }
 
   private void showAll() {

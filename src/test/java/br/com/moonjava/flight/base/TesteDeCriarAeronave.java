@@ -24,7 +24,7 @@ import java.util.List;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.AeronaveControlCreate;
+import br.com.moonjava.flight.controller.base.AeronaveCreate;
 import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
@@ -63,9 +63,8 @@ public class TesteDeCriarAeronave {
     request.set("qtdDeAssento", qtdAssentos);
     request.set("mapa", mapa);
 
-    Aeronave aeronave = new AeronaveControlCreate(request).createInstance();
-    boolean executed = dao.criar(aeronave);
-    assertThat(executed, equalTo(true));
+    Aeronave aeronave = new AeronaveCreate(request).createInstance();
+    dao.criar(aeronave);
 
     request = new RequestParamWrapper();
 

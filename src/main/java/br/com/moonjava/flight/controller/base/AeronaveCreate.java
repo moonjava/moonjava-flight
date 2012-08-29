@@ -24,11 +24,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class AeronaveControlCreate implements Aeronave.Builder {
+public class AeronaveCreate implements Aeronave.Builder {
 
   private final RequestParam request;
 
-  public AeronaveControlCreate(RequestParam request) {
+  public AeronaveCreate(RequestParam request) {
     this.request = request;
   }
 

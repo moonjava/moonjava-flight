@@ -16,11 +16,15 @@
 package br.com.moonjava.flight.view.aeronave;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import br.com.moonjava.flight.controller.base.CriarAeronaveController;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -31,6 +35,12 @@ public class AeronaveUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+
+  private JPanel subConteudo;
+  private JButton consultar;
+  private JButton cadastrar;
+  private JButton atualizar;
+  private JButton deletar;
 
   public AeronaveUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -44,12 +54,13 @@ public class AeronaveUI {
     conteudo.validate();
     conteudo.repaint();
 
+    subConteudo = new JPanel(null);
     JLabel titulo = new JLabel(bundle.getString("aeronave.titulo"));
-    JButton consultar = new JButton(bundle.getString("aeronave.consultar"));
-    JButton cadastrar = new JButton(bundle.getString("aeronave.cadastrar"));
-    JButton atualizar = new JButton(bundle.getString("aeronave.atualizar"));
-    JButton deletar = new JButton(bundle.getString("aeronave.deletar"));
-    JPanel subConteudo = new JPanel(null);
+
+    consultar = new JButton(bundle.getString("aeronave.consultar"));
+    cadastrar = new JButton(bundle.getString("aeronave.cadastrar"));
+    atualizar = new JButton(bundle.getString("aeronave.atualizar"));
+    deletar = new JButton(bundle.getString("aeronave.deletar"));
 
     titulo.setFont(new Font("Arial Bold", 0, 14));
 
@@ -64,8 +75,8 @@ public class AeronaveUI {
     deletar.setBounds(0, 280, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    consultar.addActionListener(new ConsultarAeronaveUI(subConteudo, bundle, atualizar, deletar));
-    cadastrar.addActionListener(new CriarAeronaveUI(subConteudo, bundle, atualizar, deletar));
+    consultar.addActionListener(new ConsultarAeronaveUI(subConteudo, bundle,
+        atualizar, deletar));
 
     conteudo.add(titulo);
     conteudo.add(consultar);
@@ -73,6 +84,13 @@ public class AeronaveUI {
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+
+    cadastrar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new CriarAeronaveController(subConteudo, bundle, atualizar, deletar);
+      }
+    });
   }
 
 }

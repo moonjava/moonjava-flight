@@ -59,7 +59,6 @@ public class IdiomaUI implements MouseListener {
     body.setBackground(Color.WHITE);
     conteudo.setBackground(Color.WHITE);
 
-    conteudo.setBounds(0, 30, 600, 300);
     idioma.getContentPane().add(body);
 
     ImageIcon imageBrasil = new ImageIcon("flags/brazil.gif");
@@ -70,10 +69,6 @@ public class IdiomaUI implements MouseListener {
     ingles = new JLabel(imageUSA);
     espanhol = new JLabel(imageEspanha);
 
-    portugues.setBounds(10, 0, 180, 135);
-    ingles.setBounds(190, 0, 180, 135);
-    espanhol.setBounds(370, 0, 180, 135);
-
     JLabel entrar = new JLabel("ENTRAR");
     JLabel enter = new JLabel("ENTER");
     JLabel _entrar = new JLabel("ENTRAR");
@@ -82,17 +77,23 @@ public class IdiomaUI implements MouseListener {
     enter.setFont(new Font("Arial Bold", 0, 14));
     _entrar.setFont(new Font("Arial Bold", 0, 14));
 
+    conteudo.setBounds(0, 30, 600, 300);
+    portugues.setBounds(10, 0, 180, 135);
+    ingles.setBounds(190, 0, 180, 135);
+    espanhol.setBounds(370, 0, 180, 135);
+
     entrar.setBounds(60, 100, 180, 135);
     enter.setBounds(240, 100, 180, 135);
     _entrar.setBounds(420, 100, 180, 135);
 
+    body.add(conteudo);
     conteudo.add(portugues);
     conteudo.add(ingles);
     conteudo.add(espanhol);
+
     conteudo.add(entrar);
     conteudo.add(enter);
     conteudo.add(_entrar);
-    body.add(conteudo);
 
     portugues.addMouseListener(this);
     ingles.addMouseListener(this);
@@ -109,8 +110,8 @@ public class IdiomaUI implements MouseListener {
     idioma.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));
     idioma.setSize(frameWidth, frameHeight);
     idioma.setResizable(false);
-    idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     idioma.setVisible(true);
+    idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   @Override

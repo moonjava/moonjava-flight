@@ -40,7 +40,7 @@ public interface Aeronave {
 
   interface Jdbc {
 
-    boolean criar(Aeronave aeronave);
+    void criar(Aeronave aeronave);
 
     List<Aeronave> consultar(RequestParam request);
 

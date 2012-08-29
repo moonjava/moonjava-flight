@@ -41,8 +41,8 @@ public class AeronaveDAO implements Aeronave.Jdbc {
   }
 
   @Override
-  public boolean criar(Aeronave aeronave) {
-    boolean executed = new SqlStatementWrapper()
+  public void criar(Aeronave aeronave) {
+    new SqlStatementWrapper()
         .prepare()
 
         .with("insert into FLIGHT.AERONAVE")
@@ -54,8 +54,6 @@ public class AeronaveDAO implements Aeronave.Jdbc {
         .with("?)", aeronave.isMapa())
 
         .andExecute();
-
-    return executed;
   }
 
   @Override

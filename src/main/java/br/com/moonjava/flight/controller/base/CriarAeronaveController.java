@@ -47,8 +47,8 @@ public class CriarAeronaveController extends CriarAeronaveUI {
                                  JButton deletar) {
     super(conteudo, bundle, atualizar, deletar);
 
-    addCadastrarListener(new CadastrarHandler());
     addLoaderFileListener(new LoaderFileHandler());
+    addCadastrarListener(new CadastrarHandler());
   }
 
   private class LoaderFileHandler implements ActionListener {

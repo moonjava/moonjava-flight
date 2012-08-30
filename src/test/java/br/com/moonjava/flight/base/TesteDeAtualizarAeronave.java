@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.AeronaveControlUpdate;
+import br.com.moonjava.flight.controller.base.AeronaveUpdate;
 import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
@@ -64,9 +64,8 @@ public class TesteDeAtualizarAeronave {
     request.set("id", id);
     request.set("nome", novoNome);
 
-    Aeronave aeronave = new AeronaveControlUpdate(request).createInstance();
-    boolean executed = dao.atualizar(aeronave);
-    assertThat(executed, equalTo(true));
+    Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+    dao.atualizar(aeronave);
 
     Aeronave res = dao.consultarPorId(id);
     assertThat(res.getNome(), equalTo(novoNome));

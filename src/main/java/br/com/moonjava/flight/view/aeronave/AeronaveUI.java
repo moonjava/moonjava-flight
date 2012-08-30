@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.controller.base.ConsultarAeronaveController;
 import br.com.moonjava.flight.controller.base.CriarAeronaveController;
 
 /**
@@ -75,15 +76,19 @@ public class AeronaveUI {
     deletar.setBounds(0, 280, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    consultar.addActionListener(new ConsultarAeronaveUI(subConteudo, bundle,
-        atualizar, deletar));
-
     conteudo.add(titulo);
     conteudo.add(consultar);
     conteudo.add(cadastrar);
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+
+    consultar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new ConsultarAeronaveController(subConteudo, bundle, atualizar, deletar);
+      }
+    });
 
     cadastrar.addActionListener(new ActionListener() {
       @Override

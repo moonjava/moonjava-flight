@@ -45,9 +45,9 @@ public class CriarAeronaveUI {
   private final JButton atualizar;
   private final JButton deletar;
 
-  private JLabel codigo;
   private JTextField nome;
   private JTextField assento;
+  private JLabel codigo;
   private JLabel imagem;
   private JButton mapa;
   private JButton cadastrar;
@@ -58,22 +58,35 @@ public class CriarAeronaveUI {
     this.atualizar = atualizar;
     this.deletar = deletar;
 
+    disableButtons();
+    refresh();
     mainMenu();
   }
 
   private void mainMenu() {
-    atualizar.setEnabled(false);
-    deletar.setEnabled(false);
-
-    refresh();
+    // Titulos
     JLabel tituloCodigo = new JLabel(bundle.getString("criar.aeronave.titulo.codigo"));
     JLabel tituloNome = new JLabel(bundle.getString("criar.aeronave.titulo.nome"));
     JLabel tituloAssento = new JLabel(bundle.getString("criar.aeronave.titulo.assento"));
     JLabel tituloMapa = new JLabel(bundle.getString("criar.aeronave.titulo.mapa"));
 
+    // Mensagens para possiveis erros
     JLabel alertaAssento = new JLabel(bundle.getString("alerta.numero"));
     JLabel alertaMapa = new JLabel(bundle.getString("criar.aeronave.alerta.mapa"));
 
+    String _codigo = new GerarCodigo("AERONAVE").getCodigo();
+    codigo = new JLabel(_codigo);
+    nome = new JTextField();
+    assento = new JTextField();
+
+    nome.setDocument(new JTextFieldLimit(40));
+    assento.setDocument(new JTextFieldLimit(3));
+
+    // Botoes inserir imagem e cadastrar
+    mapa = new JButton(bundle.getString("criar.aeronave.botao.mapa"));
+    cadastrar = new JButton(bundle.getString("criar.aeronave.botao.cadastrar"));
+
+    // Adicionar icone ao inserir mapa de assento
     InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
     Image image = null;
 
@@ -85,17 +98,6 @@ public class CriarAeronaveUI {
 
     ImageIcon icon = new ImageIcon(image);
     imagem = new JLabel(icon);
-
-    String _codigo = new GerarCodigo("AERONAVE").getCodigo();
-    codigo = new JLabel(_codigo);
-    nome = new JTextField();
-    assento = new JTextField();
-
-    nome.setDocument(new JTextFieldLimit(40));
-    assento.setDocument(new JTextFieldLimit(3));
-
-    mapa = new JButton(bundle.getString("criar.aeronave.botao.mapa"));
-    cadastrar = new JButton(bundle.getString("criar.aeronave.botao.cadastrar"));
 
     tituloCodigo.setBounds(60, 70, 200, 30);
     tituloNome.setBounds(60, 110, 200, 30);
@@ -177,7 +179,12 @@ public class CriarAeronaveUI {
         JOptionPane.ERROR_MESSAGE);
   }
 
-  private void refresh() {
+  public void disableButtons() {
+    atualizar.setEnabled(false);
+    deletar.setEnabled(false);
+  }
+
+  public void refresh() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();

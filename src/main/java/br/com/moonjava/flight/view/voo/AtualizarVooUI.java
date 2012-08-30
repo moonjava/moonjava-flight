@@ -33,7 +33,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.controller.base.VooControlUpdate;
+import br.com.moonjava.flight.controller.base.VooUpdate;
 import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.FormatDateTime;
@@ -209,7 +209,7 @@ class AtualizarVooUI implements ActionListener {
         request.set("chegada", _chegada);
         request.set("observacao", _observacao);
 
-        Voo voo = new VooControlUpdate(request).createInstance();
+        Voo voo = new VooUpdate(request).createInstance();
         dao.atualizar(voo);
 
         JOptionPane.showMessageDialog(null,

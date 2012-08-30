@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.controller.base.VooControlLoader;
+import br.com.moonjava.flight.controller.base.VooLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Aeronave;
@@ -44,7 +44,7 @@ public class VooDAO implements Voo.Jdbc {
         .with("join FLIGHT.AERONAVE as AERONAVE")
         .with("on AERONAVE.ID = VOO.AERONAVE_ID")
 
-        .load(new VooControlLoader());
+        .load(new VooLoader());
   }
 
   @Override

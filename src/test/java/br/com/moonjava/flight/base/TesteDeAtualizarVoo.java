@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.VooControlUpdate;
+import br.com.moonjava.flight.controller.base.VooUpdate;
 import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
@@ -65,7 +65,7 @@ public class TesteDeAtualizarVoo {
     request.set("chegada", chegada);
     request.set("observacao", observacao);
 
-    Voo voo = new VooControlUpdate(request).createInstance();
+    Voo voo = new VooUpdate(request).createInstance();
     boolean executed = dao.atualizar(voo);
     assertThat(executed, equalTo(true));
 
@@ -97,7 +97,7 @@ public class TesteDeAtualizarVoo {
     request.set("chegada", chegada);
     request.set("observacao", observacao);
 
-    Voo voo = new VooControlUpdate(request).createInstance();
+    Voo voo = new VooUpdate(request).createInstance();
     boolean executed = dao.atualizar(voo);
     assertThat(executed, equalTo(false));
   }

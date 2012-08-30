@@ -46,7 +46,7 @@ public interface Aeronave {
 
     Aeronave consultarPorId(int id);
 
-    boolean atualizar(Aeronave aeronave);
+    void atualizar(Aeronave aeronave);
 
     void deletar(int id);
   }

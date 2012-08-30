@@ -28,11 +28,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class VooControlUpdate implements Voo.Builder {
+public class VooUpdate implements Voo.Builder {
 
   private final RequestParam request;
 
-  public VooControlUpdate(RequestParam request) {
+  public VooUpdate(RequestParam request) {
     this.request = request;
   }
 

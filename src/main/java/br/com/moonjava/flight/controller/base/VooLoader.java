@@ -32,11 +32,11 @@ import br.com.moonjava.flight.model.base.VooModel;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class VooControlLoader implements ResultSetJdbcLoader<Voo> {
+public class VooLoader implements ResultSetJdbcLoader<Voo> {
 
   private final String alias;
 
-  public VooControlLoader() {
+  public VooLoader() {
     this.alias = "VOO";
   }
 
@@ -69,7 +69,7 @@ public class VooControlLoader implements ResultSetJdbcLoader<Voo> {
     @Override
     public Aeronave getAeronave() {
       ResultSet resultSet = rs.getResultSet();
-      return new AeronaveControlLoader().get(resultSet);
+      return new AeronaveLoader().get(resultSet);
     }
 
     @Override

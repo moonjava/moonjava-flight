@@ -15,10 +15,8 @@
  */
 package br.com.moonjava.flight.view.voo;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -27,16 +25,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import org.joda.time.DateTime;
-
-import br.com.moonjava.flight.controller.base.VooUpdate;
-import br.com.moonjava.flight.dao.base.VooDAO;
-import br.com.moonjava.flight.model.base.Voo;
-import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -45,188 +36,161 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class AtualizarVooUI implements ActionListener {
+public class AtualizarVooUI {
 
-  // Singleton
-  private static final AtualizarVooUI ui = new AtualizarVooUI();
-
-  private JButton atualizar;
-  private JButton deletar;
-  private JTable tabela;
-  private List<Voo> list;
   private JPanel conteudo;
   private ResourceBundle bundle;
+  private JButton atualizar;
+  private JButton deletar;
+  private JButton status;
 
-  private Voo pojo;
-  private boolean result;
-
-  private JFormattedTextField chegada;
-  private JFormattedTextField partida;
+  private JLabel tituloPartida;
+  private JLabel tituloChegada;
+  private JLabel tituloObservacao;
+  private JLabel alertaPartida;
   private JTextField observacao;
   private JComboBox timePartida;
   private JComboBox timeChegada;
+  private JFormattedTextField partida;
+  private JFormattedTextField chegada;
+  private JButton enviar;
 
-  private AtualizarVooUI() {
-  }
-
-  public static AtualizarVooUI getInstance() {
-    return ui;
-  }
-
-  public void setResult(boolean result) {
-    this.result = result;
-  }
-
-  public void setAttributes(JButton atualizar,
+  public void setAttributes(JPanel conteudo,
+                            ResourceBundle bundle,
+                            JButton atualizar,
                             JButton deletar,
-                            JTable tabela,
-                            List<Voo> list,
-                            JPanel conteudo,
-                            ResourceBundle bundle) {
-    this.atualizar = atualizar;
-    this.deletar = deletar;
-    this.tabela = tabela;
-    this.list = list;
+                            JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+    this.atualizar = atualizar;
+    this.deletar = deletar;
+    this.status = status;
+
+    mainMenu();
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
+  public void mainMenu() {
+    tituloPartida = new JLabel(bundle.getString("criar.voo.titulo.partida"));
+    tituloChegada = new JLabel(bundle.getString("criar.voo.titulo.chegada"));
+    tituloObservacao = new JLabel(bundle.getString("criar.voo.titulo.observacao"));
+    alertaPartida = new JLabel(bundle.getString("alerta.data"));
+
+    observacao = new JTextField();
+    observacao.setDocument(new JTextFieldLimit(100));
+
+    enviar = new JButton(bundle.getString("atualizar.voo.botao.atualizar"));
+
+    try {
+      MaskFormatter mask = new MaskFormatter("##/##/#### ##:##");
+      partida = new JFormattedTextField(mask);
+      chegada = new JFormattedTextField(mask);
+    } catch (ParseException e1) {
+      JOptionPane.showMessageDialog(null, e1.getMessage());
+    }
+
+    tituloPartida.setBounds(100, 70, 200, 30);
+    tituloChegada.setBounds(100, 110, 200, 30);
+    tituloObservacao.setBounds(100, 150, 200, 30);
+    alertaPartida.setBounds(460, 70, 500, 30);
+
+    partida.setBounds(250, 70, 200, 30);
+    chegada.setBounds(250, 110, 200, 30);
+    observacao.setBounds(250, 150, 400, 30);
+    enviar.setBounds(250, 190, 150, 30);
+  }
+
+  public String getCountry() {
+    return bundle.getLocale().getCountry();
+  }
+
+  public void addAtualizarListener(ActionListener a) {
+    atualizar.addActionListener(a);
+  }
+
+  public void addEnviarListener(ActionListener a) {
+    enviar.addActionListener(a);
+  }
+
+  public RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    String _observacao = observacao.getText();
+    if (_observacao.isEmpty()) {
+      _observacao = "Motivo não fornecido";
+    }
+    request.set("observacao", _observacao);
+    request.set("partida", partida.getText());
+    request.set("chegada", chegada.getText());
+
+    if (getCountry().equals("US")) {
+      request.set("timePartida", timePartida.getSelectedItem());
+      request.set("timeChegada", timeChegada.getSelectedItem());
+    }
+    return request;
+  }
+
+  public void messageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("atualizar.voo.joption.err"),
+        bundle.getString("atualizar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void messageOK() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("atualizar.voo.joption.ok"),
+        bundle.getString("atualizar.voo.joption.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  public void messageTimeException() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("criar.voo.joption.tempo"),
+        bundle.getString("atualizar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void showAll() {
+    conteudo.add(tituloPartida);
+    conteudo.add(tituloChegada);
+    conteudo.add(tituloObservacao);
+    conteudo.add(alertaPartida);
+
+    conteudo.add(partida);
+    conteudo.add(chegada);
+    conteudo.add(observacao);
+
+    conteudo.add(enviar);
+
+    if (getCountry().equals("US")) {
+      alertaPartida.setBounds(520, 70, 500, 30);
+
+      String[] ampm = {
+          "AM",
+          "PM" };
+      timePartida = new JComboBox(ampm);
+      timeChegada = new JComboBox(ampm);
+
+      timePartida.setBounds(455, 75, 60, 20);
+      timeChegada.setBounds(455, 115, 60, 20);
+
+      conteudo.add(timePartida);
+      conteudo.add(timeChegada);
+    }
+
+    conteudo.repaint();
+    conteudo.validate();
+  }
+
+  public void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
-    if (!result) {
-      result = true;
-      int[] rows = tabela.getSelectedRows();
-
-      if (rows.length == 1) {
-        pojo = list.get(rows[0]);
-
-        conteudo.removeAll();
-        conteudo.repaint();
-        conteudo.validate();
-
-        JLabel tituloPartida = new JLabel(bundle.getString("criar.voo.titulo.partida"));
-        JLabel tituloChegada = new JLabel(bundle.getString("criar.voo.titulo.chegada"));
-        JLabel tituloObservacao = new JLabel(bundle.getString("criar.voo.titulo.observacao"));
-        JLabel alertaPartida = new JLabel(bundle.getString("alerta.data"));
-
-        observacao = new JTextField();
-        observacao.setDocument(new JTextFieldLimit(100));
-
-        try {
-          MaskFormatter mask = new MaskFormatter("##/##/#### ##:##");
-          chegada = new JFormattedTextField(mask);
-          partida = new JFormattedTextField(mask);
-        } catch (ParseException e1) {
-          JOptionPane.showMessageDialog(null, e1.getMessage());
-        }
-
-        JButton atualizar = new JButton(bundle.getString("atualizar.voo.botao.atualizar"));
-
-        tituloPartida.setBounds(100, 70, 200, 30);
-        tituloChegada.setBounds(100, 110, 200, 30);
-        tituloObservacao.setBounds(100, 150, 200, 30);
-        alertaPartida.setBounds(460, 70, 500, 30);
-
-        partida.setBounds(250, 70, 200, 30);
-        chegada.setBounds(250, 110, 200, 30);
-        observacao.setBounds(250, 150, 400, 30);
-
-        atualizar.setBounds(250, 190, 150, 30);
-        atualizar.addActionListener(new Atualizar());
-
-        conteudo.add(tituloPartida);
-        conteudo.add(tituloChegada);
-        conteudo.add(tituloObservacao);
-        conteudo.add(alertaPartida);
-
-        conteudo.add(partida);
-        conteudo.add(chegada);
-        conteudo.add(observacao);
-
-        conteudo.add(atualizar);
-
-        if (bundle.getLocale().getCountry().equals("US")) {
-          alertaPartida.setBounds(520, 70, 500, 30);
-
-          String[] ampm = {
-              "AM",
-              "PM" };
-          timePartida = new JComboBox(ampm);
-          timeChegada = new JComboBox(ampm);
-
-          timePartida.setBounds(455, 75, 60, 20);
-          timeChegada.setBounds(455, 115, 60, 20);
-
-          conteudo.add(timePartida);
-          conteudo.add(timeChegada);
-        }
-
-        conteudo.repaint();
-        conteudo.validate();
-
-      } else {
-        JOptionPane
-            .showMessageDialog(null,
-                bundle.getString("atualizar.voo.joption.err"),
-                bundle.getString("atualizar.voo.joption.titulo"),
-                JOptionPane.ERROR_MESSAGE);
-        conteudo.removeAll();
-        conteudo.repaint();
-        conteudo.validate();
-      }
-    }
-
+    status.setEnabled(false);
   }
 
-  private class Atualizar implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      RequestParamWrapper request = new RequestParamWrapper();
-      VooDAO dao = new VooDAO();
-      String _observacao = observacao.getText().isEmpty() ?
-          "Motivo não fornecido" : observacao.getText();
-      String country = bundle.getLocale().getCountry();
-      String dataPartida = null;
-      String dataChegada = null;
-
-      if (country.equals("US")) {
-        dataPartida = String.format("%s %s", partida.getText(), timePartida.getSelectedItem());
-        dataChegada = String.format("%s %s", chegada.getText(), timeChegada.getSelectedItem());
-      } else {
-        dataPartida = partida.getText();
-        dataChegada = chegada.getText();
-      }
-
-      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
-
-      if (_partida.isBefore(_chegada) && _partida.isAfter(System.currentTimeMillis())) {
-        request.set("id", pojo.getId());
-        request.set("partida", _partida);
-        request.set("chegada", _chegada);
-        request.set("observacao", _observacao);
-
-        Voo voo = new VooUpdate(request).createInstance();
-        dao.atualizar(voo);
-
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("atualizar.voo.joption.ok"),
-            bundle.getString("atualizar.voo.joption.titulo"),
-            JOptionPane.INFORMATION_MESSAGE);
-      } else {
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("criar.voo.joption.tempo"),
-            bundle.getString("atualizar.voo.joption.titulo"),
-            JOptionPane.ERROR_MESSAGE);
-      }
-      conteudo.removeAll();
-      conteudo.validate();
-      conteudo.repaint();
-    }
-
+  public void refresh() {
+    conteudo.removeAll();
+    conteudo.repaint();
+    conteudo.validate();
   }
 
 }

@@ -23,7 +23,7 @@ import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.model.base.AeronaveModel;
 
 /**
- * @version 1.0 Jul 10, 2012
+ * @version 1.0 Jul 25, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */

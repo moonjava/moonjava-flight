@@ -38,7 +38,7 @@ import br.com.moonjava.flight.view.aeronave.ConsultarAeronaveUI;
  */
 public class ConsultarAeronaveController extends ConsultarAeronaveUI {
 
-  private final JPanel subConteudo;
+  private final JPanel conteudo;
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
@@ -50,7 +50,7 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
                                      JButton deletar) {
     super(subConteudo, bundle, atualizar, deletar);
 
-    this.subConteudo = subConteudo;
+    this.conteudo = subConteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
@@ -102,12 +102,12 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
       JTable tabela = getTable();
 
       DeletarAeronaveController delete = DeletarAeronaveController.getInstance();
-      delete.setAttributes(tabela, subConteudo, bundle, atualizar, deletar);
+      delete.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
       delete.setResult(false);
       delete.setList(list);
 
       AtualizarAeronaveController atualiza = AtualizarAeronaveController.getInstance();
-      atualiza.setAttributes(tabela, subConteudo, bundle, atualizar, deletar);
+      atualiza.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
       atualiza.setResult(false);
       atualiza.setList(list);
     }

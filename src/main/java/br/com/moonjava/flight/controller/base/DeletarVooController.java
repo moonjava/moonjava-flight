@@ -24,38 +24,39 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.dao.base.VooDAO;
-import br.com.moonjava.flight.model.base.Aeronave;
-import br.com.moonjava.flight.view.aeronave.DeletarAeronaveUI;
+import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.view.voo.DeletarVooUI;
 
 /**
- * @version 1.0 Aug 16, 2012
+ * @version 1.0 Aug 30, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class DeletarAeronaveController extends DeletarAeronaveUI {
+public class DeletarVooController extends DeletarVooUI {
 
   // Singleton
-  private static final DeletarAeronaveController ui = new DeletarAeronaveController();
+  private static final DeletarVooController ui = new DeletarVooController();
   private boolean result;
-  private List<Aeronave> list;
+  private List<Voo> list;
   private JTable tabela;
 
-  private DeletarAeronaveController() {
+  private DeletarVooController() {
   }
 
-  public static DeletarAeronaveController getInstance() {
+  public static DeletarVooController getInstance() {
     return ui;
   }
 
+  @Override
   public void setAttributes(JTable tabela,
-                            JPanel subConteudo,
+                            JPanel conteudo,
                             ResourceBundle bundle,
                             JButton atualizar,
-                            JButton deletar) {
+                            JButton deletar,
+                            JButton status) {
     this.tabela = tabela;
-    super.setAttributes(subConteudo, bundle, atualizar, deletar);
+    super.setAttributes(tabela, conteudo, bundle, atualizar, deletar, status);
     addDeletarListener(new DeletarHandler());
   }
 
@@ -63,7 +64,7 @@ public class DeletarAeronaveController extends DeletarAeronaveUI {
     this.result = result;
   }
 
-  public void setList(List<Aeronave> list) {
+  public void setList(List<Voo> list) {
     this.list = list;
   }
 
@@ -74,22 +75,16 @@ public class DeletarAeronaveController extends DeletarAeronaveUI {
 
       if (!result) {
         result = true;
-        int res = messageDeleteAll();
+        int[] rows = tabela.getSelectedRows();
+        VooDAO vooDAO = new VooDAO();
 
-        if (res == 0) {
-          int[] rows = tabela.getSelectedRows();
-          VooDAO vooDAO = new VooDAO();
-          AeronaveDAO aeronaveDAO = new AeronaveDAO();
-
-          for (int i = 0; i < rows.length; i++) {
-            Aeronave pojo = list.get(rows[i]);
-            vooDAO.deletarPorAeronaveId(pojo.getId());
-            aeronaveDAO.deletar(pojo.getId());
-          }
-
-          messageDeleteOK();
-          refresh();
+        for (int i = 0; i < rows.length; i++) {
+          Voo pojo = list.get(rows[i]);
+          vooDAO.deletar(pojo.getId());
         }
+
+        messageDeleteOK();
+        refresh();
       }
     }
   }

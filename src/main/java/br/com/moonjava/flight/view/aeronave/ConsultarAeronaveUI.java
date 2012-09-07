@@ -55,6 +55,7 @@ public class ConsultarAeronaveUI {
   private JButton mapa;
   private JTextField nome;
   private JTable tabela;
+  private JTextField codigo;
 
   public ConsultarAeronaveUI(JPanel conteudo,
                              ResourceBundle bundle,
@@ -71,11 +72,13 @@ public class ConsultarAeronaveUI {
   }
 
   private void mainMenu() {
-    JLabel titulo = new JLabel(bundle.getString("consultar.aeronave.titulo"));
+    JLabel tituloNome = new JLabel(bundle.getString("consultar.aeronave.titulo.nome"));
+    JLabel tituloCodigo = new JLabel(bundle.getString("consultar.aeronave.titulo.codigo"));
 
     filtrar = new JButton(bundle.getString("consultar.aeronave.campo"));
     mapa = new JButton(bundle.getString("consultar.aeronave.botao.mapa"));
     nome = new JTextField();
+    codigo = new JTextField();
 
     Image image = null;
     InputStream stream = getClass().getResourceAsStream("/img/search.png");
@@ -100,14 +103,18 @@ public class ConsultarAeronaveUI {
     scroll.setSize(750, 450);
 
     imagem.setBounds(100, 70, 30, 30);
-    titulo.setBounds(130, 45, 200, 30);
-    filtrar.setBounds(330, 70, 80, 30);
+    tituloNome.setBounds(132, 45, 200, 30);
+    tituloCodigo.setBounds(332, 45, 200, 30);
+    filtrar.setBounds(530, 70, 80, 30);
     mapa.setBounds(730, 70, 150, 30);
     nome.setBounds(130, 70, 200, 30);
+    codigo.setBounds(330, 70, 200, 30);
 
     conteudo.add(imagem);
-    conteudo.add(titulo);
+    conteudo.add(tituloNome);
+    conteudo.add(tituloCodigo);
     conteudo.add(nome);
+    conteudo.add(codigo);
     conteudo.add(filtrar);
     conteudo.add(scroll);
 
@@ -132,6 +139,7 @@ public class ConsultarAeronaveUI {
   public RequestParamWrapper getParameters() {
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("nome", nome.getText());
+    request.set("codigo", codigo.getText());
     return request;
   }
 

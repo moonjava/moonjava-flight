@@ -137,11 +137,11 @@ public class ConsultarVooUI {
 
     imagem.setBounds(100, 70, 30, 30);
 
-    tituloOrigem.setBounds(130, 45, 100, 30);
-    tituloDestino.setBounds(240, 45, 100, 30);
-    tituloPartida.setBounds(350, 45, 130, 30);
-    tituloChegada.setBounds(490, 45, 130, 30);
-    tituloStatus.setBounds(630, 45, 150, 30);
+    tituloOrigem.setBounds(132, 45, 100, 30);
+    tituloDestino.setBounds(242, 45, 100, 30);
+    tituloPartida.setBounds(352, 45, 130, 30);
+    tituloChegada.setBounds(492, 45, 130, 30);
+    tituloStatus.setBounds(632, 45, 150, 30);
 
     origem.setBounds(130, 70, 100, 30);
     destino.setBounds(240, 70, 100, 30);
@@ -169,8 +169,8 @@ public class ConsultarVooUI {
     if (getCountry().equals("US")) {
 
       String[] ampm = {
-          "AM",
-          "PM" };
+        "AM",
+        "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 

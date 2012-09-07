@@ -69,14 +69,30 @@ public class UsuarioDAO implements Usuario.Jdbc {
   @Override
   public List<Usuario> consultar(RequestParam request) {
     String login = request.stringParam("login");
+    String codigo = request.stringParam("codigo");
 
     return query()
 
         .with("where 1 = 1")
         .with("and USUARIO.LOGIN like concat ('%',?,'%')", login)
+        .with("and USUARIO.CODIGO like concat ('%',?,'%')", codigo)
         .with("order by USUARIO.CODIGO asc")
 
         .andList();
+  }
+
+  @Override
+  public Usuario consultarUsuario(RequestParam request) {
+    String login = request.stringParam("login");
+    String senha = request.stringParam("senha");
+
+    return query()
+
+        .with("where 1 = 1")
+        .with("and USUARIO.LOGIN = ?", login)
+        .with("and USUARIO.SENHA = ?", senha)
+
+        .andGet();
   }
 
   @Override
@@ -84,15 +100,6 @@ public class UsuarioDAO implements Usuario.Jdbc {
     return query()
 
         .with("where USUARIO.ID = ?", id)
-
-        .andGet();
-  }
-
-  @Override
-  public Usuario consultarPorCodigo(String codigo) {
-    return query()
-
-        .with("where USUARIO.CODIGO = ?", codigo)
 
         .andGet();
   }

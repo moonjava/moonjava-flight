@@ -71,8 +71,8 @@ public class ConsultarUsuarioUI {
   }
 
   private void mainMenu() {
-    JLabel titulo = new JLabel(bundle.getString("consultar.usuario.titulo.login"));
-    JLabel titulo2 = new JLabel(bundle.getString("consultar.usuario.titulo.codigo"));
+    JLabel tituloNome = new JLabel(bundle.getString("consultar.usuario.titulo.login"));
+    JLabel tituloCodigo = new JLabel(bundle.getString("consultar.usuario.titulo.codigo"));
 
     filtrar = new JButton(bundle.getString("consultar.usuario.filtrar"));
     detalhes = new JButton(bundle.getString("consultar.usuario.detalhes"));
@@ -104,16 +104,16 @@ public class ConsultarUsuarioUI {
     scroll.setSize(750, 420);
 
     imagem.setBounds(100, 70, 30, 30);
-    titulo.setBounds(132, 45, 200, 30);
-    titulo2.setBounds(332, 45, 200, 30);
-    filtrar.setBounds(730, 70, 80, 30);
+    tituloNome.setBounds(132, 45, 200, 30);
+    tituloCodigo.setBounds(332, 45, 200, 30);
+    filtrar.setBounds(800, 70, 80, 30);
     detalhes.setBounds(760, 520, 120, 30);
     login.setBounds(130, 70, 200, 30);
     codigo.setBounds(330, 70, 200, 30);
 
     conteudo.add(imagem);
-    conteudo.add(titulo);
-    conteudo.add(titulo2);
+    conteudo.add(tituloNome);
+    conteudo.add(tituloCodigo);
     conteudo.add(login);
     conteudo.add(codigo);
     conteudo.add(filtrar);
@@ -126,6 +126,9 @@ public class ConsultarUsuarioUI {
 
   public void addConsultarListener(ActionListener a) {
     filtrar.addActionListener(a);
+  }
+
+  public void addDetalhesListener(ActionListener a) {
     detalhes.addActionListener(a);
   }
 

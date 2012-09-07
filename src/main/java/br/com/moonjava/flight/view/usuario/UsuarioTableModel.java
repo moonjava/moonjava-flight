@@ -27,6 +27,7 @@ import br.com.moonjava.flight.model.base.Usuario;
  * @contact miqueias@moonjava.com.br
  * 
  */
+@SuppressWarnings("serial")
 public class UsuarioTableModel extends AbstractTableModel {
 
   private final List<Usuario> list;

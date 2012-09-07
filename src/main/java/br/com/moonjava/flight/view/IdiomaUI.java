@@ -30,6 +30,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.controller.base.LogarFlightController;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -125,8 +127,9 @@ public class IdiomaUI implements MouseListener {
     if (e.getSource() == espanhol) {
       bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
     }
-    idioma.setVisible(false);
-    new FlightUI(bundle);
+    idioma.dispose();
+    LogarFlightController logar = new LogarFlightController();
+    logar.setsetAttributes(bundle);
   }
 
   @Override

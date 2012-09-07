@@ -45,9 +45,9 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
   private List<Usuario> list;
 
   public ConsultarUsuarioController(JPanel subConteudo,
-                                    ResourceBundle bundle,
-                                    JButton atualizar,
-                                    JButton deletar) {
+                                    final ResourceBundle bundle,
+                                    final JButton atualizar,
+                                    final JButton deletar) {
     super(subConteudo, bundle, atualizar, deletar);
 
     this.conteudo = subConteudo;
@@ -57,6 +57,20 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
 
     addConsultarListener(new ConsultarHandler());
     addItemTableSelectedListener(new ItemTableSelectedHandler());
+    addDetalhesListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        enableButtons();
+        JTable tabela = getTable();
+
+        DetalhesUsuarioController detalhes = DetalhesUsuarioController.getInstance();
+        detalhes.setList(list);
+        detalhes.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
+        detalhes.setResult(false);
+
+      }
+    });
   }
 
   private class ConsultarHandler implements ActionListener {
@@ -80,23 +94,15 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
       enableButtons();
       JTable tabela = getTable();
 
-      // DeletarUsuarioController delete =
-      // DeletarUsuarioController.getInstance();
-      // delete.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
-      // delete.setResult(false);
-      // delete.setList(list);
-      //
-      // AtualizarUsuarioController atualiza =
-      // AtualizarUsuarioController.getInstance();
-      // atualiza.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
-      // atualiza.setResult(false);
-      // atualiza.setList(list);
-      //
-      // DetalhesUsuarioController detalhes =
-      // DetalhesUsuarioController.getInstance();
-      // detalhes.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
-      // detalhes.setResult(false);
-      // detalhes.setList(list);
+      DeletarUsuarioController delete = DeletarUsuarioController.getInstance();
+      delete.setList(list);
+      delete.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
+      delete.setResult(false);
+
+      AtualizarUsuarioController atualiza = AtualizarUsuarioController.getInstance();
+      atualiza.setList(list);
+      atualiza.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
+      atualiza.setResult(false);
 
     }
     @Override

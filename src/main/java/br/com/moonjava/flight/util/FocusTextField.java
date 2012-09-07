@@ -34,9 +34,6 @@ public class FocusTextField implements FocusListener {
   private JTextField[] fields;
   private String[] strings;
 
-  public FocusTextField() {
-  }
-
   public void setField(JTextField... fields) {
     this.fields = fields;
   }

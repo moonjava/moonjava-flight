@@ -17,21 +17,32 @@ package br.com.moonjava.flight.view.passagem;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import br.com.moonjava.flight.controller.base.ChequeController;
 import br.com.moonjava.flight.model.base.FormaDeTratamento;
 import br.com.moonjava.flight.model.base.Tipo;
+import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.ErrorSystem;
 
 /**
  * @version 1.0 Aug 31, 2012
@@ -117,7 +128,7 @@ public class VenderPassagemUI {
       nascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
       cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
     } catch (ParseException e1) {
-      e1.printStackTrace();
+      ErrorSystem.addException(e1, bundle);
     }
     quantidade = new JFormattedTextField(mask);
     codigo = new JLabel("Teste");
@@ -131,7 +142,8 @@ public class VenderPassagemUI {
 
     quantidadeOK = new JButton("Ok");
     solicitarCompra = new JButton(bundle.getString("vender.passagem.botao.solicitarCompra"));
-    cadastrar = new JButton(bundle.getString("vender.passagem.botao.cadastrar"));
+    cadastrar = new JButton(bundle.getString("vender.passagem.botao.concluir"));
+    cadastrar.setEnabled(false);
 
     Tipo[] tipos = Tipo.values();
     String valTipos[] = new String[tipos.length];
@@ -153,6 +165,7 @@ public class VenderPassagemUI {
     tipo = new JComboBox(valTipos);
     tratamento = new JComboBox(valTratamentos);
     pagamento = new JComboBox(valPagamentos);
+    pagamento.setSelectedItem(null);
 
     imagem = new JLabel();
     alerta = new JLabel();
@@ -222,13 +235,100 @@ public class VenderPassagemUI {
     conteudo.repaint();
     conteudo.validate();
 
+    cpf.addFocusListener(new FocusListener() {
+      @Override
+      public void focusLost(FocusEvent arg0) {
+        try {
+          String _cpf = cpf.getText();
+          CPF.parse(_cpf);
+          addImageCpfValido();
+        } catch (Exception e) {
+          addImageCpfInvalido();
+        }
+      }
+      @Override
+      public void focusGained(FocusEvent arg0) {
+      }
+    });
+
     solicitarCompra.addActionListener(new Teste());
     quantidadeOK.addActionListener(new Teste2());
+
+    pagamento.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int index = pagamento.getSelectedIndex();
+        if (index == 1) {
+          ChequeController chequeController = new ChequeController(bundle);
+          if (chequeController.isParemeterValid()) {
+            cadastrar.setEnabled(true);
+          }
+        } else {
+          CartaoUI cartaoUI = new CartaoUI(bundle);
+          if (cartaoUI.isValid()) {
+            cadastrar.setEnabled(true);
+          }
+        }
+      }
+    });
+  }
+  public void addSolicitarCompraListener(ActionListener a) {
+    solicitarCompra.addActionListener(a);
+  }
+
+  public void addQuantidadeOKListener(ActionListener a) {
+    quantidade.addActionListener(a);
+  }
+
+  public void addPagamentoListener(ActionListener a) {
+    pagamento.addActionListener(a);
+  }
+
+  public void addImageCpfValido() {
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
+      Image image = ImageIO.read(stream);
+      ImageIcon icon = new ImageIcon(image);
+      imagem.setIcon(icon);
+      alerta.setText("");
+
+      conteudo.add(imagem);
+      conteudo.add(alerta);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e) {
+      ErrorSystem.addException(e, bundle);
+    }
+  }
+
+  public void addImageCpfInvalido() {
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_indisponivel.png");
+      Image image = ImageIO.read(stream);
+      ImageIcon icon = new ImageIcon(image);
+      imagem.setIcon(icon);
+
+      alerta.setFont(new Font("Arial", Font.BOLD, 13));
+      alerta.setForeground(Color.RED);
+      alerta.setText(bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
+
+      conteudo.add(imagem);
+      conteudo.add(alerta);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e) {
+      ErrorSystem.addException(e, bundle);
+    }
   }
 
   private class Teste2 implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
+      JOptionPane.showMessageDialog(null,
+          bundle.getString("vender.passagem.valor"),
+          bundle.getString("vender.passagem.titulo"),
+          JOptionPane.INFORMATION_MESSAGE);
+
       conteudo.add(solicitarCompra);
       conteudo.repaint();
       conteudo.validate();

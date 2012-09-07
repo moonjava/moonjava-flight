@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.controller.base;
+package br.com.moonjava.flight.util;
 
 import java.util.ResourceBundle;
 
-import javax.swing.JPanel;
-
-import br.com.moonjava.flight.view.passagem.CancelarPassagemUI;
+import javax.swing.JOptionPane;
 
 /**
- * @version 1.0 Aug 31, 2012
+ * @version 1.0 Sep 7, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CancelarPassagemController extends CancelarPassagemUI {
+public class ErrorSystem {
 
-  public CancelarPassagemController(JPanel conteudo, ResourceBundle bundle) {
-    super(conteudo, bundle);
+  public static void addException(Exception e, ResourceBundle bundle) {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("erro.sistema.administrador") + "\n\n[ERROR] " + e.getMessage(),
+        bundle.getString("erro.sistema.titulo"),
+        JOptionPane.ERROR_MESSAGE);
   }
 
 }

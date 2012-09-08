@@ -50,6 +50,7 @@ public class TesteDeCriarUsuario {
   public void criar_usuario_com_sucesso() {
     UsuarioDAO dao = new UsuarioDAO();
     RequestParamWrapper request = new RequestParamWrapper();
+    RequestParamWrapper request2 = new RequestParamWrapper();
 
     int pessoaFisica = 3;
     String codigo = new GerarCodigo("USUARIO").getCodigo();
@@ -70,7 +71,12 @@ public class TesteDeCriarUsuario {
     Usuario usuario = new UsuarioControlCreate(request).createInstance();
     dao.criar(usuario);
 
-    Usuario res = dao.consultarPorCodigo(codigo);
+    request2.set("login", "teste");
+    List<Usuario> lres = dao.consultar(request2);
+    assertThat(lres.size(), equalTo(3));
+
+    Usuario res = lres.get(2);
+
     assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getPerfil(), equalTo(Perfil.ATENDENTE));
     assertThat(res.getLogin(), equalTo(login));

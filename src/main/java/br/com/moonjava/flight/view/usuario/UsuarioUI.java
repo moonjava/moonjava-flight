@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.controller.base.ConsultarUsuarioController;
 import br.com.moonjava.flight.controller.base.CriarUsuarioController;
 
 /**
@@ -81,6 +82,13 @@ public class UsuarioUI {
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+
+    consultar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new ConsultarUsuarioController(subConteudo, bundle, atualizar, deletar);
+      }
+    });
 
     cadastrar.addActionListener(new ActionListener() {
       @Override

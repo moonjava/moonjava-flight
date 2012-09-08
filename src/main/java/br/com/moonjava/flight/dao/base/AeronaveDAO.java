@@ -59,11 +59,13 @@ public class AeronaveDAO implements Aeronave.Jdbc {
   @Override
   public List<Aeronave> consultar(RequestParam request) {
     String nome = request.stringParam("nome");
+    String codigo = request.stringParam("codigo");
 
     return query()
 
         .with("where 1 = 1")
         .with("and AERONAVE.NOME like concat ('%',?,'%')", nome)
+        .with("and AERONAVE.CODIGO like concat ('%',?,'%')", codigo)
         .with("order by AERONAVE.CODIGO asc")
 
         .andList();

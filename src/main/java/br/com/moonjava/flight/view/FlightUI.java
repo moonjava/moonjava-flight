@@ -39,6 +39,7 @@ import javax.swing.Timer;
 
 import org.joda.time.DateTime;
 
+import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.view.aeronave.AeronaveHandler;
 import br.com.moonjava.flight.view.checkin.CheckinHandler;
@@ -60,8 +61,11 @@ public class FlightUI {
   private JPanel conteudo;
   private JMenu relogio;
 
-  public FlightUI(ResourceBundle bundle) {
+  private Usuario usuarioLogado;
+
+  public FlightUI(Usuario usuarioLogado, ResourceBundle bundle) {
     this.bundle = bundle;
+    this.usuarioLogado = usuarioLogado;
     window();
     panel();
     mainMenu();

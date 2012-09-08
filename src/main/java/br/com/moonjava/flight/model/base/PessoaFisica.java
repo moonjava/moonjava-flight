@@ -52,7 +52,8 @@ public interface PessoaFisica {
   }
 
   interface Jdbc {
-    void criar(PessoaFisica pessoaFisica);
+
+    boolean criar(PessoaFisica pessoaFisica);
 
     List<PessoaFisica> consultar(RequestParam request);
 

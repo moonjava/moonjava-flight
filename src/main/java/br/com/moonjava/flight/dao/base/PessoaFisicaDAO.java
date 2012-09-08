@@ -42,8 +42,8 @@ public class PessoaFisicaDAO implements PessoaFisica.Jdbc {
   }
 
   @Override
-  public void criar(PessoaFisica pessoaFisica) {
-    new SqlStatementWrapper()
+  public boolean criar(PessoaFisica pessoaFisica) {
+    boolean executed = new SqlStatementWrapper()
         .prepare()
 
         .with("insert into FLIGHT.PESSOAFISICA")
@@ -62,6 +62,8 @@ public class PessoaFisicaDAO implements PessoaFisica.Jdbc {
         .with("?)", pessoaFisica.getEmail())
 
         .andExecute();
+
+    return executed;
   }
 
   @Override

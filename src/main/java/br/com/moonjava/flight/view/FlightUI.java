@@ -39,8 +39,11 @@ import javax.swing.Timer;
 
 import org.joda.time.DateTime;
 
+import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.view.aeronave.AeronaveHandler;
+import br.com.moonjava.flight.view.checkin.CheckinHandler;
+import br.com.moonjava.flight.view.passagem.PassagemHandler;
 import br.com.moonjava.flight.view.usuario.UsuarioHandler;
 import br.com.moonjava.flight.view.voo.VooHandler;
 
@@ -58,8 +61,12 @@ public class FlightUI {
   private JPanel conteudo;
   private JMenu relogio;
 
-  public FlightUI(ResourceBundle bundle) {
+  private final Usuario usuarioLogado;
+
+  public FlightUI(Usuario usuarioLogado, ResourceBundle bundle) {
     this.bundle = bundle;
+    this.usuarioLogado = usuarioLogado;
+
     window();
     panel();
     mainMenu();
@@ -88,7 +95,6 @@ public class FlightUI {
     relogio = new JMenu();
 
     String country = bundle.getLocale().getCountry();
-
     Timer timer = new Timer(1000, new Clock(country));
     timer.start();
 
@@ -101,10 +107,6 @@ public class FlightUI {
     menuBar.setBounds(new Rectangle(Integer.MAX_VALUE, 30));
     rodape.setBounds(50, 630, 500, 40);
 
-    voo.addMenuListener(new VooHandler(conteudo, bundle));
-    aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
-
     menuBar.add(flight);
     menuBar.add(voo);
     menuBar.add(passagem);
@@ -116,8 +118,16 @@ public class FlightUI {
     menuBar.add(relogio);
 
     body.add(menuBar);
-    body.add(conteudo);
     body.add(rodape);
+    body.add(conteudo);
+
+    voo.addMenuListener(new VooHandler(conteudo, bundle));
+    passagem.addMenuListener(new PassagemHandler(conteudo, bundle));
+    checkin.addMenuListener(new CheckinHandler(conteudo, bundle));
+    aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
+    sobre.addMenuListener(new SobreHandler(bundle));
+    sair.addMenuListener(new SairHandler());
   }
 
   private void mainMenu() {
@@ -146,16 +156,18 @@ public class FlightUI {
     imagem.setBounds(50, 50, 1100, 600);
     imagem.setBackground(Color.DARK_GRAY);
 
-    voo.addActionListener(new VooHandler(conteudo, bundle));
-    aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
-
     conteudo.add(voo);
     conteudo.add(passagem);
     conteudo.add(checkin);
     conteudo.add(aeronave);
     conteudo.add(usuario);
     conteudo.add(imagem);
+
+    voo.addActionListener(new VooHandler(conteudo, bundle));
+    passagem.addActionListener(new PassagemHandler(conteudo, bundle));
+    checkin.addActionListener(new CheckinHandler(conteudo, bundle));
+    aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
+    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
   }
 
   private void showAll() {

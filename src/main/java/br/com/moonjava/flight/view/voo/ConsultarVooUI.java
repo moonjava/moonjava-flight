@@ -17,11 +17,12 @@ package br.com.moonjava.flight.view.voo;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -41,19 +42,30 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 import br.com.moonjava.flight.model.base.Status;
+import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Aug 17, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class ConsultarVooUI implements ActionListener {
+public class ConsultarVooUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
   private final JButton controlarStatus;
+  private JButton filtrar;
+  private JTextField origem;
+  private JTextField destino;
+  private JFormattedTextField partida;
+  private JFormattedTextField chegada;
+  private JComboBox status;
+  private JComboBox timePartida;
+  private JComboBox timeChegada;
+  private JTable tabela;
 
   public ConsultarVooUI(JPanel conteudo,
                         ResourceBundle bundle,
@@ -65,17 +77,13 @@ class ConsultarVooUI implements ActionListener {
     this.atualizar = atualizar;
     this.deletar = deletar;
     this.controlarStatus = controlarStatus;
+
+    disableButtons();
+    refresh();
+    mainMenu();
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    atualizar.setEnabled(false);
-    deletar.setEnabled(false);
-    controlarStatus.setEnabled(false);
-    conteudo.removeAll();
-    conteudo.validate();
-    conteudo.repaint();
-
+  public void mainMenu() {
     Image image = null;
     InputStream stream = getClass().getResourceAsStream("/img/search.png");
     try {
@@ -87,11 +95,11 @@ class ConsultarVooUI implements ActionListener {
     Icon _imagem = new ImageIcon(image);
     JLabel imagem = new JLabel(_imagem);
 
-    JTextField origem = new JTextField();
-    JTextField destino = new JTextField();
-    JFormattedTextField partida = null;
-    JFormattedTextField chegada = null;
-    JComboBox status = new JComboBox();
+    origem = new JTextField();
+    destino = new JTextField();
+    partida = null;
+    chegada = null;
+    status = new JComboBox();
 
     try {
       partida = new JFormattedTextField(new MaskFormatter("##/##/#### ##:##"));
@@ -114,9 +122,9 @@ class ConsultarVooUI implements ActionListener {
     JLabel tituloPartida = new JLabel(bundle.getString("consultar.voo.titulo.partida"));
     JLabel tituloChegada = new JLabel(bundle.getString("consultar.voo.titulo.chegada"));
     JLabel tituloStatus = new JLabel(bundle.getString("consultar.voo.titulo.status"));
-    JButton filtrar = new JButton(bundle.getString("consultar.voo.campo"));
+    filtrar = new JButton(bundle.getString("consultar.voo.campo"));
 
-    JTable tabela = new JTable();
+    tabela = new JTable();
     tabela.setBorder(new LineBorder(Color.black));
     tabela.setGridColor(Color.black);
     tabela.setShowGrid(true);
@@ -129,23 +137,18 @@ class ConsultarVooUI implements ActionListener {
 
     imagem.setBounds(100, 70, 30, 30);
 
-    tituloOrigem.setBounds(130, 45, 100, 30);
-    tituloDestino.setBounds(240, 45, 100, 30);
-    tituloPartida.setBounds(350, 45, 130, 30);
-    tituloChegada.setBounds(490, 45, 130, 30);
-    tituloStatus.setBounds(630, 45, 150, 30);
+    tituloOrigem.setBounds(132, 45, 100, 30);
+    tituloDestino.setBounds(242, 45, 100, 30);
+    tituloPartida.setBounds(352, 45, 130, 30);
+    tituloChegada.setBounds(492, 45, 130, 30);
+    tituloStatus.setBounds(632, 45, 150, 30);
 
     origem.setBounds(130, 70, 100, 30);
     destino.setBounds(240, 70, 100, 30);
     partida.setBounds(350, 70, 130, 30);
     chegada.setBounds(490, 70, 130, 30);
     status.setBounds(630, 70, 150, 30);
-
-    VooTableHandler vooHandler = new VooTableHandler(tabela, origem, destino, partida, chegada,
-        status, bundle, conteudo, atualizar, deletar, controlarStatus);
-
     filtrar.setBounds(800, 70, 80, 30);
-    filtrar.addActionListener(vooHandler);
 
     conteudo.add(tituloOrigem);
     conteudo.add(tituloDestino);
@@ -163,13 +166,13 @@ class ConsultarVooUI implements ActionListener {
     conteudo.add(filtrar);
     conteudo.add(scroll);
 
-    if (bundle.getLocale().getCountry().equals("US")) {
+    if (getCountry().equals("US")) {
 
       String[] ampm = {
-          "AM",
-          "PM" };
-      JComboBox timePartida = new JComboBox(ampm);
-      JComboBox timeChegada = new JComboBox(ampm);
+        "AM",
+        "PM" };
+      timePartida = new JComboBox(ampm);
+      timeChegada = new JComboBox(ampm);
 
       tituloPartida.setBounds(350, 25, 130, 30);
       tituloChegada.setBounds(490, 25, 130, 30);
@@ -179,11 +182,79 @@ class ConsultarVooUI implements ActionListener {
 
       conteudo.add(timePartida);
       conteudo.add(timeChegada);
-
-      vooHandler.setAmPm(timePartida, timeChegada);
     }
     conteudo.repaint();
     conteudo.validate();
+  }
+
+  public String getCountry() {
+    return bundle.getLocale().getCountry();
+  }
+
+  public void addConsultarListener(ActionListener a) {
+    filtrar.addActionListener(a);
+  }
+
+  public void addItemTableSelectedListener(MouseListener a) {
+    tabela.addMouseListener(a);
+  }
+
+  // Parameters
+  public RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("origem", origem.getText());
+    request.set("destino", destino.getText());
+    request.set("partida", partida.getText());
+    request.set("chegada", chegada.getText());
+    request.set("status", status.getSelectedIndex());
+    if (getCountry().equals("US")) {
+      request.set("timePartida", timePartida.getSelectedItem());
+      request.set("timeChegada", timeChegada.getSelectedItem());
+    }
+    return request;
+  }
+
+  public JTable getTable() {
+    return tabela;
+  }
+
+  // Frames/Layouts
+  public boolean showList(List<Voo> lista) {
+    VooTableModel voos = new VooTableModel(lista, bundle);
+    tabela.setModel(voos);
+    partida.setText("");
+    chegada.setText("");
+    return tabela.getRowCount() == 0 ? true : false;
+  }
+
+  public void messageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("consultar.voo.joption.err"),
+        bundle.getString("consultar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void enableButtons() {
+    atualizar.setEnabled(true);
+    deletar.setEnabled(true);
+    controlarStatus.setEnabled(true);
+  }
+
+  public void disableButtons() {
+    atualizar.setEnabled(false);
+    deletar.setEnabled(false);
+    controlarStatus.setEnabled(false);
+  }
+
+  public void repaint() {
+    conteudo.repaint();
+    conteudo.validate();
+  }
+
+  public void refresh() {
+    conteudo.removeAll();
+    conteudo.validate();
+    conteudo.repaint();
   }
 
 }

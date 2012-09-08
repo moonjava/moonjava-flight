@@ -16,11 +16,16 @@
 package br.com.moonjava.flight.view.voo;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import br.com.moonjava.flight.controller.base.ConsultarVooController;
+import br.com.moonjava.flight.controller.base.CriarVooController;
 
 /**
  * @version 1.0 Aug 17, 2012
@@ -31,6 +36,12 @@ public class VooUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private JPanel subConteudo;
+  private JButton consultar;
+  private JButton status;
+  private JButton cadastrar;
+  private JButton atualizar;
+  private JButton deletar;
 
   public VooUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -44,13 +55,14 @@ public class VooUI {
     conteudo.validate();
     conteudo.repaint();
 
+    subConteudo = new JPanel(null);
     JLabel titulo = new JLabel(bundle.getString("voo.titulo"));
-    JButton consultar = new JButton(bundle.getString("voo.consultar"));
-    JButton status = new JButton(bundle.getString("voo.status"));
-    JButton cadastrar = new JButton(bundle.getString("voo.cadastrar"));
-    JButton atualizar = new JButton(bundle.getString("voo.atualizar"));
-    JButton deletar = new JButton(bundle.getString("voo.deletar"));
-    JPanel subConteudo = new JPanel(null);
+
+    consultar = new JButton(bundle.getString("voo.consultar"));
+    cadastrar = new JButton(bundle.getString("voo.cadastrar"));
+    status = new JButton(bundle.getString("voo.status"));
+    atualizar = new JButton(bundle.getString("voo.atualizar"));
+    deletar = new JButton(bundle.getString("voo.deletar"));
 
     titulo.setFont(new Font("Arial Bold", 0, 14));
 
@@ -67,12 +79,6 @@ public class VooUI {
     deletar.setBounds(0, 350, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    consultar.addActionListener(
-        new ConsultarVooUI(subConteudo, bundle, atualizar, deletar, status));
-
-    cadastrar.addActionListener(
-        new CriarVooUI(subConteudo, bundle, atualizar, deletar, status));
-
     conteudo.add(titulo);
     conteudo.add(consultar);
     conteudo.add(status);
@@ -80,6 +86,20 @@ public class VooUI {
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+
+    consultar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new ConsultarVooController(subConteudo, bundle, atualizar, deletar, status);
+      }
+    });
+
+    cadastrar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new CriarVooController(subConteudo, bundle, atualizar, deletar, status);
+      }
+    });
   }
 
 }

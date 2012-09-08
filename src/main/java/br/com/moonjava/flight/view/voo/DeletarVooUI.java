@@ -15,9 +15,7 @@
  */
 package br.com.moonjava.flight.view.voo;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -25,73 +23,52 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
-import br.com.moonjava.flight.model.base.Voo;
-
 /**
  * @version 1.0 Aug 21, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class DeletarVooUI implements ActionListener {
+public class DeletarVooUI {
 
-  // Singleton
-  private static final DeletarVooUI ui = new DeletarVooUI();
-
-  private JButton atualizar;
-  private JButton deletar;
-  private JTable tabela;
-  private List<Voo> list;
   private JPanel conteudo;
   private ResourceBundle bundle;
+  private JButton atualizar;
+  private JButton deletar;
+  private JButton status;
 
-  private boolean result;
-
-  private DeletarVooUI() {
-  }
-
-  public static DeletarVooUI getInstance() {
-    return ui;
-  }
-
-  public void setResult(boolean result) {
-    this.result = result;
-  }
-  public void setAttributes(JButton atualizar,
+  public void setAttributes(JTable tabela, JPanel conteudo,
+                            ResourceBundle bundle,
+                            JButton atualizar,
                             JButton deletar,
-                            JTable tabela,
-                            List<Voo> list,
-                            JPanel conteudo,
-                            ResourceBundle bundle) {
-    this.atualizar = atualizar;
-    this.deletar = deletar;
-    this.tabela = tabela;
-    this.list = list;
+                            JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+    this.atualizar = atualizar;
+    this.deletar = deletar;
+    this.status = status;
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    deletar.setEnabled(false);
+  public void addDeletarListener(ActionListener a) {
+    deletar.addActionListener(a);
+  }
+
+  public void messageDeleteOK() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("deletar.voo.joption.ok"),
+        bundle.getString("criar.voo.joption.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  public void disableButtons() {
     atualizar.setEnabled(false);
-    if (!result) {
-      result = true;
+    deletar.setEnabled(false);
+    status.setEnabled(false);
+  }
 
-      int[] rows = tabela.getSelectedRows();
-      VooDAO dao = new VooDAO();
-
-      for (int i = 0; i < rows.length; i++) {
-        Voo pojo = list.get(rows[i]);
-        dao.deletar(pojo.getId());
-      }
-
-      JOptionPane.showMessageDialog(null, bundle.getString("deletar.voo.joption.ok"));
-
-      conteudo.removeAll();
-      conteudo.repaint();
-      conteudo.validate();
-    }
+  public void refresh() {
+    conteudo.removeAll();
+    conteudo.repaint();
+    conteudo.validate();
   }
 
 }

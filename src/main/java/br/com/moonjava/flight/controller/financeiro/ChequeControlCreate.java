@@ -22,7 +22,7 @@ import br.com.moonjava.flight.model.financeiro.ChequeModel;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Jul 25, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */

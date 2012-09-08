@@ -18,9 +18,7 @@ package br.com.moonjava.flight.view.usuario;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,17 +37,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import org.joda.time.LocalDate;
-
-import br.com.moonjava.flight.controller.base.PessoaFisicaControlCreate;
-import br.com.moonjava.flight.controller.base.UsuarioControlCreate;
-import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Perfil;
-import br.com.moonjava.flight.model.base.PessoaFisica;
-import br.com.moonjava.flight.model.base.Usuario;
-import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.FormatDateTime;
+import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -59,15 +48,12 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class CriarUsuarioUI implements ActionListener {
+public class CriarUsuarioUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
-  private final UsuarioDAO usuarioDAO;
-  private final PessoaFisicaDAO pessoaFisicaDAO;
-  private final RequestParamWrapper request;
 
   private JTextField nome;
   private JTextField sobrenome;
@@ -80,31 +66,29 @@ public class CriarUsuarioUI implements ActionListener {
   private JTextField email;
 
   private JComboBox perfil;
-  private JTextField usuario;
+  private JTextField login;
   private JPasswordField senha;
   private JLabel imagem;
-  private Font antes;
   private JLabel codigo;
   private JLabel alerta;
+  private JButton cadastrar;
 
-  public CriarUsuarioUI(JPanel conteudo, ResourceBundle bundle, JButton atualizar, JButton deletar) {
+  public CriarUsuarioUI(JPanel conteudo,
+                        ResourceBundle bundle,
+                        JButton atualizar,
+                        JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
-    usuarioDAO = new UsuarioDAO();
-    pessoaFisicaDAO = new PessoaFisicaDAO();
-    request = new RequestParamWrapper();
+
+    disableButtons();
+    refresh();
+    mainMenu();
   }
 
-  @Override
-  public void actionPerformed(ActionEvent arg0) {
-    atualizar.setEnabled(false);
-    deletar.setEnabled(false);
-    conteudo.removeAll();
-    conteudo.validate();
-    conteudo.repaint();
-
+  public void mainMenu() {
+    // Titulos
     JLabel tituloCodigo = new JLabel(bundle.getString("criar.usuario.titulo.codigo"));
     JLabel tituloNome = new JLabel(bundle.getString("criar.pessoafisica.titulo.nome"));
     JLabel tituloSobrenome = new JLabel(bundle.getString("criar.pessoafisica.titulo.sobrenome"));
@@ -115,23 +99,30 @@ public class CriarUsuarioUI implements ActionListener {
     JLabel tituloTelRes = new JLabel(bundle.getString("criar.pessoafisica.titulo.telResidencial"));
     JLabel tituloTelCelular = new JLabel(bundle.getString("criar.pessoafisica.titulo.telCelular"));
     JLabel tituloEmail = new JLabel(bundle.getString("criar.pessoafisica.titulo.email"));
-
     JLabel tituloPerfil = new JLabel(bundle.getString("criar.usuario.titulo.perfil"));
-    JLabel tituloUsuario = new JLabel(bundle.getString("criar.usuario.titulo.usuario"));
+    JLabel tituloLogin = new JLabel(bundle.getString("criar.usuario.titulo.usuario"));
     JLabel tituloSenha = new JLabel(bundle.getString("criar.usuario.titulo.senha"));
 
-    antes = new Font("Century Gothic", Font.ITALIC, 13);
-
+    // Botoes e caixas de textos
     GerarCodigo gerarCodigo = new GerarCodigo("USUARIO");
     codigo = new JLabel(gerarCodigo.getCodigo());
-
     nome = new JTextField(bundle.getString("criar.pessoafisica.antes.nome"));
-    nome.setFont(antes);
-    nome.setForeground(Color.GRAY);
-
     sobrenome = new JTextField(bundle.getString("criar.pessoafisica.antes.sobrenome"));
-    sobrenome.setFont(antes);
-    sobrenome.setForeground(Color.GRAY);
+    rg = new JTextField(bundle.getString("criar.pessoafisica.antes.rg"));
+    endereco = new JTextField(bundle.getString("criar.pessoafisica.antes.endereco"));
+    telResidencial = new JTextField(bundle.getString("criar.pessoafisica.antes.telResidencial"));
+    telCelular = new JTextField(bundle.getString("criar.pessoafisica.antes.telCelular"));
+    email = new JTextField(bundle.getString("criar.pessoafisica.antes.email"));
+    login = new JTextField(bundle.getString("criar.usuario.antes.login"));
+    senha = new JPasswordField();
+    cadastrar = new JButton(bundle.getString("criar.usuario.botao.cadastrar"));
+
+    Perfil[] val = Perfil.values();
+    String[] perfis = new String[val.length];
+    for (int i = 0; i < perfis.length; i++) {
+      perfis[i] = val[i].setBundle(bundle);
+    }
+    perfil = new JComboBox(perfis);
 
     try {
       nascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
@@ -140,49 +131,29 @@ public class CriarUsuarioUI implements ActionListener {
       e.printStackTrace();
     }
 
-    rg = new JTextField(bundle.getString("criar.pessoafisica.antes.rg"));
-    rg.setFont(antes);
-    rg.setForeground(Color.GRAY);
-
-    endereco = new JTextField(bundle.getString("criar.pessoafisica.antes.endereco"));
-    endereco.setFont(antes);
-    endereco.setForeground(Color.GRAY);
-
-    telResidencial = new JTextField(bundle.getString("criar.pessoafisica.antes.telResidencial"));
-    telResidencial.setFont(antes);
-    telResidencial.setForeground(Color.GRAY);
-
-    telCelular = new JTextField(bundle.getString("criar.pessoafisica.antes.telCelular"));
-    telCelular.setFont(antes);
-    telCelular.setForeground(Color.GRAY);
-
-    email = new JTextField(bundle.getString("criar.pessoafisica.antes.email"));
-    email.setFont(antes);
-    email.setForeground(Color.GRAY);
-
-    Perfil[] perfis = Perfil.values();
-    perfil = new JComboBox(perfis);
-
-    usuario = new JTextField(bundle.getString("criar.usuario.antes.usuario"));
-    usuario.setFont(antes);
-    usuario.setForeground(Color.GRAY);
-
-    senha = new JPasswordField();
-    senha.setDocument(new JTextFieldLimit(50));
-
     imagem = new JLabel();
     alerta = new JLabel();
 
-    nome.addFocusListener(new FocusTextFields());
-    sobrenome.addFocusListener(new FocusTextFields());
-    cpf.addFocusListener(new FocusTextFields());
-    rg.addFocusListener(new FocusTextFields());
-    endereco.addFocusListener(new FocusTextFields());
-    telResidencial.addFocusListener(new FocusTextFields());
-    telCelular.addFocusListener(new FocusTextFields());
-    email.addFocusListener(new FocusTextFields());
+    Font font = new Font("Century Gothic", Font.ITALIC, 13);
+    nome.setFont(font);
+    sobrenome.setFont(font);
+    rg.setFont(font);
+    endereco.setFont(font);
+    telResidencial.setFont(font);
+    telCelular.setFont(font);
+    email.setFont(font);
+    login.setFont(font);
 
-    usuario.addFocusListener(new FocusTextFields());
+    nome.setForeground(Color.GRAY);
+    sobrenome.setForeground(Color.GRAY);
+    rg.setForeground(Color.GRAY);
+    endereco.setForeground(Color.GRAY);
+    telResidencial.setForeground(Color.GRAY);
+    telCelular.setForeground(Color.GRAY);
+    email.setForeground(Color.GRAY);
+    login.setForeground(Color.GRAY);
+
+    senha.setDocument(new JTextFieldLimit(50));
 
     tituloCodigo.setBounds(60, 35, 100, 30);
     tituloNome.setBounds(60, 70, 200, 30);
@@ -194,12 +165,9 @@ public class CriarUsuarioUI implements ActionListener {
     tituloTelRes.setBounds(60, 280, 140, 30);
     tituloTelCelular.setBounds(60, 315, 140, 30);
     tituloEmail.setBounds(60, 355, 160, 30);
-
     tituloPerfil.setBounds(60, 390, 80, 30);
-    tituloUsuario.setBounds(60, 425, 100, 30);
+    tituloLogin.setBounds(60, 425, 100, 30);
     tituloSenha.setBounds(60, 460, 100, 30);
-
-    alerta.setBounds(404, 175, 100, 30);
 
     codigo.setBounds(200, 35, 100, 30);
     nome.setBounds(200, 70, 300, 30);
@@ -211,17 +179,13 @@ public class CriarUsuarioUI implements ActionListener {
     telResidencial.setBounds(200, 280, 180, 30);
     telCelular.setBounds(200, 315, 180, 30);
     email.setBounds(200, 355, 300, 30);
-
     perfil.setBounds(200, 390, 250, 30);
-    usuario.setBounds(200, 425, 230, 30);
+    login.setBounds(200, 425, 230, 30);
     senha.setBounds(200, 460, 230, 30);
-
-    imagem.setBounds(380, 175, 40, 30);
-
-    JButton cadastrar = new JButton(bundle.getString("criar.usuario.botao.cadastrar"));
     cadastrar.setBounds(600, 460, 150, 30);
 
-    cadastrar.addActionListener(new CadastrarHandler());
+    alerta.setBounds(404, 175, 100, 30);
+    imagem.setBounds(380, 175, 40, 30);
 
     conteudo.add(tituloCodigo);
     conteudo.add(tituloNome);
@@ -233,9 +197,8 @@ public class CriarUsuarioUI implements ActionListener {
     conteudo.add(tituloTelRes);
     conteudo.add(tituloTelCelular);
     conteudo.add(tituloEmail);
-
     conteudo.add(tituloPerfil);
-    conteudo.add(tituloUsuario);
+    conteudo.add(tituloLogin);
     conteudo.add(tituloSenha);
 
     conteudo.add(codigo);
@@ -248,281 +211,192 @@ public class CriarUsuarioUI implements ActionListener {
     conteudo.add(telResidencial);
     conteudo.add(telCelular);
     conteudo.add(email);
-
     conteudo.add(perfil);
-    conteudo.add(usuario);
+    conteudo.add(login);
     conteudo.add(senha);
-
     conteudo.add(cadastrar);
 
     conteudo.repaint();
     conteudo.validate();
   }
 
-  private class CadastrarHandler implements ActionListener {
+  // Listeners
+  public void addCadastrarListener(ActionListener a) {
+    cadastrar.addActionListener(a);
+  }
 
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-      if (!nome.getText().equals(bundle.getString("criar.pessoafisica.antes.nome"))
-          &&
-          !sobrenome.getText().equals(bundle.getString("criar.pessoafisica.antes.sobrenome"))
-          &&
-          !nascimento.getText().equals("  /  /    ")
-          &&
-          !cpf.getText().equals("   .   .   -  ")
-          &&
-          !rg.getText().equals(bundle.getString("criar.pessoafisica.antes.rg"))
-          &&
-          !endereco.getText().equals(bundle.getString("criar.pessoafisica.antes.endereco"))
-          &&
-          !telResidencial.getText().equals(
-              bundle.getString("criar.pessoafisica.antes.telResidencial")) &&
-          !usuario.getText().equals(bundle.getString("criar.usuario.antes.senha"))) {
+  public void addFocusListener(FocusListener a) {
+    nome.addFocusListener(a);
+    sobrenome.addFocusListener(a);
+    rg.addFocusListener(a);
+    endereco.addFocusListener(a);
+    telResidencial.addFocusListener(a);
+    telCelular.addFocusListener(a);
+    email.addFocusListener(a);
+    login.addFocusListener(a);
 
-        CPF _cpf = CPF.parse(cpf.getText());
+    ((FocusTextField) a).setField(
+        nome, sobrenome, rg, endereco, telResidencial,
+        telCelular, email, login);
 
-        if (usuarioDAO.consultarPorCpf(_cpf) != null) {
-          JOptionPane.showMessageDialog(null, bundle.getString("criar.usuario.erro"), "ERRO",
-              JOptionPane.ERROR_MESSAGE);
-        } else {
+    ((FocusTextField) a).setText(
+        bundle.getString("criar.pessoafisica.antes.nome"),
+        bundle.getString("criar.pessoafisica.antes.sobrenome"),
+        bundle.getString("criar.pessoafisica.antes.rg"),
+        bundle.getString("criar.pessoafisica.antes.endereco"),
+        bundle.getString("criar.pessoafisica.antes.telResidencial"),
+        bundle.getString("criar.pessoafisica.antes.telCelular"),
+        bundle.getString("criar.pessoafisica.antes.email"),
+        bundle.getString("criar.usuario.antes.login"));
+  }
 
-          PessoaFisica pf = pessoaFisicaDAO.consultarPorCpf(_cpf);
+  public void addFocusCpfListener(FocusListener a) {
+    cpf.addFocusListener(a);
+  }
 
-          if (pf != null) {
-            request.set("codigo", codigo.getText());
-            request.set("pessoaFisica", pf.getId());
-            request.set("perfil", perfil.getSelectedItem());
-            request.set("login", usuario.getText());
-            request.set("senha", String.valueOf(senha.getPassword()));
+  public void addFocusTelResListener(FocusListener a) {
+    telResidencial.addFocusListener(a);
+  }
 
-            Usuario pojo = new UsuarioControlCreate(request).createInstance();
-            usuarioDAO.criar(pojo);
+  public void addFocusTelCelListener(FocusListener a) {
+    telCelular.addFocusListener(a);
+  }
 
-            JOptionPane.showMessageDialog(null,
-                bundle.getString("criar.usuario.sucesso"), "OK", JOptionPane.INFORMATION_MESSAGE);
+  // Getters
+  public String getCountry() {
+    return bundle.getLocale().getCountry();
+  }
 
-          }
-          else {
-            LocalDate date = FormatDateTime.parseToLocalDate(nascimento.getText(), bundle
-                .getLocale()
-                .getCountry());
-            try {
-              Integer.parseInt(telCelular.getText());
-            } catch (Exception e) {
-              JOptionPane
-                  .showMessageDialog(null, bundle.getString("criar.usuario.erro.telCelular"));
-              return;
-            }
-            try {
-              Integer.parseInt(telResidencial.getText());
-            } catch (Exception e) {
-              JOptionPane.showMessageDialog(null,
-                  bundle.getString("criar.usuario.erro.telResidencial"));
-              return;
-            }
+  public JTextField getCpf() {
+    return cpf;
+  }
 
-            request.set("nome", nome.getText());
-            request.set("sobrenome", sobrenome.getText());
-            request.set("nascimento", date);
-            request.set("cpf", _cpf.getDigito());
-            request.set("rg", rg.getText());
-            request.set("endereco", endereco.getText());
-            request.set("telResidencial", Integer.parseInt(telResidencial.getText()));
-            request.set("telCelular", Integer.parseInt(telCelular.getText()));
-            request.set("email", email.getText());
+  public JTextField getTelResidencial() {
+    return telResidencial;
+  }
 
-            PessoaFisica pojo = new PessoaFisicaControlCreate(request).createInstance();
-            pessoaFisicaDAO.criar(pojo);
-            PessoaFisica pf2 = pessoaFisicaDAO.consultarPorCpf(_cpf);
+  public JTextField getTelCelular() {
+    return telCelular;
+  }
 
-            request.set("codigo", codigo.getText());
-            request.set("pessoaFisica", pf2.getId());
-            request.set("perfil", perfil.getSelectedItem());
-            request.set("login", usuario.getText());
-            request.set("senha", String.valueOf(senha.getPassword()));
+  public String getTextTelResidencial() {
+    return bundle.getString("criar.pessoafisica.antes.telResidencial");
+  }
 
-            Usuario pojo2 = new UsuarioControlCreate(request).createInstance();
-            usuarioDAO.criar(pojo2);
+  public String getTextTelCelular() {
+    return bundle.getString("criar.pessoafisica.antes.telCelular");
+  }
 
-            JOptionPane.showMessageDialog(null,
-                bundle.getString("criar.usuario.sucesso"), "OK", JOptionPane.INFORMATION_MESSAGE);
+  public RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("codigo", codigo.getText());
+    request.set("nome", nome.getText());
+    request.set("sobrenome", sobrenome.getText());
+    request.set("nascimento", nascimento.getText());
+    request.set("cpf", cpf.getText());
+    request.set("rg", rg.getText());
+    request.set("endereco", endereco.getText());
+    request.set("telResidencial", telResidencial.getText());
+    request.set("telCelular", telCelular.getText());
+    request.set("email", email.getText());
+    request.set("perfil", perfil.getSelectedItem());
+    request.set("login", login.getText());
+    request.set("senha", String.valueOf(senha.getPassword()));
+    return request;
+  }
 
-          }
+  public RequestParamWrapper getTexts() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("nome", bundle.getString("criar.pessoafisica.antes.nome"));
+    request.set("sobrenome", bundle.getString("criar.pessoafisica.antes.sobrenome"));
+    request.set("rg", bundle.getString("criar.pessoafisica.antes.rg"));
+    request.set("endereco", bundle.getString("criar.pessoafisica.antes.endereco"));
+    request.set("telResidencial", bundle.getString("criar.pessoafisica.antes.telResidencial"));
+    request.set("telCelular", bundle.getString("criar.pessoafisica.antes.telCelular"));
+    request.set("login", bundle.getString("criar.usuario.antes.login"));
+    return request;
+  }
 
-        }
-      }
+  // Layouts
+  public void addImageCpfValido() {
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
+      Image image;
+      image = ImageIO.read(stream);
+      ImageIcon icon = new ImageIcon(image);
+      imagem.setIcon(icon);
+      alerta.setText("");
+
+      conteudo.add(imagem);
+      conteudo.add(alerta);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
-  private class FocusTextFields implements FocusListener {
+  public void addImageCpfInvalido() {
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_indisponivel.png");
+      Image image = ImageIO.read(stream);
 
-    @Override
-    public void focusGained(FocusEvent e) {
+      ImageIcon icon = new ImageIcon(image);
+      imagem.setIcon(icon);
 
-      Font depois = new Font("Arial", Font.PLAIN, 13);
+      alerta.setFont(new Font("Arial", Font.BOLD, 13));
+      alerta.setForeground(Color.RED);
+      alerta.setText(bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
 
-      if (e.getSource() == nome
-          && nome.getText().equals(bundle.getString("criar.pessoafisica.antes.nome"))) {
-        nome.setText("");
-        nome.setFont(depois);
-        nome.setForeground(Color.BLACK);
-        nome.setDocument(new JTextFieldLimit(30));
-      }
-      if (e.getSource() == sobrenome
-          && sobrenome.getText().equals(bundle.getString("criar.pessoafisica.antes.sobrenome"))) {
-        sobrenome.setText("");
-        sobrenome.setFont(depois);
-        sobrenome.setForeground(Color.BLACK);
-        sobrenome.setDocument(new JTextFieldLimit(80));
-      }
-      if (e.getSource() == rg
-          && rg.getText().equals(bundle.getString("criar.pessoafisica.antes.rg"))) {
-        rg.setText("");
-        rg.setFont(depois);
-        rg.setForeground(Color.BLACK);
-        rg.setDocument(new JTextFieldLimit(15));
-      }
-      if (e.getSource() == endereco
-          && endereco.getText().equals(bundle.getString("criar.pessoafisica.antes.endereco"))) {
-        endereco.setText("");
-        endereco.setFont(depois);
-        endereco.setForeground(Color.BLACK);
-        endereco.setDocument(new JTextFieldLimit(100));
-      }
-      if (e.getSource() == telResidencial
-          && telResidencial.getText().equals(
-              bundle.getString("criar.pessoafisica.antes.telResidencial"))) {
-        telResidencial.setText("");
-        telResidencial.setFont(depois);
-        telResidencial.setForeground(Color.BLACK);
-        telResidencial.setDocument(new JTextFieldLimit(30));
-      }
-      if (e.getSource() == telCelular
-          && telCelular.getText().equals(bundle.getString("criar.pessoafisica.antes.telCelular"))) {
-        telCelular.setText("");
-        telCelular.setFont(depois);
-        telCelular.setForeground(Color.BLACK);
-        telCelular.setDocument(new JTextFieldLimit(30));
-      }
-      if (e.getSource() == email
-          && email.getText().equals(bundle.getString("criar.pessoafisica.antes.email"))) {
-        email.setText("");
-        email.setFont(depois);
-        email.setForeground(Color.BLACK);
-        email.setDocument(new JTextFieldLimit(100));
-      }
-      if (e.getSource() == usuario
-          && usuario.getText().equals(bundle.getString("criar.usuario.antes.usuario"))) {
-        usuario.setText("");
-        usuario.setFont(depois);
-        usuario.setForeground(Color.BLACK);
-        usuario.setDocument(new JTextFieldLimit(50));
-      }
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-      if (e.getSource() == nome && nome.getText().equals("")) {
-        nome.setText(bundle.getString("criar.pessoafisica.antes.nome"));
-        nome.setFont(antes);
-        nome.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == sobrenome && sobrenome.getText().equals("")) {
-        sobrenome.setText(bundle.getString("criar.pessoafisica.antes.sobrenome"));
-        sobrenome.setFont(antes);
-        sobrenome.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == cpf) {
-        try {
-          CPF.parse(cpf.getText());
-          InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
-          Image image = null;
-
-          try {
-            image = ImageIO.read(stream);
-          } catch (IOException e1) {
-            e1.printStackTrace();
-          }
-
-          ImageIcon icon = new ImageIcon(image);
-          imagem.setIcon(icon);
-          alerta.setText("");
-          conteudo.add(imagem);
-          conteudo.add(alerta);
-          conteudo.repaint();
-          conteudo.validate();
-        } catch (Exception e2) {
-          InputStream stream = getClass().getResourceAsStream("/img/icon_indisponivel.png");
-          Image image = null;
-
-          try {
-            image = ImageIO.read(stream);
-          } catch (IOException e1) {
-            e1.printStackTrace();
-          }
-
-          ImageIcon icon = new ImageIcon(image);
-          imagem.setIcon(icon);
-
-          Font fontAlerta = new Font("Arial", Font.BOLD, 13);
-          alerta.setFont(fontAlerta);
-          alerta.setForeground(Color.RED);
-          alerta.setText(bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
-          conteudo.add(imagem);
-          conteudo.add(alerta);
-          conteudo.repaint();
-          conteudo.validate();
-        }
-      }
-      if (e.getSource() == rg && rg.getText().equals("")) {
-        rg.setText(bundle.getString("criar.pessoafisica.antes.rg"));
-        rg.setFont(antes);
-        rg.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == endereco && endereco.getText().equals("")) {
-        endereco.setText(bundle.getString("criar.pessoafisica.antes.endereco"));
-        endereco.setFont(antes);
-        endereco.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == telResidencial && telResidencial.getText().equals("")) {
-        telResidencial.setText(bundle.getString("criar.pessoafisica.antes.telResidencial"));
-        telResidencial.setFont(antes);
-        telResidencial.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == telCelular && telCelular.getText().equals("")) {
-        telCelular.setText(bundle.getString("criar.pessoafisica.antes.telCelular"));
-        telCelular.setFont(antes);
-        telCelular.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == email && email.getText().equals("")) {
-        email.setText(bundle.getString("criar.pessoafisica.antes.email"));
-        email.setFont(antes);
-        email.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == usuario && usuario.getText().equals("")) {
-        usuario.setText(bundle.getString("criar.usuario.antes.usuario"));
-        usuario.setFont(antes);
-        usuario.setForeground(Color.GRAY);
-      }
-      if (e.getSource() == telResidencial
-          && !telResidencial.getText().equals("")
-          && !telResidencial.getText().equals(
-              bundle.getString("criar.pessoafisica.antes.telResidencial"))) {
-        try {
-          Integer.parseInt(telResidencial.getText());
-        } catch (Exception e2) {
-          JOptionPane.showMessageDialog(null, "Insira somente números no Campo Tel. Residnecial");
-        }
-      }
-      if (e.getSource() == telCelular && !telCelular.getText().equals("")
-          && !telCelular.getText().equals(bundle.getString("criar.pessoafisica.antes.telCelular"))) {
-        try {
-          Integer.parseInt(telCelular.getText());
-        } catch (Exception e2) {
-          JOptionPane.showMessageDialog(null, "Insira somente números no campo Tel. Celuar");
-        }
-      }
-
+      conteudo.add(imagem);
+      conteudo.add(alerta);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e1) {
+      e1.printStackTrace();
     }
   }
+
+  public void messageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("criar.voo.joption.tempo"),
+        bundle.getString("criar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  // Adicionar titulo
+  public void messageOK() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("criar.usuario.sucesso"),
+        "OK",
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  // Adicionar titulo
+  public void messageTelParseExecption() {
+    JOptionPane.showMessageDialog(null, bundle.getString("criar.usuario.erro.tel"));
+  }
+
+  public void messageCpfInvalidExecption() {
+    JOptionPane.showMessageDialog(null, bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
+  }
+
+  // Adicionar titulo
+  public void messageUsuarioExistente() {
+    JOptionPane.showMessageDialog(null, bundle.getString("criar.usuario.erro"),
+        "",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void disableButtons() {
+    atualizar.setEnabled(false);
+    deletar.setEnabled(false);
+  }
+
+  public void refresh() {
+    conteudo.removeAll();
+    conteudo.validate();
+    conteudo.repaint();
+  }
+
 }

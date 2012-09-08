@@ -22,13 +22,19 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import br.com.moonjava.flight.controller.base.LoginController;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -59,7 +65,6 @@ public class IdiomaUI implements MouseListener {
     body.setBackground(Color.WHITE);
     conteudo.setBackground(Color.WHITE);
 
-    conteudo.setBounds(0, 30, 600, 300);
     idioma.getContentPane().add(body);
 
     ImageIcon imageBrasil = new ImageIcon("flags/brazil.gif");
@@ -70,10 +75,6 @@ public class IdiomaUI implements MouseListener {
     ingles = new JLabel(imageUSA);
     espanhol = new JLabel(imageEspanha);
 
-    portugues.setBounds(10, 0, 180, 135);
-    ingles.setBounds(190, 0, 180, 135);
-    espanhol.setBounds(370, 0, 180, 135);
-
     JLabel entrar = new JLabel("ENTRAR");
     JLabel enter = new JLabel("ENTER");
     JLabel _entrar = new JLabel("ENTRAR");
@@ -82,17 +83,23 @@ public class IdiomaUI implements MouseListener {
     enter.setFont(new Font("Arial Bold", 0, 14));
     _entrar.setFont(new Font("Arial Bold", 0, 14));
 
+    conteudo.setBounds(0, 30, 600, 300);
+    portugues.setBounds(10, 0, 180, 135);
+    ingles.setBounds(190, 0, 180, 135);
+    espanhol.setBounds(370, 0, 180, 135);
+
     entrar.setBounds(60, 100, 180, 135);
     enter.setBounds(240, 100, 180, 135);
     _entrar.setBounds(420, 100, 180, 135);
 
+    body.add(conteudo);
     conteudo.add(portugues);
     conteudo.add(ingles);
     conteudo.add(espanhol);
+
     conteudo.add(entrar);
     conteudo.add(enter);
     conteudo.add(_entrar);
-    body.add(conteudo);
 
     portugues.addMouseListener(this);
     ingles.addMouseListener(this);
@@ -109,14 +116,27 @@ public class IdiomaUI implements MouseListener {
     idioma.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));
     idioma.setSize(frameWidth, frameHeight);
     idioma.setResizable(false);
-    idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     idioma.setVisible(true);
+    idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+
+  private static class ResourceControl extends ResourceBundle.Control {
+    @Override
+    public ResourceBundle newBundle(String baseName, Locale locale,
+                                    String format, ClassLoader loader,
+                                    boolean reload)
+        throws IllegalAccessException, InstantiationException, IOException {
+      String bundlename = toBundleName(baseName, locale);
+      String resName = toResourceName(bundlename, "properties");
+      InputStream stream = loader.getResourceAsStream(resName);
+      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+    }
   }
 
   @Override
   public void mouseClicked(MouseEvent e) {
     if (e.getSource() == portugues) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("pt", "BR"));
+      bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
     }
     if (e.getSource() == ingles) {
       bundle = ResourceBundle.getBundle("idioma/arquivo", Locale.US);
@@ -124,8 +144,8 @@ public class IdiomaUI implements MouseListener {
     if (e.getSource() == espanhol) {
       bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
     }
-    idioma.setVisible(false);
-    new FlightUI(bundle);
+    idioma.dispose();
+    new LoginController(bundle);
   }
 
   @Override

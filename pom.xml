@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.com.moonjava</groupId>
-	<version>0.0.7</version>
+	<version>1.0.9</version>
 	<artifactId>moonjava-flight</artifactId>
 
 	<name>moonjava :: flight</name>
@@ -88,7 +88,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>br.com.moonjava.flight.app.App</mainClass>
+							<mainClass>br.com.moonjava.flight.view.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

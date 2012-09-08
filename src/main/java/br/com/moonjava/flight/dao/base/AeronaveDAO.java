@@ -17,7 +17,7 @@ package br.com.moonjava.flight.dao.base;
 
 import java.util.List;
 
-import br.com.moonjava.flight.controller.base.AeronaveControlLoader;
+import br.com.moonjava.flight.controller.base.AeronaveLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Aeronave;
@@ -37,12 +37,12 @@ public class AeronaveDAO implements Aeronave.Jdbc {
         .with("select *")
         .with("from FLIGHT.AERONAVE as AERONAVE")
 
-        .load(new AeronaveControlLoader());
+        .load(new AeronaveLoader());
   }
 
   @Override
-  public boolean criar(Aeronave aeronave) {
-    boolean executed = new SqlStatementWrapper()
+  public void criar(Aeronave aeronave) {
+    new SqlStatementWrapper()
         .prepare()
 
         .with("insert into FLIGHT.AERONAVE")
@@ -54,18 +54,18 @@ public class AeronaveDAO implements Aeronave.Jdbc {
         .with("?)", aeronave.isMapa())
 
         .andExecute();
-
-    return executed;
   }
 
   @Override
   public List<Aeronave> consultar(RequestParam request) {
     String nome = request.stringParam("nome");
+    String codigo = request.stringParam("codigo");
 
     return query()
 
         .with("where 1 = 1")
         .with("and AERONAVE.NOME like concat ('%',?,'%')", nome)
+        .with("and AERONAVE.CODIGO like concat ('%',?,'%')", codigo)
         .with("order by AERONAVE.CODIGO asc")
 
         .andList();
@@ -81,8 +81,8 @@ public class AeronaveDAO implements Aeronave.Jdbc {
   }
 
   @Override
-  public boolean atualizar(Aeronave aeronave) {
-    boolean executed = new SqlStatementWrapper()
+  public void atualizar(Aeronave aeronave) {
+    new SqlStatementWrapper()
         .prepare()
 
         .with("update FLIGHT.AERONAVE AS AERONAVE set")
@@ -90,8 +90,6 @@ public class AeronaveDAO implements Aeronave.Jdbc {
         .with("where AERONAVE.ID = ?", aeronave.getId())
 
         .andExecute();
-
-    return executed;
   }
 
   @Override

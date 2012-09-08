@@ -15,6 +15,7 @@
  */
 package br.com.moonjava.flight.controller.base;
 
+import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.RequestParam;
@@ -37,14 +38,19 @@ public class ReembolsoControlCreate implements Reembolso.Builder {
     return new ReembolsoModel(this);
   }
 
+  // @Override
+  // public Passsagem getPassagem() {
+  // return new PassagemFake() {
+  // @Override
+  // public int getId() {
+  // return request.intParam("passagem");
+  // }
+  // };
+  // }
+
   @Override
-  public Passsagem getPassagem() {
-    return new PassagemFake() {
-      @Override
-      public int getId() {
-        return request.intParam("passagem");
-      }
-    };
+  public Passagem getPassagem() {
+    return null;
   }
 
   @Override

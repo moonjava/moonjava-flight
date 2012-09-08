@@ -40,13 +40,13 @@ public interface Aeronave {
 
   interface Jdbc {
 
-    boolean criar(Aeronave aeronave);
+    void criar(Aeronave aeronave);
 
     List<Aeronave> consultar(RequestParam request);
 
     Aeronave consultarPorId(int id);
 
-    boolean atualizar(Aeronave aeronave);
+    void atualizar(Aeronave aeronave);
 
     void deletar(int id);
   }

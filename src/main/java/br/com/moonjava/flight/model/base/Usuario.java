@@ -48,9 +48,9 @@ public interface Usuario {
 
     Usuario consultarPorId(int id);
 
-    Usuario consultarPorCodigo(String codigo);
-
     Usuario consultarPorCpf(CPF cpf);
+
+    Usuario consultarUsuario(RequestParam request);
 
     boolean atualizar(Usuario usuario);
 

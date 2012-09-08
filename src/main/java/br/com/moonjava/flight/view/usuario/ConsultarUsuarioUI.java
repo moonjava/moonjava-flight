@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.aeronave;
+package br.com.moonjava.flight.view.usuario;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -28,7 +28,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,30 +36,30 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0 Apr 10, 2012
- * @contact tiago.aguiar@moonjava.com.br
+ * @version 1.0 Sep 2, 2012
+ * @contact miqueias@moonjava.com.br
  * 
  */
-public class ConsultarAeronaveUI {
+public class ConsultarUsuarioUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
+  private JButton detalhes;
   private JButton filtrar;
-  private JButton mapa;
-  private JTextField nome;
-  private JTable tabela;
+  private JTextField login;
   private JTextField codigo;
+  private JTable tabela;
 
-  public ConsultarAeronaveUI(JPanel conteudo,
-                             ResourceBundle bundle,
-                             JButton atualizar,
-                             JButton deletar) {
+  public ConsultarUsuarioUI(JPanel conteudo,
+                            ResourceBundle bundle,
+                            JButton atualizar,
+                            JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -72,12 +71,14 @@ public class ConsultarAeronaveUI {
   }
 
   private void mainMenu() {
-    JLabel tituloNome = new JLabel(bundle.getString("consultar.aeronave.titulo.nome"));
-    JLabel tituloCodigo = new JLabel(bundle.getString("consultar.aeronave.titulo.codigo"));
+    JLabel tituloNome = new JLabel(bundle.getString("consultar.usuario.titulo.login"));
+    JLabel tituloCodigo = new JLabel(bundle.getString("consultar.usuario.titulo.codigo"));
 
-    filtrar = new JButton(bundle.getString("consultar.aeronave.campo"));
-    mapa = new JButton(bundle.getString("consultar.aeronave.botao.mapa"));
-    nome = new JTextField();
+    filtrar = new JButton(bundle.getString("consultar.usuario.filtrar"));
+    detalhes = new JButton(bundle.getString("consultar.usuario.detalhes"));
+    detalhes.setEnabled(false);
+
+    login = new JTextField();
     codigo = new JTextField();
 
     Image image = null;
@@ -99,46 +100,45 @@ public class ConsultarAeronaveUI {
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
     scroll.getViewport().add(tabela);
-    scroll.setBounds(130, 100, 750, 450);
-    scroll.setSize(750, 450);
+    scroll.setBounds(130, 100, 750, 420);
+    scroll.setSize(750, 420);
 
     imagem.setBounds(100, 70, 30, 30);
     tituloNome.setBounds(132, 45, 200, 30);
     tituloCodigo.setBounds(332, 45, 200, 30);
-    filtrar.setBounds(530, 70, 80, 30);
-    mapa.setBounds(730, 70, 150, 30);
-    nome.setBounds(130, 70, 200, 30);
+    filtrar.setBounds(800, 70, 80, 30);
+    detalhes.setBounds(760, 520, 120, 30);
+    login.setBounds(130, 70, 200, 30);
     codigo.setBounds(330, 70, 200, 30);
 
     conteudo.add(imagem);
     conteudo.add(tituloNome);
     conteudo.add(tituloCodigo);
-    conteudo.add(nome);
+    conteudo.add(login);
     conteudo.add(codigo);
     conteudo.add(filtrar);
+    conteudo.add(detalhes);
     conteudo.add(scroll);
 
     conteudo.repaint();
     conteudo.validate();
   }
 
-  // Listeners
   public void addConsultarListener(ActionListener a) {
     filtrar.addActionListener(a);
   }
 
-  public void addShowSeatMapListener(ActionListener a) {
-    mapa.addActionListener(a);
+  public void addDetalhesListener(ActionListener a) {
+    detalhes.addActionListener(a);
   }
 
   public void addItemTableSelectedListener(MouseListener a) {
     tabela.addMouseListener(a);
   }
 
-  // Parameters
   public RequestParamWrapper getParameters() {
     RequestParamWrapper request = new RequestParamWrapper();
-    request.set("nome", nome.getText());
+    request.set("login", login.getText());
     request.set("codigo", codigo.getText());
     return request;
   }
@@ -147,50 +147,29 @@ public class ConsultarAeronaveUI {
     return tabela;
   }
 
-  // Frames/Layouts
-  public boolean showList(List<Aeronave> lista) {
-    AeronaveTableModel aeronaves = new AeronaveTableModel(lista, bundle);
-    tabela.setModel(aeronaves);
+  public boolean showList(List<Usuario> lista) {
+    UsuarioTableModel usuario = new UsuarioTableModel(lista, bundle);
+    tabela.setModel(usuario);
     return tabela.getRowCount() == 0 ? true : false;
   }
 
-  public void showSeatMap(String pathFile) {
-    Icon image = new ImageIcon(pathFile);
-    int width = image.getIconWidth();
-    int height = image.getIconHeight();
-
-    JLabel label = new JLabel(image);
-
-    JDialog frame = new JDialog();
-    frame.add(label);
-    frame.setSize(width + 40, height + 40);
-    frame.setResizable(false);
-    frame.setVisible(true);
-  }
-
-  public void addButtonMapa() {
-    conteudo.add(mapa);
+  public void addButtonDetalhes() {
+    conteudo.add(detalhes);
     conteudo.repaint();
     conteudo.validate();
   }
 
   public void messageFailed() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("consultar.joption.err"),
-        bundle.getString("consultar.joption.titulo"),
-        JOptionPane.ERROR_MESSAGE);
-  }
-
-  public void messageSeatMapFailed() {
-    JOptionPane.showMessageDialog(null,
-        bundle.getString("consultar.joption.erro"),
-        bundle.getString("consultar.joption.titulo"),
+        bundle.getString("consultar.usuario.joption.err"),
+        bundle.getString("consultar.usuario.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
 
   public void enableButtons() {
     atualizar.setEnabled(true);
     deletar.setEnabled(true);
+    detalhes.setEnabled(true);
   }
 
   public void disableButtons() {

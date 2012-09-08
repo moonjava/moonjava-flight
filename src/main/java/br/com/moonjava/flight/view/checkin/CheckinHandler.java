@@ -13,43 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.controller.base;
+package br.com.moonjava.flight.view.checkin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
-
-import br.com.moonjava.flight.view.passagem.TransferirPassagemUI;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 /**
- * @version 1.0 Aug 31, 2012
+ * @version 1.0 Sep 8, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class TransferirPassagemController extends TransferirPassagemUI {
+public class CheckinHandler implements MenuListener, ActionListener {
 
-  public TransferirPassagemController(JPanel conteudo, ResourceBundle bundle) {
-    super(conteudo, bundle);
+  private final JPanel conteudo;
+  private final ResourceBundle bundle;
 
-    addConsultarListener(new ConsultarHandler());
-    addTransferirListener(new TransferirHandler());
+  public CheckinHandler(JPanel conteudo, ResourceBundle bundle) {
+    this.conteudo = conteudo;
+    this.bundle = bundle;
   }
 
-  private class ConsultarHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      addVooTable();
-    }
+  @Override
+  public void menuCanceled(MenuEvent e) {
   }
 
-  private class TransferirHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      messageOK();
-      messageFailed();
-    }
+  @Override
+  public void menuDeselected(MenuEvent e) {
+  }
+
+  @Override
+  public void menuSelected(MenuEvent e) {
+    new CheckinUI(conteudo, bundle);
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    new CheckinUI(conteudo, bundle);
   }
 
 }

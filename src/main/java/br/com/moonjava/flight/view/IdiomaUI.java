@@ -22,7 +22,11 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
@@ -119,13 +123,13 @@ public class IdiomaUI implements MouseListener {
   @Override
   public void mouseClicked(MouseEvent e) {
     if (e.getSource() == portugues) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("pt", "BR"));
+      bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
     }
     if (e.getSource() == ingles) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", Locale.US);
+      bundle = ResourceBundle.getBundle("idioma/arquivo_en_US", new ResourceControl());
     }
     if (e.getSource() == espanhol) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
+      bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
     }
     idioma.dispose();
     LogarFlightController logar = new LogarFlightController();
@@ -149,6 +153,20 @@ public class IdiomaUI implements MouseListener {
 
   @Override
   public void mouseReleased(MouseEvent e) {
+  }
+
+  private static class ResourceControl extends ResourceBundle.Control {
+    @Override
+    public ResourceBundle newBundle(String baseName, Locale locale,
+                                    String format, ClassLoader loader, boolean reload)
+        throws IllegalAccessException, InstantiationException,
+        IOException {
+      String bundlename = toBundleName(baseName, locale);
+      String resName = toResourceName(bundlename, "properties");
+      InputStream stream = loader.getResourceAsStream(resName);
+      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+    }
+
   }
 
 }

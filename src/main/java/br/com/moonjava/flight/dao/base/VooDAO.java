@@ -103,7 +103,7 @@ public class VooDAO implements Voo.Jdbc {
     return query()
 
         .with("where 1 = 1")
-        .with("order by STATUS asc")
+        .with("order by VOO.STATUS asc")
         .with("limit 0,15")
 
         .andList();

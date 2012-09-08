@@ -21,7 +21,7 @@ import br.com.moonjava.flight.dao.financeiro.OperadoraDeCartaoDAO;
 import br.com.moonjava.flight.model.financeiro.Cartao;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Jul 25, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */

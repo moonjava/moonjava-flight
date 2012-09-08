@@ -31,7 +31,7 @@ import br.com.moonjava.flight.model.base.ReembolsoModel;
  */
 public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
 
-  private String alias;
+  private final String alias;
 
   public ReembolsoControlLoader() {
     this.alias = "REEMBOLSO";
@@ -60,8 +60,9 @@ public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
 
     @Override
     public Passagem getPassagem() {
-      ResultSet resultSet = rs.getResultSet();
-      return new PassagemLoader().get(resultSet);
+      // ResultSet resultSet = rs.getResultSet();
+      // return new PassagemLoader().get(resultSet);
+      return null;
     }
 
     @Override

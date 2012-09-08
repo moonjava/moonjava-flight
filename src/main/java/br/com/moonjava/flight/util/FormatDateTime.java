@@ -38,7 +38,7 @@ public class FormatDateTime {
       if (country.equals("US")) {
         date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse(value);
       }
-      if (country.equals("BR") || country.equals("ES")) {
+      else {
         date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(value);
       }
       String format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(date);
@@ -55,7 +55,7 @@ public class FormatDateTime {
       if (country.equals("US")) {
         time = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa").format(date);
       }
-      if (country.equals("BR") || country.equals("ES")) {
+      else {
         time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
       }
       return time;
@@ -70,7 +70,7 @@ public class FormatDateTime {
       if (country.equals("US")) {
         date = new SimpleDateFormat("MM/dd/yyyy").parse(value);
       }
-      if (country.equals("BR") || country.equals("ES")) {
+      else {
         date = new SimpleDateFormat("dd/MM/yyyy").parse(value);
       }
       String format = new SimpleDateFormat("yyyy-MM-dd").format(date);
@@ -87,7 +87,7 @@ public class FormatDateTime {
       if (country.equals("US")) {
         time = new SimpleDateFormat("MM/dd/yyyy").format(date);
       }
-      if (country.equals("BR") || country.equals("ES")) {
+      else {
         time = new SimpleDateFormat("dd/MM/yyyy").format(date);
       }
       return time;

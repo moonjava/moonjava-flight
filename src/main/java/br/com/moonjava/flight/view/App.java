@@ -18,6 +18,8 @@ package br.com.moonjava.flight.view;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import br.com.moonjava.flight.controller.base.IdiomaController;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -42,7 +44,7 @@ public class App {
   }
 
   private static void start() {
-    new IdiomaUI();
+    new IdiomaController();
   }
 
 }

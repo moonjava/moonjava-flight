@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.VooControlCreate;
+import br.com.moonjava.flight.controller.base.VooCreate;
 import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
@@ -82,7 +82,7 @@ public class TesteDeCriarVoo {
     request.set("assentoLivre", assentoLivre);
     request.set("preco", preco);
 
-    Voo voo = new VooControlCreate(request).createInstance();
+    Voo voo = new VooCreate(request).createInstance();
     vooDAO.criar(voo);
 
     request = new RequestParamWrapper();

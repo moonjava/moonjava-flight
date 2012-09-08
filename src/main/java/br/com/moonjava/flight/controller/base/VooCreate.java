@@ -25,15 +25,15 @@ import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Jul 25, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class VooControlCreate implements Voo.Builder {
+public class VooCreate implements Voo.Builder {
 
   private final RequestParam request;
 
-  public VooControlCreate(RequestParam request) {
+  public VooCreate(RequestParam request) {
     this.request = request;
   }
 

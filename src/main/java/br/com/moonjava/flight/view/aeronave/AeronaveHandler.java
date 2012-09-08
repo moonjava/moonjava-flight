@@ -39,14 +39,6 @@ public class AeronaveHandler implements ActionListener, MenuListener {
   }
 
   @Override
-  public void menuCanceled(MenuEvent e) {
-  }
-
-  @Override
-  public void menuDeselected(MenuEvent e) {
-  }
-
-  @Override
   public void menuSelected(MenuEvent e) {
     new AeronaveUI(conteudo, bundle);
   }
@@ -54,6 +46,14 @@ public class AeronaveHandler implements ActionListener, MenuListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     new AeronaveUI(conteudo, bundle);
+  }
+
+  @Override
+  public void menuCanceled(MenuEvent e) {
+  }
+
+  @Override
+  public void menuDeselected(MenuEvent e) {
   }
 
 }

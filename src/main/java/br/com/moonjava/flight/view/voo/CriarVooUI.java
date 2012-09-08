@@ -15,7 +15,6 @@
  */
 package br.com.moonjava.flight.view.voo;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.List;
@@ -32,14 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import org.joda.time.DateTime;
-
-import br.com.moonjava.flight.controller.base.VooControlCreate;
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
-import br.com.moonjava.flight.model.base.Voo;
-import br.com.moonjava.flight.util.FormatDateTime;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -49,16 +42,13 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class CriarVooUI implements ActionListener {
+public abstract class CriarVooUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
   private final JButton status;
-  private final VooDAO vooDAO;
-  private final AeronaveDAO aeronaveDAO;
-  private final RequestParamWrapper request;
 
   private JLabel codigo;
   private JTextField origem;
@@ -70,6 +60,7 @@ class CriarVooUI implements ActionListener {
   private JComboBox timePartida;
   private JComboBox timeChegada;
   private JTextField preco;
+  private JButton cadastrar;
 
   public CriarVooUI(JPanel conteudo,
                     ResourceBundle bundle,
@@ -82,13 +73,20 @@ class CriarVooUI implements ActionListener {
     this.deletar = deletar;
     this.status = status;
 
-    vooDAO = new VooDAO();
-    aeronaveDAO = new AeronaveDAO();
-    request = new RequestParamWrapper();
+    disableButtons();
+    refresh();
+    mainMenu();
   }
 
   @Override
-  public void actionPerformed(ActionEvent e) {
+  protected JPanel getConteudo() {
+    return conteudo;
+  }
+
+  public abstract List<Aeronave> getList();
+
+  @Override
+  public void mainMenu() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
     status.setEnabled(false);
@@ -106,7 +104,7 @@ class CriarVooUI implements ActionListener {
     JLabel tituloPreco = new JLabel(bundle.getString("criar.voo.titulo.preco"));
 
     JLabel alertaPartida = new JLabel(bundle.getString("alerta.data"));
-    JButton cadastrar = new JButton(bundle.getString("criar.voo.botao.cadastrar"));
+    cadastrar = new JButton(bundle.getString("criar.voo.botao.cadastrar"));
 
     String _codigo = new GerarCodigo("VOO").getCodigo();
     codigo = new JLabel(_codigo);
@@ -123,8 +121,7 @@ class CriarVooUI implements ActionListener {
       JOptionPane.showMessageDialog(null, e1.getMessage());
     }
 
-    List<Aeronave> aeronaves = aeronaveDAO.consultar(request);
-    Vector<Aeronave> vector = new Vector<Aeronave>(aeronaves);
+    Vector<Aeronave> vector = new Vector<Aeronave>(getList());
     DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
     aeronave.setModel(model);
 
@@ -153,8 +150,6 @@ class CriarVooUI implements ActionListener {
     preco.setBounds(180, 350, 200, 30);
     cadastrar.setBounds(205, 390, 150, 30);
 
-    cadastrar.addActionListener(new CadastrarHandler());
-
     conteudo.add(tituloCodigo);
     conteudo.add(tituloOrigem);
     conteudo.add(tituloDestino);
@@ -174,10 +169,9 @@ class CriarVooUI implements ActionListener {
     conteudo.add(chegada);
     conteudo.add(aeronave);
     conteudo.add(preco);
-
     conteudo.add(cadastrar);
 
-    if (bundle.getLocale().getCountry().equals("US")) {
+    if (getCountry().equals("US")) {
       alertaPartida.setBounds(450, 230, 500, 30);
 
       String[] ampm = {
@@ -197,63 +191,57 @@ class CriarVooUI implements ActionListener {
     conteudo.validate();
   }
 
-  private class CadastrarHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      String country = bundle.getLocale().getCountry();
-      String dataPartida = null;
-      String dataChegada = null;
+  public String getCountry() {
+    return bundle.getLocale().getCountry();
+  }
 
-      if (country.equals("US")) {
-        dataPartida = String.format("%s %s", partida.getText(), timePartida.getSelectedItem());
-        dataChegada = String.format("%s %s", chegada.getText(), timeChegada.getSelectedItem());
-      } else {
-        dataPartida = partida.getText();
-        dataChegada = chegada.getText();
-      }
+  public void addCadastrarListener(ActionListener a) {
+    cadastrar.addActionListener(a);
+  }
 
-      Aeronave _aeronave = ((Aeronave) aeronave.getSelectedItem());
-      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
-
-      try {
-        double _preco = Double.parseDouble(preco.getText());
-        request.set("preco", _preco);
-        request.set("codigo", codigo.getText());
-        request.set("origem", origem.getText());
-        request.set("destino", destino.getText());
-        request.set("escala", escala.getText());
-        request.set("partida", _partida);
-        request.set("chegada", _chegada);
-        request.set("aeronave", _aeronave.getId());
-        request.set("assentoLivre", _aeronave.getQtdDeAssento());
-
-        Voo pojo = new VooControlCreate(request).createInstance();
-        boolean executed = vooDAO.criar(pojo);
-
-        if (executed) {
-          JOptionPane.showMessageDialog(null,
-              bundle.getString("criar.voo.joption.ok"),
-              bundle.getString("criar.voo.joption.titulo"),
-              JOptionPane.INFORMATION_MESSAGE);
-        } else {
-          JOptionPane.showMessageDialog(null,
-              bundle.getString("criar.voo.joption.tempo"),
-              bundle.getString("criar.voo.joption.titulo"),
-              JOptionPane.ERROR_MESSAGE);
-        }
-      } catch (NumberFormatException e2) {
-        JOptionPane.showMessageDialog(null,
-            bundle.getString("alerta.numero"),
-            bundle.getString("criar.voo.joption.titulo"),
-            JOptionPane.ERROR_MESSAGE);
-      }
-
-      conteudo.removeAll();
-      conteudo.validate();
-      conteudo.repaint();
+  public RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    Aeronave _aeronave = (Aeronave) aeronave.getSelectedItem();
+    request.set("preco", preco.getText());
+    request.set("codigo", codigo.getText());
+    request.set("origem", origem.getText());
+    request.set("destino", destino.getText());
+    request.set("escala", escala.getText());
+    request.set("partida", partida.getText());
+    request.set("chegada", chegada.getText());
+    request.set("aeronave", _aeronave.getId());
+    request.set("assentoLivre", _aeronave.getQtdDeAssento());
+    if (getCountry().equals("US")) {
+      request.set("timePartida", timePartida.getSelectedItem());
+      request.set("timeChegada", timeChegada.getSelectedItem());
     }
+    return request;
+  }
 
+  public void messageOK() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("criar.voo.joption.ok"),
+        bundle.getString("criar.voo.joption.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  public void messageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("criar.voo.joption.tempo"),
+        bundle.getString("criar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void messageNumberException() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("alerta.numero"),
+        bundle.getString("criar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void disableButtons() {
+    atualizar.setEnabled(false);
+    deletar.setEnabled(false);
   }
 
 }

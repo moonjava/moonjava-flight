@@ -48,14 +48,18 @@ public class TesteDeConsultarUsuario {
 
   public void consultar_usuario_por_codigo() {
     UsuarioDAO dao = new UsuarioDAO();
+    RequestParamWrapper request = new RequestParamWrapper();
 
     String codigo = "U1001";
-    Usuario res = dao.consultarPorCodigo(codigo);
+    request.set("codigo", codigo);
+
+    List<Usuario> lres = dao.consultar(request);
+    Usuario res = lres.get(0);
+
     assertThat(res.getPerfil(), equalTo(Perfil.SUPERVISOR));
     assertThat(res.getLogin(), equalTo("teste2"));
     assertThat(res.getSenha(), equalTo("teste2"));
   }
-
   public void consultar_usuario_por_cpf() {
     UsuarioDAO dao = new UsuarioDAO();
 

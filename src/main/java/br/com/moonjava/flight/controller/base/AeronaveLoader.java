@@ -23,15 +23,15 @@ import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.model.base.AeronaveModel;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Jul 25, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class AeronaveControlLoader implements ResultSetJdbcLoader<Aeronave> {
+public class AeronaveLoader implements ResultSetJdbcLoader<Aeronave> {
 
   private final String alias;
 
-  public AeronaveControlLoader() {
+  public AeronaveLoader() {
     this.alias = "AERONAVE";
   }
 

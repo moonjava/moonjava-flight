@@ -16,11 +16,16 @@
 package br.com.moonjava.flight.view.usuario;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import br.com.moonjava.flight.controller.base.ConsultarUsuarioController;
+import br.com.moonjava.flight.controller.base.CriarUsuarioController;
 
 /**
  * @version 1.0 Aug 21, 2012
@@ -31,6 +36,12 @@ public class UsuarioUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+
+  private JPanel subConteudo;
+  private JButton consultar;
+  private JButton cadastrar;
+  private JButton atualizar;
+  private JButton deletar;
 
   public UsuarioUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -44,12 +55,13 @@ public class UsuarioUI {
     conteudo.validate();
     conteudo.repaint();
 
+    subConteudo = new JPanel(null);
     JLabel titulo = new JLabel(bundle.getString("usuario.titulo"));
-    JButton consultar = new JButton(bundle.getString("usuario.consultar"));
-    JButton cadastrar = new JButton(bundle.getString("usuario.cadastrar"));
-    JButton atualizar = new JButton(bundle.getString("usuario.atualizar"));
-    JButton deletar = new JButton(bundle.getString("usuario.deletar"));
-    JPanel subConteudo = new JPanel(null);
+
+    consultar = new JButton(bundle.getString("usuario.consultar"));
+    cadastrar = new JButton(bundle.getString("usuario.cadastrar"));
+    atualizar = new JButton(bundle.getString("usuario.atualizar"));
+    deletar = new JButton(bundle.getString("usuario.deletar"));
 
     titulo.setFont(new Font("Arial Bold", 0, 14));
 
@@ -64,14 +76,26 @@ public class UsuarioUI {
     deletar.setBounds(0, 280, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
-    cadastrar.addActionListener(new CriarUsuarioUI(subConteudo, bundle, atualizar, deletar));
-
     conteudo.add(titulo);
     conteudo.add(consultar);
     conteudo.add(cadastrar);
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+
+    consultar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new ConsultarUsuarioController(subConteudo, bundle, atualizar, deletar);
+      }
+    });
+
+    cadastrar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new CriarUsuarioController(subConteudo, bundle, atualizar, deletar);
+      }
+    });
   }
 
 }

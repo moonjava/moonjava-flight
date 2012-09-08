@@ -20,10 +20,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.util.ResourceBundle;
 
-import br.com.moonjava.flight.controller.base.VerifierString;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.CartaoUI;
 
 /**

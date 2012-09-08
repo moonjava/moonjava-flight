@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.controller.base;
+package br.com.moonjava.flight.util;
 
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
-import br.com.moonjava.flight.util.FormatDateTime;
 
 /**
  * @version 1.0 Sep 7, 2012

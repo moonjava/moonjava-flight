@@ -15,36 +15,27 @@
  */
 package br.com.moonjava.flight.view;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import br.com.moonjava.flight.controller.base.IdiomaController;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Sep 8, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class App {
+public class SairHandler implements MenuListener {
 
-  public static void main(String[] args) {
-    try {
-      UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (UnsupportedLookAndFeelException e) {
-      e.printStackTrace();
-    }
-
-    start();
+  @Override
+  public void menuCanceled(MenuEvent e) {
   }
 
-  private static void start() {
-    new IdiomaController();
+  @Override
+  public void menuDeselected(MenuEvent e) {
+  }
+
+  @Override
+  public void menuSelected(MenuEvent e) {
+    System.exit(0);
   }
 
 }

@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import br.com.moonjava.flight.util.ErrorSystem;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -47,23 +48,25 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  */
 public class LoginUI {
 
+  private JFrame conteudo;
+  protected final ResourceBundle bundle;
+
   private JLabel tituloLogin;
   private JLabel tituloSenha;
+  private JLabel alerta;
+
   private JTextField login;
   private JPasswordField senha;
   private JButton entrar;
-  private JFrame conteudo;
-  private JLabel alerta;
-  private ResourceBundle bundle;
 
-  public void setAttributes(ResourceBundle bundle) {
+  public LoginUI(ResourceBundle bundle) {
     this.bundle = bundle;
     window();
     showAll();
   }
 
   public void window() {
-    conteudo = new JFrame("Flight");
+    conteudo = new JFrame("Flight > Login");
     conteudo.setLayout(new BorderLayout());
     conteudo.getContentPane().setBackground(Color.WHITE);
 
@@ -84,11 +87,16 @@ public class LoginUI {
     panel4.setLayout(new FlowLayout(40, 40, 40));
     panel4.setBackground(Color.WHITE);
 
+    JPanel panel5 = new JPanel();
+    panel5.setLayout(new GridLayout(1, 2, 5, 5));
+    panel5.setBackground(Color.WHITE);
+
     tituloLogin = new JLabel(bundle.getString("login.titulo.usuario"));
     tituloSenha = new JLabel(bundle.getString("login.titulo.senha"));
     login = new JTextField(20);
     senha = new JPasswordField(20);
     entrar = new JButton(bundle.getString("login.botao.entrar"));
+    JLabel spaceBlank = new JLabel();
 
     alerta = new JLabel();
     alerta.setForeground(Color.RED);
@@ -98,32 +106,30 @@ public class LoginUI {
     try {
       image = ImageIO.read(stream);
     } catch (IOException e) {
-      e.printStackTrace();
+      ErrorSystem.addException(e, bundle);
     }
     ImageIcon icon = new ImageIcon(image);
-
     JLabel imagem = new JLabel(icon);
     JLabel rodape = new JLabel(bundle.getString("rodape"));
+
+    panel5.add(spaceBlank);
+    panel5.add(entrar);
 
     panel1.add(tituloLogin);
     panel1.add(login);
     panel1.add(tituloSenha);
     panel1.add(senha);
-    panel1.add(entrar);
+    panel1.add(panel5);
 
     panel2.add(panel1);
     panel1.add(alerta);
-
     panel3.add(imagem);
-
     panel4.add(rodape);
 
     conteudo.add(panel2, BorderLayout.EAST);
     conteudo.add(panel3, BorderLayout.WEST);
     conteudo.add(panel4, BorderLayout.SOUTH);
-
   }
-
   public void showAll() {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
@@ -131,21 +137,20 @@ public class LoginUI {
     int frameWidth = 760;
     int frameHeight = 497;
 
-    conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2)
-        - (frameHeight / 2));
+    conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));
     conteudo.setSize(frameWidth, frameHeight);
-    conteudo.setResizable(true);
+    conteudo.setResizable(false);
     conteudo.setVisible(true);
     conteudo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  public void addActionListenerEntrar(ActionListener a) {
+  public void addLogarListener(ActionListener a) {
     if (login.getText() != null && (String.valueOf(senha.getPassword()) != null)) {
       entrar.addActionListener(a);
     }
   }
 
-  public void addKeyListenerEntrar(KeyListener a) {
+  public void addLogarKeyListener(KeyListener a) {
     if (login.getText() != null && (String.valueOf(senha.getPassword()) != null)) {
       senha.addKeyListener(a);
     }
@@ -166,4 +171,5 @@ public class LoginUI {
   public void dispose() {
     conteudo.dispose();
   }
+
 }

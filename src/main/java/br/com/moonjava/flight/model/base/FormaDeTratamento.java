@@ -41,14 +41,14 @@ public enum FormaDeTratamento {
   public String setBundle(ResourceBundle bundle) {
     String country = bundle.getLocale().getCountry();
     String res = null;
-    if (country.equals("BR")) {
-      res = br;
-    }
     if (country.equals("ES")) {
       res = es;
     }
-    if (country.equals("US")) {
+    else if (country.equals("US")) {
       res = us;
+    }
+    else {
+      res = br;
     }
     return res;
   }

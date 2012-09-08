@@ -34,22 +34,21 @@ import br.com.moonjava.flight.model.base.Voo;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-class ControlarStatusVooUI implements ActionListener {
+public class ControlarStatusController implements ActionListener {
 
   // Singleton
-  private static final ControlarStatusVooUI ui = new ControlarStatusVooUI();
-
-  private JTable tabela;
+  private static final ControlarStatusController ui = new ControlarStatusController();
+  private boolean result;
   private List<Voo> list;
+  private JTable tabela;
+
   private JPanel conteudo;
   private ResourceBundle bundle;
 
-  private boolean result;
-
-  private ControlarStatusVooUI() {
+  private ControlarStatusController() {
   }
 
-  public static ControlarStatusVooUI getInstance() {
+  public static ControlarStatusController getInstance() {
     return ui;
   }
 
@@ -96,4 +95,5 @@ class ControlarStatusVooUI implements ActionListener {
       }
     }
   }
+
 }

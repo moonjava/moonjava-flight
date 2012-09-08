@@ -71,7 +71,7 @@ public class ConsultarUsuarioUI {
   }
 
   private void mainMenu() {
-    JLabel tituloNome = new JLabel(bundle.getString("consultar.usuario.titulo.login"));
+    JLabel tituloLogin = new JLabel(bundle.getString("consultar.usuario.titulo.login"));
     JLabel tituloCodigo = new JLabel(bundle.getString("consultar.usuario.titulo.codigo"));
 
     filtrar = new JButton(bundle.getString("consultar.usuario.filtrar"));
@@ -104,18 +104,19 @@ public class ConsultarUsuarioUI {
     scroll.setSize(750, 420);
 
     imagem.setBounds(100, 70, 30, 30);
-    tituloNome.setBounds(132, 45, 200, 30);
-    tituloCodigo.setBounds(332, 45, 200, 30);
+
+    tituloCodigo.setBounds(132, 45, 200, 30);
+    tituloLogin.setBounds(332, 45, 200, 30);
     filtrar.setBounds(800, 70, 80, 30);
     detalhes.setBounds(760, 520, 120, 30);
-    login.setBounds(130, 70, 200, 30);
-    codigo.setBounds(330, 70, 200, 30);
+    codigo.setBounds(130, 70, 200, 30);
+    login.setBounds(330, 70, 200, 30);
 
     conteudo.add(imagem);
-    conteudo.add(tituloNome);
+    conteudo.add(tituloLogin);
     conteudo.add(tituloCodigo);
-    conteudo.add(login);
     conteudo.add(codigo);
+    conteudo.add(login);
     conteudo.add(filtrar);
     conteudo.add(detalhes);
     conteudo.add(scroll);

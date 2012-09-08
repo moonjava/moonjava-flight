@@ -92,7 +92,7 @@ public class AtualizarUsuarioUI {
   private JLabel tituloSenha;
 
   public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-      JButton atualizar, JButton deletar) {
+                            JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -103,29 +103,18 @@ public class AtualizarUsuarioUI {
 
   public void mainMenu() {
     // Titulos
-    tituloCodigo = new JLabel(
-        bundle.getString("criar.usuario.titulo.codigo"));
-    tituloNome = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.nome"));
-    tituloSobrenome = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.sobrenome"));
-    tituloNascimento = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.nascimento"));
-    tituloCpf = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.cpf"));
+    tituloCodigo = new JLabel(bundle.getString("criar.usuario.titulo.codigo"));
+    tituloNome = new JLabel(bundle.getString("criar.pessoafisica.titulo.nome"));
+    tituloSobrenome = new JLabel(bundle.getString("criar.pessoafisica.titulo.sobrenome"));
+    tituloNascimento = new JLabel(bundle.getString("criar.pessoafisica.titulo.nascimento"));
+    tituloCpf = new JLabel(bundle.getString("criar.pessoafisica.titulo.cpf"));
     tituloRg = new JLabel(bundle.getString("criar.pessoafisica.titulo.rg"));
-    tituloEndereco = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.endereco"));
-    tituloTelRes = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.telResidencial"));
-    tituloTelCelular = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.telCelular"));
-    tituloEmail = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.email"));
-    tituloPerfil = new JLabel(
-        bundle.getString("criar.usuario.titulo.perfil"));
-    tituloLogin = new JLabel(
-        bundle.getString("criar.usuario.titulo.usuario"));
+    tituloEndereco = new JLabel(bundle.getString("criar.pessoafisica.titulo.endereco"));
+    tituloTelRes = new JLabel(bundle.getString("criar.pessoafisica.titulo.telResidencial"));
+    tituloTelCelular = new JLabel(bundle.getString("criar.pessoafisica.titulo.telCelular"));
+    tituloEmail = new JLabel(bundle.getString("criar.pessoafisica.titulo.email"));
+    tituloPerfil = new JLabel(bundle.getString("criar.usuario.titulo.perfil"));
+    tituloLogin = new JLabel(bundle.getString("criar.usuario.titulo.usuario"));
     tituloSenha = new JLabel(bundle.getString("criar.usuario.titulo.senha"));
 
     // Botoes e caixas de textos
@@ -140,7 +129,11 @@ public class AtualizarUsuarioUI {
     login = new JTextField();
     senha = new JPasswordField();
 
-    Perfil[] perfis = Perfil.values();
+    Perfil[] val = Perfil.values();
+    String[] perfis = new String[val.length];
+    for (int i = 0; i < perfis.length; i++) {
+      perfis[i] = val[i].setBundle(bundle);
+    }
     perfil = new JComboBox(perfis);
 
     try {

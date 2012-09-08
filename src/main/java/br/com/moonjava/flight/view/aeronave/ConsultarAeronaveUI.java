@@ -103,12 +103,12 @@ public class ConsultarAeronaveUI {
     scroll.setSize(750, 450);
 
     imagem.setBounds(100, 70, 30, 30);
-    tituloNome.setBounds(132, 45, 200, 30);
-    tituloCodigo.setBounds(332, 45, 200, 30);
+    tituloNome.setBounds(332, 45, 200, 30);
+    tituloCodigo.setBounds(132, 45, 200, 30);
     filtrar.setBounds(530, 70, 80, 30);
     mapa.setBounds(730, 70, 150, 30);
-    nome.setBounds(130, 70, 200, 30);
-    codigo.setBounds(330, 70, 200, 30);
+    nome.setBounds(330, 70, 200, 30);
+    codigo.setBounds(130, 70, 200, 30);
 
     conteudo.add(imagem);
     conteudo.add(tituloNome);

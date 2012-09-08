@@ -71,11 +71,11 @@ public class UsuarioTableModel extends AbstractTableModel {
     Usuario usuario = list.get(linha);
     switch (coluna) {
     case 0:
-      return usuario.getLogin();
-    case 1:
       return usuario.getCodigo();
+    case 1:
+      return usuario.getLogin();
     case 2:
-      return usuario.getPerfil();
+      return usuario.getPerfil().setBundle(bundle);
     }
     return null;
   }

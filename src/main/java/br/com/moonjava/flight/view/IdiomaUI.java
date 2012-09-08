@@ -34,7 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.LogarFlightController;
+import br.com.moonjava.flight.controller.base.LoginController;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -120,20 +120,32 @@ public class IdiomaUI implements MouseListener {
     idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
+  private static class ResourceControl extends ResourceBundle.Control {
+    @Override
+    public ResourceBundle newBundle(String baseName, Locale locale,
+                                    String format, ClassLoader loader,
+                                    boolean reload)
+        throws IllegalAccessException, InstantiationException, IOException {
+      String bundlename = toBundleName(baseName, locale);
+      String resName = toResourceName(bundlename, "properties");
+      InputStream stream = loader.getResourceAsStream(resName);
+      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+    }
+  }
+
   @Override
   public void mouseClicked(MouseEvent e) {
     if (e.getSource() == portugues) {
       bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
     }
     if (e.getSource() == ingles) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo_en_US", new ResourceControl());
+      bundle = ResourceBundle.getBundle("idioma/arquivo", Locale.US);
     }
     if (e.getSource() == espanhol) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
+      bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
     }
     idioma.dispose();
-    LogarFlightController logar = new LogarFlightController();
-    logar.setsetAttributes(bundle);
+    new LoginController(bundle);
   }
 
   @Override
@@ -153,20 +165,6 @@ public class IdiomaUI implements MouseListener {
 
   @Override
   public void mouseReleased(MouseEvent e) {
-  }
-
-  private static class ResourceControl extends ResourceBundle.Control {
-    @Override
-    public ResourceBundle newBundle(String baseName, Locale locale,
-                                    String format, ClassLoader loader, boolean reload)
-        throws IllegalAccessException, InstantiationException,
-        IOException {
-      String bundlename = toBundleName(baseName, locale);
-      String resName = toResourceName(bundlename, "properties");
-      InputStream stream = loader.getResourceAsStream(resName);
-      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
-    }
-
   }
 
 }

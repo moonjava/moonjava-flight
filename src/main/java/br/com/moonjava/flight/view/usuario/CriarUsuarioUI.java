@@ -117,7 +117,11 @@ public class CriarUsuarioUI {
     senha = new JPasswordField();
     cadastrar = new JButton(bundle.getString("criar.usuario.botao.cadastrar"));
 
-    Perfil[] perfis = Perfil.values();
+    Perfil[] val = Perfil.values();
+    String[] perfis = new String[val.length];
+    for (int i = 0; i < perfis.length; i++) {
+      perfis[i] = val[i].setBundle(bundle);
+    }
     perfil = new JComboBox(perfis);
 
     try {

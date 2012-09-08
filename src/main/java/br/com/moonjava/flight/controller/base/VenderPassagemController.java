@@ -29,6 +29,7 @@ import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.PrintFileToPrinter;
 import br.com.moonjava.flight.view.passagem.VenderPassagemUI;
 

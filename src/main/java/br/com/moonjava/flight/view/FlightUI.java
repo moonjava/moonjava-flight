@@ -61,11 +61,12 @@ public class FlightUI {
   private JPanel conteudo;
   private JMenu relogio;
 
-  private Usuario usuarioLogado;
+  private final Usuario usuarioLogado;
 
   public FlightUI(Usuario usuarioLogado, ResourceBundle bundle) {
     this.bundle = bundle;
     this.usuarioLogado = usuarioLogado;
+
     window();
     panel();
     mainMenu();
@@ -125,6 +126,8 @@ public class FlightUI {
     checkin.addMenuListener(new CheckinHandler(conteudo, bundle));
     aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
     usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
+    sobre.addMenuListener(new SobreHandler(bundle));
+    sair.addMenuListener(new SairHandler());
   }
 
   private void mainMenu() {

@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.CancelarPassagemUI;
 
 /**

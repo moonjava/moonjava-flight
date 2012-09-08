@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -41,7 +42,7 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public abstract class CriarVooUI {
+public abstract class CriarVooUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
@@ -77,8 +78,14 @@ public abstract class CriarVooUI {
     mainMenu();
   }
 
+  @Override
+  protected JPanel getConteudo() {
+    return conteudo;
+  }
+
   public abstract List<Aeronave> getList();
 
+  @Override
   public void mainMenu() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
@@ -235,12 +242,6 @@ public abstract class CriarVooUI {
   public void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
-  }
-
-  public void refresh() {
-    conteudo.removeAll();
-    conteudo.validate();
-    conteudo.repaint();
   }
 
 }

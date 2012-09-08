@@ -34,6 +34,7 @@ import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.ConsultarVooUI;
+import br.com.moonjava.flight.view.voo.ControlarStatusController;
 
 /**
  * @version 1.0 Aug 29, 2012
@@ -136,6 +137,11 @@ public class ConsultarVooController extends ConsultarVooUI {
       atualiza.setAttributes(tabela, conteudo, bundle, atualizar, deletar, status);
       atualiza.setResult(false);
       atualiza.setList(list);
+
+      ControlarStatusController ctrlStatus = ControlarStatusController.getInstance();
+      ctrlStatus.setAttributes(tabela, list, conteudo, bundle);
+      ctrlStatus.setResult(false);
+      status.addActionListener(ctrlStatus);
     }
     @Override
     public void mouseEntered(MouseEvent e) {

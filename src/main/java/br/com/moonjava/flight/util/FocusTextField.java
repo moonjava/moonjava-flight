@@ -31,6 +31,7 @@ public class FocusTextField implements FocusListener {
 
   private final Font antes = new Font("Century Gothic", Font.ITALIC, 13);
   private final Font depois = new Font("Arial", Font.PLAIN, 13);
+
   private JTextField[] fields;
   private String[] strings;
 

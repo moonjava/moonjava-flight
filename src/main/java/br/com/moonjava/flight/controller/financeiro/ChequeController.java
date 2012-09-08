@@ -13,38 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.controller.base;
+package br.com.moonjava.flight.controller.financeiro;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.util.ResourceBundle;
 
-import javax.swing.JPanel;
-
+import br.com.moonjava.flight.controller.base.VerifierString;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
-import br.com.moonjava.flight.view.passagem.CancelarPassagemUI;
+import br.com.moonjava.flight.view.passagem.ChequeUI;
 
 /**
- * @version 1.0 Aug 31, 2012
+ * @version 1.0 Sep 7, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CancelarPassagemController extends CancelarPassagemUI {
+public class ChequeController extends ChequeUI {
 
-  public CancelarPassagemController(JPanel conteudo, ResourceBundle bundle) {
-    super(conteudo, bundle);
+  public ChequeController(ResourceBundle bundle) {
+    super(bundle);
 
+    // add listeners
     addFocusListener(new FocusTextField());
+    addFocusNumeroListener(new FocusNumeroHandler());
     addFocusBancoListener(new FocusBancoHandler());
     addFocusAgenciaListener(new FocusAgenciaHandler());
     addFocusContaListener(new FocusContaHandler());
+    addOkListener(new OkHandler());
     addFocusCpfListener(new FocusCpfHandler());
-    addSolicitarCancelamentoListener(new SolicitarCancelamentoHandler());
-    addOKListener(new OKHandler());
-    addEfetuarCancelamentoListener(new EfetuarCancelamentoHandler());
+
+    showAll();
+  }
+
+  private class FocusNumeroHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      String numero = getParameters().stringParam("numero");
+      String defaultText = getDefaultTexts().stringParam("numero");
+
+      if (!numero.isEmpty() && !numero.equals(defaultText)) {
+
+        try {
+          int num = Integer.parseInt(numero);
+          if (num <= 0) {
+            throw new NumberFormatException();
+          }
+          removeImageNumeroParseException();
+        } catch (NumberFormatException e2) {
+          addImageNumeroParseException();
+        }
+
+      }
+    }
   }
 
   private class FocusBancoHandler extends FlightFocusLostListener {
@@ -113,6 +136,14 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     }
   }
 
+  private class OkHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      dispose();
+      setParameterValid(true);
+    }
+  }
+
   private class FocusCpfHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
@@ -125,27 +156,6 @@ public class CancelarPassagemController extends CancelarPassagemUI {
           addImageCpfInvalido();
         }
       }
-    }
-  }
-
-  private class SolicitarCancelamentoHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      addCalcularPassagemButton();
-    }
-  }
-
-  private class OKHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      addEfetuarCancelamentoButton();
-    }
-  }
-
-  private class EfetuarCancelamentoHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      messageOK();
     }
   }
 

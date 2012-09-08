@@ -15,23 +15,40 @@
  */
 package br.com.moonjava.flight.controller.base;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
+
+import br.com.moonjava.flight.view.passagem.TransferirPassagemUI;
 
 /**
  * @version 1.0 Aug 31, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class TransferirPassagemController {
-
-  private final JPanel conteudo;
-  private final ResourceBundle bundle;
+public class TransferirPassagemController extends TransferirPassagemUI {
 
   public TransferirPassagemController(JPanel conteudo, ResourceBundle bundle) {
-    this.conteudo = conteudo;
-    this.bundle = bundle;
+    super(conteudo, bundle);
+
+    addConsultarListener(new ConsultarHandler());
+    addTransferirListener(new TransferirHandler());
+  }
+
+  private class ConsultarHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      addTransferirButton();
+    }
+  }
+
+  private class TransferirHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      messageOK();
+    }
   }
 
 }

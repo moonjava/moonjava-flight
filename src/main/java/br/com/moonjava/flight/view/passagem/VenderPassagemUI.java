@@ -17,18 +17,11 @@ package br.com.moonjava.flight.view.passagem;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -38,21 +31,23 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import br.com.moonjava.flight.controller.base.ChequeController;
 import br.com.moonjava.flight.model.base.FormaDeTratamento;
 import br.com.moonjava.flight.model.base.Tipo;
-import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
+import br.com.moonjava.flight.util.FlightImageUI;
+import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Aug 31, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class VenderPassagemUI {
+public class VenderPassagemUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
-  private final ResourceBundle bundle;
+  protected final ResourceBundle bundle;
 
   private JLabel tituloQuantidade;
   private JLabel tituloTipo;
@@ -69,8 +64,10 @@ public class VenderPassagemUI {
   private JLabel tituloTelCelular;
   private JLabel tituloEmail;
 
-  private JLabel imagem;
-  private JLabel alerta;
+  private JLabel imagemCpf;
+  private JLabel alertaCpf;
+  private JLabel imagemNascimento;
+  private JLabel alertaNascimento;
   private JLabel tipoLabel;
   private JLabel codigo;
 
@@ -91,8 +88,12 @@ public class VenderPassagemUI {
   private JComboBox pagamento;
 
   private JButton solicitarCompra;
-  private JButton cadastrar;
+  private JButton concluir;
   private JButton quantidadeOK;
+  private JLabel imagemTelResidencial;
+  private JLabel imagemTelCelular;
+  private JLabel alertaTelResidencial;
+  private JLabel alertaTelCelular;
 
   public VenderPassagemUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -102,7 +103,8 @@ public class VenderPassagemUI {
     mainMenu();
   }
 
-  public void mainMenu() {
+  @Override
+  protected void mainMenu() {
     // Titulos
     tituloQuantidade = new JLabel(bundle.getString("vender.passagem.titulo.quantidade"));
     tituloTipo = new JLabel(bundle.getString("vender.passagem.titulo.tipo"));
@@ -142,8 +144,8 @@ public class VenderPassagemUI {
 
     quantidadeOK = new JButton("Ok");
     solicitarCompra = new JButton(bundle.getString("vender.passagem.botao.solicitarCompra"));
-    cadastrar = new JButton(bundle.getString("vender.passagem.botao.concluir"));
-    cadastrar.setEnabled(false);
+    concluir = new JButton(bundle.getString("vender.passagem.botao.concluir"));
+    concluir.setEnabled(false);
 
     Tipo[] tipos = Tipo.values();
     String valTipos[] = new String[tipos.length];
@@ -167,8 +169,15 @@ public class VenderPassagemUI {
     pagamento = new JComboBox(valPagamentos);
     pagamento.setSelectedItem(null);
 
-    imagem = new JLabel();
-    alerta = new JLabel();
+    imagemCpf = new JLabel();
+    imagemNascimento = new JLabel();
+    imagemTelResidencial = new JLabel();
+    imagemTelCelular = new JLabel();
+
+    alertaCpf = new JLabel();
+    alertaNascimento = new JLabel();
+    alertaTelResidencial = new JLabel();
+    alertaTelCelular = new JLabel();
 
     Font font = new Font("Century Gothic", Font.ITALIC, 13);
     nome.setFont(font);
@@ -220,10 +229,17 @@ public class VenderPassagemUI {
     tratamento.setBounds(200, 435, 100, 30);
     pagamento.setBounds(200, 475, 100, 30);
 
-    cadastrar.setBounds(350, 475, 150, 30);
+    concluir.setBounds(350, 475, 150, 30);
 
-    alerta.setBounds(404, 215, 100, 30);
-    imagem.setBounds(380, 215, 40, 30);
+    imagemCpf.setBounds(385, 215, 40, 30);
+    imagemNascimento.setBounds(385, 180, 40, 30);
+    imagemTelResidencial.setBounds(385, 320, 40, 30);
+    imagemTelCelular.setBounds(385, 355, 40, 30);
+
+    alertaCpf.setBounds(410, 215, 100, 30);
+    alertaNascimento.setBounds(410, 180, 300, 30);
+    alertaTelResidencial.setBounds(410, 320, 400, 30);
+    alertaTelCelular.setBounds(410, 355, 400, 30);
 
     conteudo.add(tituloQuantidade);
     conteudo.add(tituloTipo);
@@ -232,157 +248,189 @@ public class VenderPassagemUI {
     conteudo.add(tipo);
     conteudo.add(quantidadeOK);
 
-    conteudo.repaint();
-    conteudo.validate();
-
-    cpf.addFocusListener(new FocusListener() {
-      @Override
-      public void focusLost(FocusEvent arg0) {
-        try {
-          String _cpf = cpf.getText();
-          CPF.parse(_cpf);
-          addImageCpfValido();
-        } catch (Exception e) {
-          addImageCpfInvalido();
-        }
-      }
-      @Override
-      public void focusGained(FocusEvent arg0) {
-      }
-    });
-
-    solicitarCompra.addActionListener(new Teste());
-    quantidadeOK.addActionListener(new Teste2());
-
-    pagamento.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        int index = pagamento.getSelectedIndex();
-        if (index == 1) {
-          ChequeController chequeController = new ChequeController(bundle);
-          if (chequeController.isParemeterValid()) {
-            cadastrar.setEnabled(true);
-          }
-        } else {
-          CartaoUI cartaoUI = new CartaoUI(bundle);
-          if (cartaoUI.isValid()) {
-            cadastrar.setEnabled(true);
-          }
-        }
-      }
-    });
+    repaint();
   }
-  public void addSolicitarCompraListener(ActionListener a) {
+
+  @Override
+  protected JPanel getConteudo() {
+    return conteudo;
+  }
+
+  // Get parameters
+  protected RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("cpf", cpf.getText());
+    request.set("dataDeNascimento", nascimento.getText());
+    request.set("telResidencial", telResidencial.getText());
+    request.set("telCelular", telCelular.getText());
+    request.set("pagamentoIndex", pagamento.getSelectedIndex());
+
+    return request;
+  }
+
+  protected RequestParamWrapper getDefaultTexts() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("telResidencial", bundle.getString("criar.pessoafisica.antes.telResidencial"));
+    request.set("telCelular", bundle.getString("criar.pessoafisica.antes.telCelular"));
+
+    return request;
+  }
+
+  // Add listeners
+  protected void addSolicitarCompraListener(ActionListener a) {
     solicitarCompra.addActionListener(a);
   }
 
-  public void addQuantidadeOKListener(ActionListener a) {
-    quantidade.addActionListener(a);
+  protected void addQuantidadeOKListener(ActionListener a) {
+    quantidadeOK.addActionListener(a);
   }
 
-  public void addPagamentoListener(ActionListener a) {
+  protected void addFocusCpfListener(FocusListener a) {
+    cpf.addFocusListener(a);
+  }
+
+  protected void addFocusDataDeNascimentoListener(FocusListener a) {
+    nascimento.addFocusListener(a);
+  }
+
+  protected void addPagamentoChangeListener(ActionListener a) {
     pagamento.addActionListener(a);
   }
 
-  public void addImageCpfValido() {
-    try {
-      InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
-      Image image = ImageIO.read(stream);
-      ImageIcon icon = new ImageIcon(image);
-      imagem.setIcon(icon);
-      alerta.setText("");
+  protected void addConcluirListener(ActionListener a) {
+    concluir.addActionListener(a);
+  }
 
-      conteudo.add(imagem);
-      conteudo.add(alerta);
-      conteudo.repaint();
-      conteudo.validate();
-    } catch (IOException e) {
-      ErrorSystem.addException(e, bundle);
-    }
+  protected void addFocusTelResidencialListener(FocusListener a) {
+    telResidencial.addFocusListener(a);
+  }
+
+  protected void addFocusTelCelularListener(FocusListener a) {
+    telCelular.addFocusListener(a);
+  }
+
+  protected void addFocusListener(FocusListener a) {
+    nome.addFocusListener(a);
+    sobrenome.addFocusListener(a);
+    rg.addFocusListener(a);
+    endereco.addFocusListener(a);
+    telResidencial.addFocusListener(a);
+    telCelular.addFocusListener(a);
+    email.addFocusListener(a);
+
+    ((FocusTextField) a).setField(nome, sobrenome, rg, endereco, telResidencial, telCelular, email);
+    ((FocusTextField) a).setText(bundle.getString("criar.pessoafisica.antes.nome"),
+        bundle.getString("criar.pessoafisica.antes.sobrenome"),
+        bundle.getString("criar.pessoafisica.antes.rg"),
+        bundle.getString("criar.pessoafisica.antes.endereco"),
+        bundle.getString("criar.pessoafisica.antes.telResidencial"),
+        bundle.getString("criar.pessoafisica.antes.telCelular"),
+        bundle.getString("criar.pessoafisica.antes.email"));
+  }
+
+  // Add layout
+  protected void addConcluirButton() {
+    concluir.setEnabled(true);
+  }
+
+  protected void addSolicitarCompraButton() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("vender.passagem.valor"),
+        bundle.getString("vender.passagem.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+
+    conteudo.add(solicitarCompra);
+    conteudo.repaint();
+    conteudo.validate();
+  }
+
+  protected void addForm() {
+    refresh();
+
+    tituloTipo.setBounds(60, 75, 100, 30);
+    conteudo.add(tituloCodigo);
+    conteudo.add(tituloTipo);
+    conteudo.add(tituloNome);
+    conteudo.add(tituloSobrenome);
+    conteudo.add(tituloNascimento);
+    conteudo.add(tituloCpf);
+    conteudo.add(tituloRg);
+    conteudo.add(tituloEndereco);
+    conteudo.add(tituloTelRes);
+    conteudo.add(tituloTelCelular);
+    conteudo.add(tituloEmail);
+    conteudo.add(tituloTratamento);
+    conteudo.add(tituloPagamento);
+
+    String item = (String) tipo.getSelectedItem();
+    tipoLabel = new JLabel(item);
+    tipoLabel.setBounds(200, 75, 300, 30);
+
+    conteudo.add(tipoLabel);
+    conteudo.add(codigo);
+    conteudo.add(nome);
+    conteudo.add(sobrenome);
+    conteudo.add(nascimento);
+    conteudo.add(cpf);
+    conteudo.add(rg);
+    conteudo.add(endereco);
+    conteudo.add(telResidencial);
+    conteudo.add(telCelular);
+    conteudo.add(email);
+    conteudo.add(tratamento);
+    conteudo.add(pagamento);
+    conteudo.add(concluir);
+
+    repaint();
+  }
+
+  protected void addImageBirthDayValid() {
+    FlightImageUI.add(imagemNascimento, alertaNascimento,
+        bundle.getString("nascimento.valido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageBirthDayInvalid() {
+    FlightImageUI.addError(imagemNascimento, alertaNascimento,
+        bundle.getString("nascimento.invalido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageTelResidencialParseException() {
+    FlightImageUI.addError(imagemTelResidencial, alertaTelResidencial,
+        bundle.getString("alerta.numero"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageTelCelularParseException() {
+    FlightImageUI.addError(imagemTelCelular, alertaTelCelular,
+        bundle.getString("alerta.numero"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageCpfValido() {
+    FlightImageUI.add(imagemCpf, alertaCpf,
+        bundle.getString("criar.pessoafisica.cpf.alerta.ok"), bundle, conteudo);
+    repaint();
   }
 
   public void addImageCpfInvalido() {
-    try {
-      InputStream stream = getClass().getResourceAsStream("/img/icon_indisponivel.png");
-      Image image = ImageIO.read(stream);
-      ImageIcon icon = new ImageIcon(image);
-      imagem.setIcon(icon);
-
-      alerta.setFont(new Font("Arial", Font.BOLD, 13));
-      alerta.setForeground(Color.RED);
-      alerta.setText(bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
-
-      conteudo.add(imagem);
-      conteudo.add(alerta);
-      conteudo.repaint();
-      conteudo.validate();
-    } catch (IOException e) {
-      ErrorSystem.addException(e, bundle);
-    }
+    FlightImageUI.addError(imagemCpf, alertaCpf,
+        bundle.getString("criar.pessoafisica.cpf.alerta.erro"), bundle, conteudo);
+    repaint();
   }
 
-  private class Teste2 implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      JOptionPane.showMessageDialog(null,
-          bundle.getString("vender.passagem.valor"),
-          bundle.getString("vender.passagem.titulo"),
-          JOptionPane.INFORMATION_MESSAGE);
-
-      conteudo.add(solicitarCompra);
-      conteudo.repaint();
-      conteudo.validate();
-    }
+  // remove layout
+  protected void removeImageTelResidencialParseException() {
+    conteudo.remove(alertaTelResidencial);
+    conteudo.remove(imagemTelResidencial);
+    repaint();
   }
 
-  private class Teste implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      refresh();
-
-      tituloTipo.setBounds(60, 75, 100, 30);
-      conteudo.add(tituloCodigo);
-      conteudo.add(tituloTipo);
-      conteudo.add(tituloNome);
-      conteudo.add(tituloSobrenome);
-      conteudo.add(tituloNascimento);
-      conteudo.add(tituloCpf);
-      conteudo.add(tituloRg);
-      conteudo.add(tituloEndereco);
-      conteudo.add(tituloTelRes);
-      conteudo.add(tituloTelCelular);
-      conteudo.add(tituloEmail);
-      conteudo.add(tituloTratamento);
-      conteudo.add(tituloPagamento);
-
-      String item = (String) tipo.getSelectedItem();
-      tipoLabel = new JLabel(item);
-      tipoLabel.setBounds(200, 75, 300, 30);
-
-      conteudo.add(tipoLabel);
-      conteudo.add(codigo);
-      conteudo.add(nome);
-      conteudo.add(sobrenome);
-      conteudo.add(nascimento);
-      conteudo.add(cpf);
-      conteudo.add(rg);
-      conteudo.add(endereco);
-      conteudo.add(telResidencial);
-      conteudo.add(telCelular);
-      conteudo.add(email);
-      conteudo.add(tratamento);
-      conteudo.add(pagamento);
-      conteudo.add(cadastrar);
-
-      conteudo.repaint();
-      conteudo.validate();
-    }
-  }
-
-  public void refresh() {
-    conteudo.removeAll();
-    conteudo.validate();
-    conteudo.repaint();
+  protected void removeImageTelCelularParseException() {
+    conteudo.remove(alertaTelCelular);
+    conteudo.remove(imagemTelCelular);
+    repaint();
   }
 
 }

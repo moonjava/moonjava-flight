@@ -26,6 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.joda.time.LocalDate;
+
 import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
 import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.PessoaFisica;
@@ -33,6 +35,7 @@ import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.usuario.AtualizarUsuarioUI;
 
@@ -158,19 +161,78 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
   private class EnviarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
+      String maskNascimento = "  /  /    ";
+      String maskCpf = "   .   .   -  ";
+
       RequestParamWrapper requestPf = getParametersPessoaFisica();
+      String nome = requestPf.stringParam("nome");
+      String sobrenome = requestPf.stringParam("sobrenome");
+      String nascimento = requestPf.stringParam("nascimento");
+      String cpf = requestPf.stringParam("cpf");
+      String rg = requestPf.stringParam("rg");
+      String endereco = requestPf.stringParam("endereco");
+      String telResidencial = requestPf.stringParam("telResidencial");
+      String telCelular = requestPf.stringParam("telCelular");
+
       RequestParamWrapper requestUsu = getParametersUsuario();
+      String login = requestUsu.stringParam("login");
+      String senha = requestUsu.stringParam("senha");
 
-      PessoaFisica pFisica = new PessoaFisicaControlUpdate(requestPf)
-          .createInstance();
-      new PessoaFisicaDAO().atualizar(pFisica);
+      RequestParamWrapper text = getTexts();
+      String textNome = text.stringParam("nome");
+      String textSobrenome = text.stringParam("sobrenome");
+      String textRg = text.stringParam("rg");
+      String textEndereco = text.stringParam("endereco");
+      String textTelResidencial = text.stringParam("telResidencial");
+      String textTelCelular = text.stringParam("telCelular");
+      String textLogin = text.stringParam("login");
 
-      Usuario usuario = new UsuarioControlUpdate(requestUsu)
-          .createInstance();
-      new UsuarioDAO().atualizar(usuario);
+      // Algo foi digitado
+      if (!nome.equals(textNome) && !sobrenome.equals(textSobrenome) &&
+          !nascimento.equals(maskNascimento) && !cpf.equals(maskCpf) &&
+          !rg.equals(textRg) && !endereco.equals(textEndereco) &&
+          !telResidencial.equals(textTelResidencial) && !telCelular.equals(textTelCelular) &&
+          !login.equals(textLogin) &&
 
-      messageOK();
-      refresh();
+          !nome.isEmpty() && !sobrenome.isEmpty() && !rg.isEmpty() && !endereco.isEmpty() &&
+          !telResidencial.isEmpty() && !telCelular.isEmpty() && !login.isEmpty() &&
+          !senha.isEmpty()) {
+
+        // CPF continua invalido
+        CPF _cpf = null;
+        try {
+          _cpf = CPF.parse(cpf);
+        } catch (Exception e1) {
+          messageCpfInvalidExecption();
+          return;
+        }
+
+        int _telResidencial = 0;
+        int _telCelular = 0;
+        try {
+          _telResidencial = Integer.parseInt(telResidencial);
+          _telCelular = Integer.parseInt(telCelular);
+        } catch (Exception e2) {
+          messageTelParseExecption();
+          return;
+        }
+
+        LocalDate date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
+
+        requestPf.set("nascimento", date);
+        requestPf.set("cpf", _cpf.getDigito());
+        requestPf.set("telResidencial", _telResidencial);
+        requestPf.set("telCelular", _telCelular);
+
+        PessoaFisica pFisica = new PessoaFisicaControlUpdate(requestPf).createInstance();
+        new PessoaFisicaDAO().atualizar(pFisica);
+
+        Usuario usuario = new UsuarioControlUpdate(requestUsu).createInstance();
+        new UsuarioDAO().atualizar(usuario);
+
+        messageOK();
+        refresh();
+      }
     }
   }
 }

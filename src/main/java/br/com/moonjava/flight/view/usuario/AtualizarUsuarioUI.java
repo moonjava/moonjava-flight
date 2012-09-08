@@ -37,12 +37,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import org.joda.time.LocalDate;
-
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.model.base.Usuario;
-import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.JTextFieldLimit;
@@ -92,7 +89,7 @@ public class AtualizarUsuarioUI {
   private JLabel tituloSenha;
 
   public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-                            JButton atualizar, JButton deletar) {
+      JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -103,18 +100,29 @@ public class AtualizarUsuarioUI {
 
   public void mainMenu() {
     // Titulos
-    tituloCodigo = new JLabel(bundle.getString("criar.usuario.titulo.codigo"));
-    tituloNome = new JLabel(bundle.getString("criar.pessoafisica.titulo.nome"));
-    tituloSobrenome = new JLabel(bundle.getString("criar.pessoafisica.titulo.sobrenome"));
-    tituloNascimento = new JLabel(bundle.getString("criar.pessoafisica.titulo.nascimento"));
-    tituloCpf = new JLabel(bundle.getString("criar.pessoafisica.titulo.cpf"));
+    tituloCodigo = new JLabel(
+        bundle.getString("criar.usuario.titulo.codigo"));
+    tituloNome = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.nome"));
+    tituloSobrenome = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.sobrenome"));
+    tituloNascimento = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.nascimento"));
+    tituloCpf = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.cpf"));
     tituloRg = new JLabel(bundle.getString("criar.pessoafisica.titulo.rg"));
-    tituloEndereco = new JLabel(bundle.getString("criar.pessoafisica.titulo.endereco"));
-    tituloTelRes = new JLabel(bundle.getString("criar.pessoafisica.titulo.telResidencial"));
-    tituloTelCelular = new JLabel(bundle.getString("criar.pessoafisica.titulo.telCelular"));
-    tituloEmail = new JLabel(bundle.getString("criar.pessoafisica.titulo.email"));
-    tituloPerfil = new JLabel(bundle.getString("criar.usuario.titulo.perfil"));
-    tituloLogin = new JLabel(bundle.getString("criar.usuario.titulo.usuario"));
+    tituloEndereco = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.endereco"));
+    tituloTelRes = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.telResidencial"));
+    tituloTelCelular = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.telCelular"));
+    tituloEmail = new JLabel(
+        bundle.getString("criar.pessoafisica.titulo.email"));
+    tituloPerfil = new JLabel(
+        bundle.getString("criar.usuario.titulo.perfil"));
+    tituloLogin = new JLabel(
+        bundle.getString("criar.usuario.titulo.usuario"));
     tituloSenha = new JLabel(bundle.getString("criar.usuario.titulo.senha"));
 
     // Botoes e caixas de textos
@@ -129,11 +137,7 @@ public class AtualizarUsuarioUI {
     login = new JTextField();
     senha = new JPasswordField();
 
-    Perfil[] val = Perfil.values();
-    String[] perfis = new String[val.length];
-    for (int i = 0; i < perfis.length; i++) {
-      perfis[i] = val[i].setBundle(bundle);
-    }
+    Perfil[] perfis = Perfil.values();
     perfil = new JComboBox(perfis);
 
     try {
@@ -252,19 +256,15 @@ public class AtualizarUsuarioUI {
   public RequestParamWrapper getParametersPessoaFisica() {
     RequestParamWrapper request = new RequestParamWrapper();
 
-    LocalDate date = FormatDateTime.parseToLocalDate(nascimento.getText(), bundle.getLocale()
-        .getCountry());
-    CPF _cpf = CPF.parse(cpf.getText());
-
     request.set("id", pf.getId());
     request.set("nome", nome.getText());
     request.set("sobrenome", sobrenome.getText());
-    request.set("nascimento", date);
-    request.set("cpf", _cpf.getDigito());
+    request.set("nascimento", nascimento.getText());
+    request.set("cpf", cpf.getText());
     request.set("rg", rg.getText());
     request.set("endereco", endereco.getText());
-    request.set("telResidencial", Integer.parseInt(telResidencial.getText()));
-    request.set("telCelular", Integer.parseInt(telCelular.getText()));
+    request.set("telResidencial", telResidencial.getText());
+    request.set("telCelular", telCelular.getText());
     request.set("email", email.getText());
 
     return request;
@@ -279,6 +279,18 @@ public class AtualizarUsuarioUI {
     request.set("login", login.getText());
     request.set("senha", String.valueOf(senha.getPassword()));
 
+    return request;
+  }
+
+  public RequestParamWrapper getTexts() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("nome", bundle.getString("criar.pessoafisica.antes.nome"));
+    request.set("sobrenome", bundle.getString("criar.pessoafisica.antes.sobrenome"));
+    request.set("rg", bundle.getString("criar.pessoafisica.antes.rg"));
+    request.set("endereco", bundle.getString("criar.pessoafisica.antes.endereco"));
+    request.set("telResidencial", bundle.getString("criar.pessoafisica.antes.telResidencial"));
+    request.set("telCelular", bundle.getString("criar.pessoafisica.antes.telCelular"));
+    request.set("login", bundle.getString("criar.usuario.antes.login"));
     return request;
   }
 
@@ -303,22 +315,6 @@ public class AtualizarUsuarioUI {
     perfil.setSelectedItem(usuario.getPerfil());
     login.setText(usuario.getLogin());
     senha.setText(usuario.getSenha());
-  }
-
-  public RequestParamWrapper getTexts() {
-    RequestParamWrapper request = new RequestParamWrapper();
-    request.set("nome", bundle.getString("criar.pessoafisica.antes.nome"));
-    request.set("sobrenome",
-        bundle.getString("criar.pessoafisica.antes.sobrenome"));
-    request.set("rg", bundle.getString("criar.pessoafisica.antes.rg"));
-    request.set("endereco",
-        bundle.getString("criar.pessoafisica.antes.endereco"));
-    request.set("telResidencial",
-        bundle.getString("criar.pessoafisica.antes.telResidencial"));
-    request.set("telCelular",
-        bundle.getString("criar.pessoafisica.antes.telCelular"));
-    request.set("login", bundle.getString("criar.usuario.antes.login"));
-    return request;
   }
 
   public void showAll() {
@@ -399,14 +395,14 @@ public class AtualizarUsuarioUI {
 
   public void messageFailed() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("criar.usuario.joption.tempo"),
-        bundle.getString("criar.usuario.joption.titulo"),
+        bundle.getString("detalhes.usuario.joption.tempo"),
+        bundle.getString("detalhes.usuario.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
 
   public void messageOK() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("criar.usuario.sucesso"), "OK",
+        bundle.getString("atualizar.usuario.sucesso"), "OK",
         JOptionPane.INFORMATION_MESSAGE);
   }
 

@@ -34,7 +34,6 @@ import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.ConsultarVooUI;
-import br.com.moonjava.flight.view.voo.ControlarStatusController;
 
 /**
  * @version 1.0 Aug 29, 2012

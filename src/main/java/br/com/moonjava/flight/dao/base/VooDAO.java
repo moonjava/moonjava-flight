@@ -99,6 +99,17 @@ public class VooDAO implements Voo.Jdbc {
   }
 
   @Override
+  public List<Voo> consultaPainel() {
+    return query()
+
+        .with("where 1 = 1")
+        .with("order by STATUS asc")
+        .with("limit 0,15")
+
+        .andList();
+  }
+
+  @Override
   public Voo consultarPorId(int id) {
     return query()
 

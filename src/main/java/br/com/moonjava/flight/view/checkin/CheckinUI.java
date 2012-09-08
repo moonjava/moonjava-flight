@@ -13,47 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.passagem;
+package br.com.moonjava.flight.view.checkin;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
 import java.util.ResourceBundle;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+
+import br.com.moonjava.flight.controller.base.CheckinController;
 
 /**
- * @version 1.0 Aug 31, 2012
+ * @version 1.0 Sep 8, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class PassagemHandler implements MenuListener, ActionListener {
+public class CheckinUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private JPanel subConteudo;
 
-  public PassagemHandler(JPanel conteudo, ResourceBundle bundle) {
+  public CheckinUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+
+    mainMenu();
   }
 
-  @Override
-  public void menuCanceled(MenuEvent e) {
-  }
+  private void mainMenu() {
+    conteudo.removeAll();
+    conteudo.validate();
+    conteudo.repaint();
 
-  @Override
-  public void menuDeselected(MenuEvent e) {
-  }
+    subConteudo = new JPanel(null);
+    JLabel titulo = new JLabel(bundle.getString("checkin.titulo"));
 
-  @Override
-  public void menuSelected(MenuEvent e) {
-    new PassagemUI(conteudo, bundle);
-  }
+    titulo.setFont(new Font("Arial Bold", 0, 14));
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    new PassagemUI(conteudo, bundle);
+    titulo.setEnabled(false);
+
+    titulo.setBounds(0, 30, 100, 30);
+    subConteudo.setBounds(200, 30, 960, 600);
+
+    conteudo.add(titulo);
+    conteudo.add(subConteudo);
+
+    new CheckinController(subConteudo, bundle);
   }
 
 }

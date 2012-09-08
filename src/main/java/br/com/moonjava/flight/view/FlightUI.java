@@ -42,6 +42,8 @@ import org.joda.time.DateTime;
 import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.view.aeronave.AeronaveHandler;
+import br.com.moonjava.flight.view.checkin.CheckinHandler;
+import br.com.moonjava.flight.view.passagem.PassagemHandler;
 import br.com.moonjava.flight.view.usuario.UsuarioHandler;
 import br.com.moonjava.flight.view.voo.VooHandler;
 
@@ -119,6 +121,8 @@ public class FlightUI {
     body.add(conteudo);
 
     voo.addMenuListener(new VooHandler(conteudo, bundle));
+    passagem.addMenuListener(new PassagemHandler(conteudo, bundle));
+    checkin.addMenuListener(new CheckinHandler(conteudo, bundle));
     aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
     usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
   }
@@ -157,6 +161,8 @@ public class FlightUI {
     conteudo.add(imagem);
 
     voo.addActionListener(new VooHandler(conteudo, bundle));
+    passagem.addActionListener(new PassagemHandler(conteudo, bundle));
+    checkin.addActionListener(new CheckinHandler(conteudo, bundle));
     aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
     usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
   }

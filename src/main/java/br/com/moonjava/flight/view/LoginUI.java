@@ -158,7 +158,7 @@ public class LoginUI {
   }
 
   protected void incorrectLoginMessage() {
-    alerta.setText(bundle.getString("login.incorrect.message"));
+    alerta.setText(bundle.getString("login.incorreto.messagem"));
   }
 
   protected RequestParamWrapper getLogin() {

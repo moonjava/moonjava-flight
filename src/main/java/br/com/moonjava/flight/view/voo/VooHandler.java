@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import br.com.moonjava.flight.model.base.Usuario;
+
 /**
  * @version 1.0 Aug 17, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -32,10 +34,12 @@ public class VooHandler implements ActionListener, MenuListener {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private final Usuario usuarioLogado;
 
-  public VooHandler(JPanel conteudo, ResourceBundle bundle) {
+  public VooHandler(JPanel conteudo, ResourceBundle bundle, Usuario usuarioLogado) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+    this.usuarioLogado = usuarioLogado;
   }
 
   @Override
@@ -48,12 +52,12 @@ public class VooHandler implements ActionListener, MenuListener {
 
   @Override
   public void menuSelected(MenuEvent e) {
-    new VooUI(conteudo, bundle);
+    new VooUI(conteudo, bundle, usuarioLogado);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    new VooUI(conteudo, bundle);
+    new VooUI(conteudo, bundle, usuarioLogado);
   }
 
 }

@@ -16,7 +16,6 @@ public class PainelController extends PainelDeDecolagemUI {
   }
 
   public void painelHandler() {
-
     VooDAO dao = new VooDAO();
     List<Voo> lista = dao.consultaPainel();
     showList(lista);

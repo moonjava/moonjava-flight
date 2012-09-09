@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 
 import br.com.moonjava.flight.controller.financeiro.CartaoController;
 import br.com.moonjava.flight.controller.financeiro.ChequeController;
+import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
@@ -40,6 +41,8 @@ import br.com.moonjava.flight.view.passagem.VenderPassagemUI;
  */
 public class VenderPassagemController extends VenderPassagemUI {
 
+  private Voo voo;
+
   public VenderPassagemController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
 
@@ -53,6 +56,11 @@ public class VenderPassagemController extends VenderPassagemUI {
     addQuantidadeOKListener(new QuantidadeOKHandler());
     addSolicitarCompraListener(new SolicitarCompraHandler());
     addConcluirListener(new ConcluirHandler());
+  }
+
+  public VenderPassagemController(JPanel conteudo, ResourceBundle bundle, Voo voo) {
+    this(conteudo, bundle);
+    this.voo = voo;
   }
 
   private class FocusTelResidencialHandler extends FlightFocusLostListener {
@@ -153,6 +161,7 @@ public class VenderPassagemController extends VenderPassagemUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       addSolicitarCompraButton();
+      messageFailedQtd();
     }
   }
 

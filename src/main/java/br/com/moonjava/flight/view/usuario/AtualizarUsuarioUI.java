@@ -90,7 +90,7 @@ public class AtualizarUsuarioUI {
   private JLabel tituloSenha;
 
   public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-      JButton atualizar, JButton deletar) {
+                            JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;

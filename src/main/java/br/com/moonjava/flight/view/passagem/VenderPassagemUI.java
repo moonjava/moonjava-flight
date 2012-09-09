@@ -340,8 +340,14 @@ public class VenderPassagemUI extends AbstractFlightUI {
         JOptionPane.INFORMATION_MESSAGE);
 
     conteudo.add(solicitarCompra);
-    conteudo.repaint();
-    conteudo.validate();
+    repaint();
+  }
+
+  protected void messageFailedQtd() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("vender.passagem.quantidade.erro"),
+        bundle.getString("vender.passagem.titulo"),
+        JOptionPane.QUESTION_MESSAGE);
   }
 
   protected void addForm() {

@@ -2,6 +2,7 @@ package br.com.moonjava.flight.view.painel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -37,6 +38,7 @@ public class PainelDeDecolagemUI {
     tabela.setBorder(new LineBorder(Color.black));
     tabela.setGridColor(Color.black);
     tabela.setShowGrid(true);
+    tabela.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);

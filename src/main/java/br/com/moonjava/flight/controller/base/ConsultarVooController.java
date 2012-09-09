@@ -169,7 +169,15 @@ public class ConsultarVooController extends ConsultarVooUI {
   private class ItemTableSelectedPassagemHandler implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
-      enableVenderButton();
+      if (e.getClickCount() == 2) {
+        int[] rows = getTable().getSelectedRows();
+        if (rows.length == 1) {
+          Voo pojo = list.get(rows[0]);
+          new VenderPassagemController(conteudo, bundle, pojo);
+        } else {
+          messageSelectFailed();
+        }
+      }
     }
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -193,7 +201,6 @@ public class ConsultarVooController extends ConsultarVooUI {
 
       if (rows.length == 1) {
         Voo pojo = list.get(rows[0]);
-        System.out.println(pojo.getCodigo());
         new VenderPassagemController(conteudo, bundle, pojo);
       } else {
         messageSelectFailed();

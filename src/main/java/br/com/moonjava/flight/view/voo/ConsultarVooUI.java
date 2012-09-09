@@ -16,6 +16,7 @@
 package br.com.moonjava.flight.view.voo;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -136,12 +137,12 @@ public class ConsultarVooUI {
     JLabel tituloStatus = new JLabel(bundle.getString("consultar.voo.titulo.status"));
     filtrar = new JButton(bundle.getString("consultar.voo.campo"));
     vender = new JButton(bundle.getString("consultar.voo.vender.passagem"));
-    vender.setEnabled(false);
 
     tabela = new JTable();
-    tabela.setBorder(new LineBorder(Color.black));
-    tabela.setGridColor(Color.black);
+    tabela.setBorder(new LineBorder(Color.BLACK));
+    tabela.setGridColor(Color.BLACK);
     tabela.setShowGrid(true);
+    tabela.setFont(new Font("Century Gothic", Font.ITALIC, 13));
 
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
@@ -180,7 +181,6 @@ public class ConsultarVooUI {
     conteudo.add(imagem);
     conteudo.add(filtrar);
     conteudo.add(scroll);
-    conteudo.add(vender);
 
     if (getCountry().equals("US")) {
 
@@ -265,11 +265,9 @@ public class ConsultarVooUI {
     atualizar.setEnabled(true);
     deletar.setEnabled(true);
     controlarStatus.setEnabled(true);
-    vender.setEnabled(true);
-  }
+    conteudo.add(vender);
 
-  protected void enableVenderButton() {
-    vender.setEnabled(true);
+    repaint();
   }
 
   protected void disableButtons() {

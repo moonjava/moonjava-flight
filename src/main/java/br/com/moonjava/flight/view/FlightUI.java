@@ -39,7 +39,9 @@ import javax.swing.Timer;
 
 import org.joda.time.DateTime;
 
+import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.ErrorSystem;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.view.aeronave.AeronaveHandler;
 import br.com.moonjava.flight.view.checkin.CheckinHandler;
@@ -55,7 +57,6 @@ import br.com.moonjava.flight.view.voo.VooHandler;
 public class FlightUI {
 
   private final ResourceBundle bundle;
-
   private JFrame frame;
   private JPanel body;
   private JPanel conteudo;
@@ -88,8 +89,6 @@ public class FlightUI {
     JMenu voo = new JMenu(bundle.getString("menubar.voo"));
     JMenu passagem = new JMenu(bundle.getString("menubar.passagem"));
     JMenu checkin = new JMenu(bundle.getString("menubar.checkin"));
-    JMenu aeronave = new JMenu(bundle.getString("menubar.aeronave"));
-    JMenu usuario = new JMenu(bundle.getString("menubar.usuario"));
     JMenu sobre = new JMenu(bundle.getString("menubar.sobre"));
     JMenu sair = new JMenu(bundle.getString("menubar.sair"));
     relogio = new JMenu();
@@ -111,8 +110,19 @@ public class FlightUI {
     menuBar.add(voo);
     menuBar.add(passagem);
     menuBar.add(checkin);
-    menuBar.add(aeronave);
-    menuBar.add(usuario);
+
+    // Adiciona botoes caso supervisor
+    if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
+      JMenu aeronave = new JMenu(bundle.getString("menubar.aeronave"));
+      JMenu usuario = new JMenu(bundle.getString("menubar.usuario"));
+
+      menuBar.add(usuario);
+      menuBar.add(aeronave);
+
+      aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
+      usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
+    }
+
     menuBar.add(sobre);
     menuBar.add(sair);
     menuBar.add(relogio);
@@ -121,11 +131,9 @@ public class FlightUI {
     body.add(rodape);
     body.add(conteudo);
 
-    voo.addMenuListener(new VooHandler(conteudo, bundle));
+    voo.addMenuListener(new VooHandler(conteudo, bundle, usuarioLogado));
     passagem.addMenuListener(new PassagemHandler(conteudo, bundle));
     checkin.addMenuListener(new CheckinHandler(conteudo, bundle));
-    aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
     sobre.addMenuListener(new SobreHandler(bundle));
     sair.addMenuListener(new SairHandler());
   }
@@ -133,41 +141,47 @@ public class FlightUI {
   private void mainMenu() {
     Image image = null;
     InputStream stream = getClass().getResourceAsStream("/img/aviao_principal.svg.png");
-
     try {
       image = ImageIO.read(stream);
     } catch (IOException e) {
-      e.printStackTrace();
+      ErrorSystem.addException(e, bundle);
     }
-
     ImageIcon imageIcon = new ImageIcon(image);
     JLabel imagem = new JLabel(imageIcon);
     JButton voo = new JButton(bundle.getString("menubar.voo"));
     JButton passagem = new JButton(bundle.getString("menubar.passagem"));
     JButton checkin = new JButton(bundle.getString("menubar.checkin"));
-    JButton aeronave = new JButton(bundle.getString("menubar.aeronave"));
-    JButton usuario = new JButton(bundle.getString("menubar.usuario"));
 
     voo.setBounds(50, 80, 200, 50);
     passagem.setBounds(50, 150, 200, 50);
     checkin.setBounds(50, 220, 200, 50);
-    aeronave.setBounds(50, 290, 200, 50);
-    usuario.setBounds(50, 360, 200, 50);
+
     imagem.setBounds(50, 50, 1100, 600);
     imagem.setBackground(Color.DARK_GRAY);
 
     conteudo.add(voo);
     conteudo.add(passagem);
     conteudo.add(checkin);
-    conteudo.add(aeronave);
-    conteudo.add(usuario);
     conteudo.add(imagem);
 
-    voo.addActionListener(new VooHandler(conteudo, bundle));
+    voo.addActionListener(new VooHandler(conteudo, bundle, usuarioLogado));
     passagem.addActionListener(new PassagemHandler(conteudo, bundle));
     checkin.addActionListener(new CheckinHandler(conteudo, bundle));
-    aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
-    usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
+
+    // Adiciona botoes caso supervisor
+    if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
+      JButton aeronave = new JButton(bundle.getString("menubar.aeronave"));
+      JButton usuario = new JButton(bundle.getString("menubar.usuario"));
+
+      aeronave.setBounds(50, 290, 200, 50);
+      usuario.setBounds(50, 360, 200, 50);
+
+      conteudo.add(aeronave);
+      conteudo.add(usuario);
+
+      aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
+      usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
+    }
   }
 
   private void showAll() {

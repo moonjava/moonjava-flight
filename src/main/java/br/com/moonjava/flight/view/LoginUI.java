@@ -65,8 +65,8 @@ public class LoginUI {
     showAll();
   }
 
-  public void window() {
-    conteudo = new JFrame("Flight > Login");
+  private void window() {
+    conteudo = new JFrame("Flight :: Flight");
     conteudo.setLayout(new BorderLayout());
     conteudo.getContentPane().setBackground(Color.WHITE);
 
@@ -130,7 +130,8 @@ public class LoginUI {
     conteudo.add(panel3, BorderLayout.WEST);
     conteudo.add(panel4, BorderLayout.SOUTH);
   }
-  public void showAll() {
+
+  private void showAll() {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
     int height = dimension.height;
@@ -144,23 +145,23 @@ public class LoginUI {
     conteudo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  public void addLogarListener(ActionListener a) {
+  protected void addLogarListener(ActionListener a) {
     if (login.getText() != null && (String.valueOf(senha.getPassword()) != null)) {
       entrar.addActionListener(a);
     }
   }
 
-  public void addLogarKeyListener(KeyListener a) {
+  protected void addLogarKeyListener(KeyListener a) {
     if (login.getText() != null && (String.valueOf(senha.getPassword()) != null)) {
       senha.addKeyListener(a);
     }
   }
 
-  public void incorrectLoginMessage() {
-    alerta.setText(bundle.getString("login.incorrect.message"));
+  protected void incorrectLoginMessage() {
+    alerta.setText(bundle.getString("login.incorreto.messagem"));
   }
 
-  public RequestParamWrapper getLogin() {
+  protected RequestParamWrapper getLogin() {
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("login", login.getText());
     request.set("senha", String.valueOf(senha.getPassword()));
@@ -168,7 +169,7 @@ public class LoginUI {
     return request;
   }
 
-  public void dispose() {
+  protected void dispose() {
     conteudo.dispose();
   }
 

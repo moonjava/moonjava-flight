@@ -26,14 +26,14 @@ public class UsuarioModel implements Usuario {
   private int id;
   private String codigo;
   private PessoaFisica pessoaFisica;
-  private Perfil cargo;
+  private Perfil perfil;
   private String login;
   private String senha;
 
   public UsuarioModel(Builder builder) {
     this.codigo = builder.getCodigo();
     this.pessoaFisica = builder.getPessoaFisica();
-    this.cargo = builder.getPerfil();
+    this.perfil = builder.getPerfil();
     this.login = builder.getLogin();
     this.senha = builder.getSenha();
   }
@@ -59,7 +59,7 @@ public class UsuarioModel implements Usuario {
 
   @Override
   public Perfil getPerfil() {
-    return cargo;
+    return perfil;
   }
 
   @Override

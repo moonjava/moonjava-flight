@@ -58,7 +58,7 @@ public class IdiomaUI implements MouseListener {
   }
 
   private void window() {
-    idioma = new JFrame("FLIGHT :: FLIGHT");
+    idioma = new JFrame("Flight :: Flight");
     body = new JPanel(null);
     conteudo = new JPanel(null);
 

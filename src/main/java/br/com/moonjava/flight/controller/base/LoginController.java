@@ -41,16 +41,19 @@ public class LoginController extends LoginUI {
   }
 
   private class LogarHandler extends FlightKeyPressedListener implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
       logar();
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
       if (e.getKeyCode() == 10) {
         logar();
       }
     }
+
     private void logar() {
       RequestParamWrapper request = getLogin();
       UsuarioDAO dao = new UsuarioDAO();
@@ -58,6 +61,7 @@ public class LoginController extends LoginUI {
 
       if (usuarioLogado != null) {
         new FlightController(usuarioLogado, bundle);
+        new PainelController(bundle);
         dispose();
       } else {
         incorrectLoginMessage();

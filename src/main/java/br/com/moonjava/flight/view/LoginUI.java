@@ -134,7 +134,7 @@ public class LoginUI {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
     int height = dimension.height;
-    int frameWidth = 760;
+    int frameWidth = 765;
     int frameHeight = 497;
 
     conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));

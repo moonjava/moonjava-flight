@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -122,7 +123,9 @@ public class CriarUsuarioUI {
     for (int i = 0; i < perfis.length; i++) {
       perfis[i] = val[i].setBundle(bundle);
     }
-    perfil = new JComboBox(perfis);
+
+    DefaultComboBoxModel model = new DefaultComboBoxModel(perfis);
+    perfil = new JComboBox(model);
 
     try {
       nascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
@@ -288,6 +291,9 @@ public class CriarUsuarioUI {
   }
 
   public RequestParamWrapper getParameters() {
+    Perfil[] val = Perfil.values();
+    Perfil item = val[perfil.getSelectedIndex()];
+
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("codigo", codigo.getText());
     request.set("nome", nome.getText());
@@ -299,7 +305,7 @@ public class CriarUsuarioUI {
     request.set("telResidencial", telResidencial.getText());
     request.set("telCelular", telCelular.getText());
     request.set("email", email.getText());
-    request.set("perfil", perfil.getSelectedItem());
+    request.set("perfil", item);
     request.set("login", login.getText());
     request.set("senha", String.valueOf(senha.getPassword()));
     return request;

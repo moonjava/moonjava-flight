@@ -59,7 +59,7 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
   }
 
   public void setAttributes(JTable tabela, JPanel subConteudo,
-      ResourceBundle bundle, JButton atualizar, JButton deletar) {
+                            ResourceBundle bundle, JButton atualizar, JButton deletar) {
 
     this.tabela = tabela;
 

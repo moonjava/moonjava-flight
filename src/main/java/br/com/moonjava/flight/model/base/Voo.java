@@ -64,6 +64,8 @@ public interface Voo {
 
     List<Voo> consultarPorAeronaveId(RequestParam request);
 
+    List<Voo> consultaPainel();
+
     boolean atualizar(Voo voo);
 
     void deletar(int id);

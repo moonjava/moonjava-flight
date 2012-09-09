@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -137,8 +138,14 @@ public class AtualizarUsuarioUI {
     login = new JTextField();
     senha = new JPasswordField();
 
-    Perfil[] perfis = Perfil.values();
-    perfil = new JComboBox(perfis);
+    Perfil[] val = Perfil.values();
+    String[] perfis = new String[val.length];
+    for (int i = 0; i < perfis.length; i++) {
+      perfis[i] = val[i].setBundle(bundle);
+    }
+
+    DefaultComboBoxModel model = new DefaultComboBoxModel(perfis);
+    perfil = new JComboBox(model);
 
     try {
       nascimento = new JFormattedTextField(
@@ -272,10 +279,12 @@ public class AtualizarUsuarioUI {
 
   public RequestParamWrapper getParametersUsuario() {
     RequestParamWrapper request = new RequestParamWrapper();
+    Perfil[] val = Perfil.values();
+    Perfil item = val[perfil.getSelectedIndex()];
 
     request.set("id", usuario.getId());
     request.set("codigo", codigo.getText());
-    request.set("perfil", perfil.getSelectedItem());
+    request.set("perfil", item);
     request.set("login", login.getText());
     request.set("senha", String.valueOf(senha.getPassword()));
 

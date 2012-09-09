@@ -25,8 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.moonjava.flight.controller.base.CancelarPassagemController;
+import br.com.moonjava.flight.controller.base.ConsultarVooController;
 import br.com.moonjava.flight.controller.base.TransferirPassagemController;
-import br.com.moonjava.flight.controller.base.VenderPassagemController;
 
 /**
  * @version 1.0 Aug 31, 2012
@@ -81,7 +81,7 @@ public class PassagemUI {
     vender.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        new VenderPassagemController(subConteudo, bundle);
+        new ConsultarVooController(subConteudo, bundle);
       }
     });
 

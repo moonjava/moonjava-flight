@@ -54,17 +54,22 @@ public class ConsultarVooUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
-  private final JButton atualizar;
-  private final JButton deletar;
-  private final JButton controlarStatus;
+  private JButton atualizar;
+  private JButton deletar;
+  private JButton controlarStatus;
+
   private JButton filtrar;
+  private JButton vender;
+
   private JTextField origem;
   private JTextField destino;
   private JFormattedTextField partida;
   private JFormattedTextField chegada;
+
   private JComboBox status;
   private JComboBox timePartida;
   private JComboBox timeChegada;
+
   private JTable tabela;
 
   public ConsultarVooUI(JPanel conteudo,
@@ -83,7 +88,14 @@ public class ConsultarVooUI {
     mainMenu();
   }
 
-  public void mainMenu() {
+  public ConsultarVooUI(JPanel conteudo, ResourceBundle bundle) {
+    this.conteudo = conteudo;
+    this.bundle = bundle;
+    refresh();
+    mainMenu();
+  }
+
+  private void mainMenu() {
     Image image = null;
     InputStream stream = getClass().getResourceAsStream("/img/search.png");
     try {
@@ -123,6 +135,8 @@ public class ConsultarVooUI {
     JLabel tituloChegada = new JLabel(bundle.getString("consultar.voo.titulo.chegada"));
     JLabel tituloStatus = new JLabel(bundle.getString("consultar.voo.titulo.status"));
     filtrar = new JButton(bundle.getString("consultar.voo.campo"));
+    vender = new JButton(bundle.getString("consultar.voo.vender.passagem"));
+    vender.setEnabled(false);
 
     tabela = new JTable();
     tabela.setBorder(new LineBorder(Color.black));
@@ -132,8 +146,8 @@ public class ConsultarVooUI {
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
     scroll.getViewport().add(tabela);
-    scroll.setBounds(130, 100, 750, 450);
-    scroll.setSize(750, 450);
+    scroll.setBounds(130, 100, 750, 400);
+    scroll.setSize(750, 400);
 
     imagem.setBounds(100, 70, 30, 30);
 
@@ -149,6 +163,7 @@ public class ConsultarVooUI {
     chegada.setBounds(490, 70, 130, 30);
     status.setBounds(630, 70, 150, 30);
     filtrar.setBounds(800, 70, 80, 30);
+    vender.setBounds(700, 500, 180, 30);
 
     conteudo.add(tituloOrigem);
     conteudo.add(tituloDestino);
@@ -165,12 +180,13 @@ public class ConsultarVooUI {
     conteudo.add(imagem);
     conteudo.add(filtrar);
     conteudo.add(scroll);
+    conteudo.add(vender);
 
     if (getCountry().equals("US")) {
 
       String[] ampm = {
-        "AM",
-        "PM" };
+          "AM",
+          "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -187,20 +203,24 @@ public class ConsultarVooUI {
     conteudo.validate();
   }
 
-  public String getCountry() {
+  protected String getCountry() {
     return bundle.getLocale().getCountry();
   }
 
-  public void addConsultarListener(ActionListener a) {
+  protected void addConsultarListener(ActionListener a) {
     filtrar.addActionListener(a);
   }
 
-  public void addItemTableSelectedListener(MouseListener a) {
+  protected void addVenderPassagemListener(ActionListener a) {
+    vender.addActionListener(a);
+  }
+
+  protected void addItemTableSelectedListener(MouseListener a) {
     tabela.addMouseListener(a);
   }
 
   // Parameters
-  public RequestParamWrapper getParameters() {
+  protected RequestParamWrapper getParameters() {
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("origem", origem.getText());
     request.set("destino", destino.getText());
@@ -214,12 +234,12 @@ public class ConsultarVooUI {
     return request;
   }
 
-  public JTable getTable() {
+  protected JTable getTable() {
     return tabela;
   }
 
   // Frames/Layouts
-  public boolean showList(List<Voo> lista) {
+  protected boolean showList(List<Voo> lista) {
     VooTableModel voos = new VooTableModel(lista, bundle);
     tabela.setModel(voos);
     partida.setText("");
@@ -227,31 +247,43 @@ public class ConsultarVooUI {
     return tabela.getRowCount() == 0 ? true : false;
   }
 
-  public void messageFailed() {
+  protected void messageFailed() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("consultar.voo.joption.err"),
         bundle.getString("consultar.voo.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
 
-  public void enableButtons() {
+  protected void messageSelectFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("consultar.voo.joption.err.selecao"),
+        bundle.getString("consultar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void enableButtons() {
     atualizar.setEnabled(true);
     deletar.setEnabled(true);
     controlarStatus.setEnabled(true);
+    vender.setEnabled(true);
   }
 
-  public void disableButtons() {
+  protected void enableVenderButton() {
+    vender.setEnabled(true);
+  }
+
+  protected void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
     controlarStatus.setEnabled(false);
   }
 
-  public void repaint() {
+  protected void repaint() {
     conteudo.repaint();
     conteudo.validate();
   }
 
-  public void refresh() {
+  protected void refresh() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();

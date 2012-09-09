@@ -44,9 +44,9 @@ public class ConsultarVooController extends ConsultarVooUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
-  private final JButton atualizar;
-  private final JButton deletar;
-  private final JButton status;
+  private JButton atualizar;
+  private JButton deletar;
+  private JButton status;
 
   private List<Voo> list;
 
@@ -62,9 +62,19 @@ public class ConsultarVooController extends ConsultarVooUI {
     this.atualizar = atualizar;
     this.deletar = deletar;
     this.status = status;
-
     addConsultarListener(new ConsultarHandler());
     addItemTableSelectedListener(new ItemTableSelectedHandler());
+    addVenderPassagemListener(new VenderPassagemHandler());
+  }
+
+  public ConsultarVooController(JPanel conteudo, ResourceBundle bundle) {
+    super(conteudo, bundle);
+
+    this.conteudo = conteudo;
+    this.bundle = bundle;
+    addConsultarListener(new ConsultarHandler());
+    addItemTableSelectedListener(new ItemTableSelectedPassagemHandler());
+    addVenderPassagemListener(new VenderPassagemHandler());
   }
 
   private class ConsultarHandler implements ActionListener {
@@ -153,6 +163,41 @@ public class ConsultarVooController extends ConsultarVooUI {
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+  }
+
+  private class ItemTableSelectedPassagemHandler implements MouseListener {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      enableVenderButton();
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+  }
+
+  private class VenderPassagemHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      // busca voo selecionada
+      int[] rows = getTable().getSelectedRows();
+
+      if (rows.length == 1) {
+        Voo pojo = list.get(rows[0]);
+        System.out.println(pojo.getCodigo());
+        new VenderPassagemController(conteudo, bundle, pojo);
+      } else {
+        messageSelectFailed();
+      }
     }
   }
 

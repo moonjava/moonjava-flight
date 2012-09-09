@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 
 import br.com.moonjava.flight.controller.base.ConsultarVooController;
 import br.com.moonjava.flight.controller.base.CriarVooController;
+import br.com.moonjava.flight.model.base.Perfil;
+import br.com.moonjava.flight.model.base.Usuario;
 
 /**
  * @version 1.0 Aug 17, 2012
@@ -36,6 +38,8 @@ public class VooUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private final Usuario usuarioLogado;
+
   private JPanel subConteudo;
   private JButton consultar;
   private JButton status;
@@ -43,9 +47,10 @@ public class VooUI {
   private JButton atualizar;
   private JButton deletar;
 
-  public VooUI(JPanel conteudo, ResourceBundle bundle) {
+  public VooUI(JPanel conteudo, ResourceBundle bundle, Usuario usuarioLogado) {
     this.conteudo = conteudo;
     this.bundle = bundle;
+    this.usuarioLogado = usuarioLogado;
 
     mainMenu();
   }
@@ -59,7 +64,6 @@ public class VooUI {
     JLabel titulo = new JLabel(bundle.getString("voo.titulo"));
 
     consultar = new JButton(bundle.getString("voo.consultar"));
-    cadastrar = new JButton(bundle.getString("voo.cadastrar"));
     status = new JButton(bundle.getString("voo.status"));
     atualizar = new JButton(bundle.getString("voo.atualizar"));
     deletar = new JButton(bundle.getString("voo.deletar"));
@@ -73,16 +77,11 @@ public class VooUI {
 
     titulo.setBounds(0, 30, 100, 30);
     consultar.setBounds(0, 70, 200, 50);
-    cadastrar.setBounds(0, 140, 200, 50);
-    status.setBounds(0, 210, 200, 50);
-    atualizar.setBounds(0, 280, 200, 50);
-    deletar.setBounds(0, 350, 200, 50);
     subConteudo.setBounds(200, 30, 960, 600);
 
     conteudo.add(titulo);
     conteudo.add(consultar);
     conteudo.add(status);
-    conteudo.add(cadastrar);
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
@@ -94,12 +93,29 @@ public class VooUI {
       }
     });
 
-    cadastrar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new CriarVooController(subConteudo, bundle, atualizar, deletar, status);
-      }
-    });
+    // Adiciona cadastrar se for Supervisor
+    if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
+      cadastrar = new JButton(bundle.getString("voo.cadastrar"));
+
+      cadastrar.setBounds(0, 140, 200, 50);
+      status.setBounds(0, 210, 200, 50);
+      atualizar.setBounds(0, 280, 200, 50);
+      deletar.setBounds(0, 350, 200, 50);
+
+      cadastrar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          new CriarVooController(subConteudo, bundle, atualizar, deletar, status);
+        }
+      });
+
+      conteudo.add(cadastrar);
+    } else {
+      status.setBounds(0, 140, 200, 50);
+      atualizar.setBounds(0, 210, 200, 50);
+      deletar.setBounds(0, 280, 200, 50);
+    }
+
   }
 
 }

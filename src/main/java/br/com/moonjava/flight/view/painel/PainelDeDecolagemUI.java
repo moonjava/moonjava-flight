@@ -2,13 +2,11 @@ package br.com.moonjava.flight.view.painel;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,8 +26,8 @@ public class PainelDeDecolagemUI {
     window();
   }
 
-  public void window() {
-    conteudo = new JFrame("Flight");
+  private void window() {
+    conteudo = new JFrame("Flight - " + bundle.getString("painel.titulo"));
     conteudo.getContentPane().setBackground(Color.DARK_GRAY);
 
     painel = new JPanel(null);
@@ -43,42 +41,31 @@ public class PainelDeDecolagemUI {
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
     scroll.getViewport().add(tabela);
-    scroll.setBounds(30, 45, 750, 400);
-    scroll.setSize(750, 400);
+    scroll.setBounds(30, 45, 1050, 400);
+    scroll.setSize(1050, 400);
 
-    Font font = new Font("Arial", Font.BOLD, 13);
-
-    JLabel titulo = new JLabel(bundle.getString("painel.titulo"));
-    titulo.setFont(font);
-    titulo.setBounds(340, 12, 180, 30);
-
-    painel.add(titulo);
     painel.add(scroll);
-
     conteudo.add(painel);
   }
-  public JTable getTable() {
-    return tabela;
-  }
 
-  public boolean showList(List<Voo> lista) {
+  protected boolean showList(List<Voo> lista) {
     PainelDeDecolagemTableModel voos = new PainelDeDecolagemTableModel(lista, bundle);
     tabela.setModel(voos);
     return tabela.getRowCount() == 0 ? true : false;
   }
 
-  public void showAll() {
+  protected void showAll() {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
     int height = dimension.height;
-    int frameWidth = 826;
+    int frameWidth = 1126;
     int frameHeight = 512;
 
-    conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2)
-        - (frameHeight / 2));
+    conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));
     conteudo.setSize(frameWidth, frameHeight);
-    conteudo.setResizable(true);
+    conteudo.setResizable(false);
     conteudo.setVisible(true);
     conteudo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
+
 }

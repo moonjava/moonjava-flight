@@ -123,8 +123,8 @@ public class IdiomaUI implements MouseListener {
   private static class ResourceControl extends ResourceBundle.Control {
     @Override
     public ResourceBundle newBundle(String baseName, Locale locale,
-                                    String format, ClassLoader loader,
-                                    boolean reload)
+        String format, ClassLoader loader,
+        boolean reload)
         throws IllegalAccessException, InstantiationException, IOException {
       String bundlename = toBundleName(baseName, locale);
       String resName = toResourceName(bundlename, "properties");
@@ -139,10 +139,10 @@ public class IdiomaUI implements MouseListener {
       bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
     }
     if (e.getSource() == ingles) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", Locale.US);
+      bundle = ResourceBundle.getBundle("idioma/arquivo_en_US", new ResourceControl());
     }
     if (e.getSource() == espanhol) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo", new Locale("es", "ES"));
+      bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
     }
     idioma.dispose();
     new LoginController(bundle);

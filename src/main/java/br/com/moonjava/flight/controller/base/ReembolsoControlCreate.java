@@ -68,4 +68,8 @@ public class ReembolsoControlCreate implements Reembolso.Builder {
     return request.intParam("conta");
   }
 
+  @Override
+  public double getValor() {
+    return request.doubleParam("valor");
+  }
 }

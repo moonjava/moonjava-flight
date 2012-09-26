@@ -57,11 +57,13 @@ public class TesteDeAtualizarReembolso {
     int banco = 99;
     int agencia = 999;
     int conta = 999999999;
+    double valor = 100.50;
 
     request.set("id", id);
     request.set("banco", banco);
     request.set("agencia", agencia);
     request.set("conta", conta);
+    request.set("valor", valor);
 
     Reembolso reembolso = new ReembolsoControlUpdate(request).createInstance();
 
@@ -71,5 +73,6 @@ public class TesteDeAtualizarReembolso {
     assertThat(res.getBanco(), equalTo(banco));
     assertThat(res.getAgencia(), equalTo(agencia));
     assertThat(res.getConta(), equalTo(conta));
+    assertThat(res.getValor(), equalTo(valor));
   }
 }

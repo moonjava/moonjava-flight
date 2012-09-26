@@ -1,17 +1,9 @@
-CREATE DATABASE FLIGHT;
-USE FLIGHT;
-SET STORAGE_ENGINE=InnoDB;
-SET NAMES 'utf8';
+drop database if exists FLIGHT;
+create database FLIGHT;
+use FLIGHT;
+set STORAGE_ENGINE=InnoDB;
+set NAMES 'utf8';
 
-set foreign_key_checks=0;
-
-drop table if exists FLIGHT.AERONAVE;
-drop table if exists FLIGHT.VOO;
-drop table if exists FLIGHT.PESSOAFISICA;
-drop table if exists FLIGHT.USUARIO; 
-drop table if exists FLIGHT.REEMBOLSO;
-drop table if exists FLIGHT.PASSAGEM;
- 
 
 create table FLIGHT.AERONAVE (
 ID integer not null auto_increment,
@@ -92,6 +84,7 @@ PASSAGEM_ID integer not null,
 BANCO integer not null,
 AGENCIA integer not null,
 CONTA integer not null,
+VALOR decimal(10,2) not null,
 
 primary key(ID),
 unique key(BANCO,AGENCIA,CONTA,PASSAGEM_ID),

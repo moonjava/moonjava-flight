@@ -27,8 +27,6 @@ public interface Cartao extends Pagamento {
   interface Builder extends Pagamento.Builder,
       br.com.moonjava.flight.util.Builder<Cartao> {
 
-    String getTitular();
-
     long getNumero();
 
     LocalDate getDataDeValidade();
@@ -44,8 +42,6 @@ public interface Cartao extends Pagamento {
     boolean creditar(Cartao cartao);
 
   }
-
-  String getTitular();
 
   long getNumero();
 

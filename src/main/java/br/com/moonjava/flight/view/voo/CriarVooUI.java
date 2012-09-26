@@ -175,8 +175,8 @@ public abstract class CriarVooUI extends AbstractFlightUI {
       alertaPartida.setBounds(450, 230, 500, 30);
 
       String[] ampm = {
-          "AM",
-          "PM" };
+        "AM",
+        "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -192,7 +192,7 @@ public abstract class CriarVooUI extends AbstractFlightUI {
   }
 
   public String getCountry() {
-    return bundle.getLocale().getCountry();
+    return bundle.getString("country");
   }
 
   public void addCadastrarListener(ActionListener a) {

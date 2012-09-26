@@ -48,14 +48,15 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
         .prepare()
 
         .with("insert into FLIGHT.REEMBOLSO")
-        .with("(ID, PASSAGEM_ID, BANCO, AGENCIA, CONTA)")
+        .with("(ID, PASSAGEM_ID, BANCO, AGENCIA, CONTA, VALOR)")
 
         .with("values (")
         .with("?,", reembolso.getId())
         .with("?,", passagem.getId())
         .with("?,", reembolso.getBanco())
         .with("?,", reembolso.getAgencia())
-        .with("?)", reembolso.getConta())
+        .with("?,", reembolso.getConta())
+        .with("?)", reembolso.getValor())
 
         .andExecute();
   }
@@ -89,7 +90,8 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
 
         .with("BANCO = ?,", reembolso.getBanco())
         .with("AGENCIA = ?,", reembolso.getAgencia())
-        .with("CONTA = ?", reembolso.getConta())
+        .with("CONTA = ?,", reembolso.getConta())
+        .with("VALOR = ?", reembolso.getValor())
 
         .with("where ID = ?", reembolso.getId())
 
@@ -116,5 +118,4 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
 
         .andExecute();
   }
-
 }

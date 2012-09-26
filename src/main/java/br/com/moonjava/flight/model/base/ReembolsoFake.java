@@ -47,4 +47,9 @@ public class ReembolsoFake implements Reembolso {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public double getValor() {
+    throw new UnsupportedOperationException();
+  }
+
 }

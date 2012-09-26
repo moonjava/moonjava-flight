@@ -51,6 +51,7 @@ public class TesteDeCriarReembolso {
     int banco = 99;
     int agencia = 999;
     int conta = 999955556;
+    double valor = 100.50;
 
     Reembolso antes = dao.consultarPorPassagemId(passagem);
     assertThat(antes, equalTo(null));
@@ -59,6 +60,7 @@ public class TesteDeCriarReembolso {
     request.set("banco", banco);
     request.set("agencia", agencia);
     request.set("conta", conta);
+    request.set("valor", valor);
 
     Reembolso reembolso = new ReembolsoControlCreate(request).createInstance();
 
@@ -68,5 +70,6 @@ public class TesteDeCriarReembolso {
     assertThat(res.getBanco(), equalTo(banco));
     assertThat(res.getAgencia(), equalTo(agencia));
     assertThat(res.getConta(), equalTo(conta));
+    assertThat(res.getValor(), equalTo(valor));
   }
 }

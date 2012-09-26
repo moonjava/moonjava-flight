@@ -22,7 +22,6 @@ package br.com.moonjava.flight.model.financeiro;
  */
 public class ChequeModel extends PagamentoModel implements Cheque {
 
-  private final String titular;
   private final int numero;
   private final int banco;
   private final int agencia;
@@ -30,16 +29,10 @@ public class ChequeModel extends PagamentoModel implements Cheque {
 
   public ChequeModel(Cheque.Builder builder) {
     super(builder);
-    this.titular = builder.getTitular();
     this.numero = builder.getNumero();
     this.banco = builder.getBanco();
     this.agencia = builder.getAgencia();
     this.conta = builder.getConta();
-  }
-
-  @Override
-  public String getTitular() {
-    return titular;
   }
 
   @Override

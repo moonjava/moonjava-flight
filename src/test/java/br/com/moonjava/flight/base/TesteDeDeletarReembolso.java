@@ -50,11 +50,11 @@ public class TesteDeDeletarReembolso {
     assertThat(antes.getBanco(), equalTo(11));
     assertThat(antes.getAgencia(), equalTo(111));
     assertThat(antes.getConta(), equalTo(222255558));
+    assertThat(antes.getValor(), equalTo(500.45));
 
     dao.deletar(id);
 
     Reembolso res = dao.consultarPorId(id);
     assertThat(res, equalTo(null));
   }
-
 }

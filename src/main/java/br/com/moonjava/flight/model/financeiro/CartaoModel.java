@@ -17,7 +17,6 @@ package br.com.moonjava.flight.model.financeiro;
 
 import org.joda.time.LocalDate;
 
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -25,22 +24,15 @@ import org.joda.time.LocalDate;
  */
 public class CartaoModel extends PagamentoModel implements Cartao {
 
-  private final String titular;
   private final long numero;
   private final LocalDate dataDeValidade;
   private final Bandeira bandeira;
 
   public CartaoModel(Cartao.Builder builder) {
     super(builder);
-    this.titular = builder.getTitular();
     this.numero = builder.getNumero();
     this.dataDeValidade = builder.getDataDeValidade();
     this.bandeira = builder.getBandeira();
-  }
-
-  @Override
-  public String getTitular() {
-    return titular;
   }
 
   @Override

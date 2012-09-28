@@ -78,23 +78,6 @@ references FLIGHT.PESSOAFISICA (ID)
 )Engine=InnoDB;
 
 
-create table FLIGHT.REEMBOLSO (
-ID integer not null auto_increment,
-PASSAGEM_ID integer not null,
-BANCO integer not null,
-AGENCIA integer not null,
-CONTA integer not null,
-VALOR decimal(10,2) not null,
-
-primary key(ID),
-unique key(BANCO,AGENCIA,CONTA,PASSAGEM_ID),
-
-constraint foreign key FK_PASSAGEM_REEMBOLSO (PASSAGEM_ID)
-references FLIGHT.PASSAGEM (ID)
-
-)Engine=InnoDB;
-
-
 create table FLIGHT.PASSAGEM(
 ID integer not null auto_increment,
 VOO_ID integer not null,
@@ -104,7 +87,6 @@ ASSENTO varchar(5) not null,
 
 primary key(ID),
 unique key(COD_BILHETE),
-unique key(PESSOAFISICA_ID,ASSENTO),
 
 constraint foreign key FK_VOO_PASSAGEM (VOO_ID)
 references FLIGHT.VOO (ID),
@@ -113,6 +95,24 @@ constraint foreign key FK_PESSOAFISICA_PASSAGEM (PESSOAFISICA_ID)
 references FLIGHT.PESSOAFISICA (ID)
 
 )Engine=InnoDB;
+
+
+create table FLIGHT.REEMBOLSO (
+ID integer not null auto_increment,
+PASSAGEM_ID integer not null,
+BANCO integer not null,
+AGENCIA integer not null,
+CONTA integer not null,
+VALOR double(10,2) not null,
+
+primary key(ID),
+unique key(PASSAGEM_ID),
+
+constraint foreign key FK_PASSAGEM_REEMBOLSO (PASSAGEM_ID)
+references FLIGHT.PASSAGEM (ID)
+
+)Engine=InnoDB;
+
 
 CREATE USER 'usjt'@'localhost' IDENTIFIED BY 'usjt';
 GRANT ALL PRIVILEGES ON FLIGHT.* TO 'usjt'@'localhost' WITH GRANT OPTION;

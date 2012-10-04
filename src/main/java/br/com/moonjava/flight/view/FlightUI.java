@@ -93,7 +93,7 @@ public class FlightUI {
     JMenu sair = new JMenu(bundle.getString("menubar.sair"));
     relogio = new JMenu();
 
-    String country = bundle.getLocale().getCountry();
+    String country = bundle.getString("country");
     Timer timer = new Timer(1000, new Clock(country));
     timer.start();
 

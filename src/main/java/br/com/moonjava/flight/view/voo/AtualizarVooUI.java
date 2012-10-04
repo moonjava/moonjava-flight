@@ -56,10 +56,10 @@ public class AtualizarVooUI {
   private JButton enviar;
 
   public void setAttributes(JPanel conteudo,
-                            ResourceBundle bundle,
-                            JButton atualizar,
-                            JButton deletar,
-                            JButton status) {
+      ResourceBundle bundle,
+      JButton atualizar,
+      JButton deletar,
+      JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -100,7 +100,7 @@ public class AtualizarVooUI {
   }
 
   public String getCountry() {
-    return bundle.getLocale().getCountry();
+    return bundle.getString("country");
   }
 
   public void addAtualizarListener(ActionListener a) {
@@ -165,8 +165,8 @@ public class AtualizarVooUI {
       alertaPartida.setBounds(520, 70, 500, 30);
 
       String[] ampm = {
-          "AM",
-          "PM" };
+        "AM",
+        "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 

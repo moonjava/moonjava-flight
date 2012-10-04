@@ -38,7 +38,7 @@ public enum Perfil {
   }
 
   public String setBundle(ResourceBundle bundle) {
-    String country = bundle.getLocale().getCountry();
+    String country = bundle.getString("country");
     String res = null;
     if (country.equals("ES")) {
       res = es;

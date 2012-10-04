@@ -15,6 +15,10 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
+import br.com.moonjava.flight.util.RequestParam;
+
 /**
  * @version 1.0 Aug 24, 2012
  * @contact miqueias@moonjava.com.br
@@ -22,6 +26,39 @@ package br.com.moonjava.flight.model.base;
  */
 public interface Passagem {
 
-  int getId();
+	interface Builder extends br.com.moonjava.flight.util.Builder<Passagem> {
 
+		Voo getVoo();
+
+		PessoaFisica getPessoaFisica();
+
+		String getCodigoBilhete();
+
+		String getAssento();
+	}
+
+	interface Jdbc {
+
+		boolean criar(Passagem passagem);
+
+		List<Passagem> consultar(RequestParam request);
+
+		Passagem consultarPorId(int id);
+
+		Passagem consultarPorCodigoBilhete(String bilhete);
+
+		boolean atualizar(Passagem passagem);
+
+		void deletar(int id);
+	}
+
+	int getId();
+
+	Voo getVoo();
+
+	PessoaFisica getPessoaFisica();
+
+	String getCodigoBilhete();
+
+	String getAssento();
 }

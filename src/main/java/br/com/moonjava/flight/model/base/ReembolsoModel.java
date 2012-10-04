@@ -27,12 +27,14 @@ public class ReembolsoModel implements Reembolso {
   private final int banco;
   private final int agencia;
   private final int conta;
+  private final double valor;
 
   public ReembolsoModel(Builder builder) {
     this.passagem = builder.getPassagem();
     this.banco = builder.getBanco();
     this.agencia = builder.getAgencia();
     this.conta = builder.getConta();
+    this.valor = builder.getValor();
   }
 
   public void setId(int id) {
@@ -62,6 +64,11 @@ public class ReembolsoModel implements Reembolso {
   @Override
   public int getConta() {
     return conta;
+  }
+
+  @Override
+  public double getValor() {
+    return valor;
   }
 
 }

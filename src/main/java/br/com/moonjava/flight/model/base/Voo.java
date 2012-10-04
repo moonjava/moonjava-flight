@@ -74,6 +74,9 @@ public interface Voo {
 
     void controlarStatus(int id, Status status);
 
+    void incrementarAssento(int id);
+
+    void decrementarAssento(int id);
   }
 
   int getId();

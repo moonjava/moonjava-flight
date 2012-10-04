@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
-
 /**
  * @version 1.0 Sep 7, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -39,7 +38,7 @@ public class VerifierString {
 
   public static boolean isBirthDay(String word, ResourceBundle bundle) {
     boolean birthDay = false;
-    String country = bundle.getLocale().getCountry();
+    String country = bundle.getString("country");
     LocalDate date = FormatDateTime.parseToLocalDate(word, country);
     boolean leapYear = new GregorianCalendar().isLeapYear(date.getYear());
     LocalDate now = new LocalDate();

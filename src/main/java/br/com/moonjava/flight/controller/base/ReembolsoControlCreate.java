@@ -16,6 +16,7 @@
 package br.com.moonjava.flight.controller.base;
 
 import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemFake;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.RequestParam;
@@ -27,45 +28,44 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public class ReembolsoControlCreate implements Reembolso.Builder {
 
-  private final RequestParam request;
+	private final RequestParam request;
 
-  public ReembolsoControlCreate(RequestParam request) {
-    this.request = request;
-  }
+	public ReembolsoControlCreate(RequestParam request) {
+		this.request = request;
+	}
 
-  @Override
-  public Reembolso createInstance() {
-    return new ReembolsoModel(this);
-  }
+	@Override
+	public Reembolso createInstance() {
+		return new ReembolsoModel(this);
+	}
 
-  // @Override
-  // public Passsagem getPassagem() {
-  // return new PassagemFake() {
-  // @Override
-  // public int getId() {
-  // return request.intParam("passagem");
-  // }
-  // };
-  // }
+	@Override
+	public Passagem getPassagem() {
+		return new PassagemFake() {
+			@Override
+			public int getId() {
+				return request.intParam("passagem");
+			}
+		};
+	}
 
-  @Override
-  public Passagem getPassagem() {
-    return null;
-  }
+	@Override
+	public int getBanco() {
+		return request.intParam("banco");
+	}
 
-  @Override
-  public int getBanco() {
-    return request.intParam("banco");
-  }
+	@Override
+	public int getAgencia() {
+		return request.intParam("agencia");
+	}
 
-  @Override
-  public int getAgencia() {
-    return request.intParam("agencia");
-  }
+	@Override
+	public int getConta() {
+		return request.intParam("conta");
+	}
 
-  @Override
-  public int getConta() {
-    return request.intParam("conta");
-  }
-
+	@Override
+	public double getValor() {
+		return request.doubleParam("valor");
+	}
 }

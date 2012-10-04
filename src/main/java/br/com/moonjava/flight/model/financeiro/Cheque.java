@@ -25,8 +25,6 @@ public interface Cheque extends Pagamento {
   interface Builder extends Pagamento.Builder,
       br.com.moonjava.flight.util.Builder<Cheque> {
 
-    String getTitular();
-
     int getNumero();
 
     int getBanco();
@@ -36,8 +34,6 @@ public interface Cheque extends Pagamento {
     int getConta();
 
   }
-
-  String getTitular();
 
   int getNumero();
 

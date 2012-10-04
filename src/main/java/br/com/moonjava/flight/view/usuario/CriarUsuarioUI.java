@@ -267,7 +267,7 @@ public class CriarUsuarioUI {
 
   // Getters
   public String getCountry() {
-    return bundle.getLocale().getCountry();
+    return bundle.getString("country");
   }
 
   public JTextField getCpf() {

@@ -90,7 +90,7 @@ public class AtualizarUsuarioUI {
   private JLabel tituloSenha;
 
   public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-                            JButton atualizar, JButton deletar) {
+      JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -237,7 +237,7 @@ public class AtualizarUsuarioUI {
   }
 
   public String getCountry() {
-    return bundle.getLocale().getCountry();
+    return bundle.getString("country");
   }
 
   public JTextField getCpf() {
@@ -308,7 +308,7 @@ public class AtualizarUsuarioUI {
     this.usuario = usuario;
 
     String date = FormatDateTime.parseToStringLocalDate(String.valueOf(pf
-        .getDataNascimento()), bundle.getLocale().getCountry());
+        .getDataNascimento()), bundle.getString("country"));
     String _cpf = String.valueOf(pf.getCpf());
 
     codigo.setText(usuario.getCodigo());

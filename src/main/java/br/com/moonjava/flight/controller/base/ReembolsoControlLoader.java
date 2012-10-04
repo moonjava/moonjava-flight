@@ -79,5 +79,10 @@ public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
     public int getConta() {
       return rs.getInt("CONTA");
     }
+
+    @Override
+    public double getValor() {
+      return rs.getDouble("VALOR");
+    }
   }
 }

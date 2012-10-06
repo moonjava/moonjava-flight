@@ -59,4 +59,9 @@ public class ReembolsoControlUpdate implements Reembolso.Builder {
   public int getConta() {
     return request.intParam("conta");
   }
+
+  @Override
+  public double getValor() {
+    return request.doubleParam("valor");
+  }
 }

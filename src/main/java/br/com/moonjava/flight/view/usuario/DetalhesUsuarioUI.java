@@ -168,7 +168,7 @@ public class DetalhesUsuarioUI {
 
   public void setParameters(PessoaFisica pf, Usuario usuario) {
     String date = FormatDateTime.parseToStringLocalDate(
-        pf.getDataNascimento().toString(), bundle.getLocale().getCountry());
+        pf.getDataNascimento().toString(), bundle.getString("country"));
     String str = String.valueOf(pf.getCpf());
     String _cpf = String.format("%1$2s.%2$2s.%3$2s-%4$2s",
         str.substring(0, 3), str.substring(3, 6), str.substring(6, 9),

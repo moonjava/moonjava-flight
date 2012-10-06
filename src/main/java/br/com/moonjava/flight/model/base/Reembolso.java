@@ -31,6 +31,8 @@ public interface Reembolso {
     int getAgencia();
 
     int getConta();
+
+    double getValor();
   }
 
   interface Jdbc {
@@ -58,4 +60,5 @@ public interface Reembolso {
 
   int getConta();
 
+  double getValor();
 }

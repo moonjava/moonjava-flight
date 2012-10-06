@@ -1,17 +1,9 @@
-CREATE DATABASE FLIGHT;
-USE FLIGHT;
-SET STORAGE_ENGINE=InnoDB;
-SET NAMES 'utf8';
+drop database if exists FLIGHT;
+create database FLIGHT;
+use FLIGHT;
+set STORAGE_ENGINE=InnoDB;
+set NAMES 'utf8';
 
-set foreign_key_checks=0;
-
-drop table if exists FLIGHT.AERONAVE;
-drop table if exists FLIGHT.VOO;
-drop table if exists FLIGHT.PESSOAFISICA;
-drop table if exists FLIGHT.USUARIO; 
-drop table if exists FLIGHT.REEMBOLSO;
-drop table if exists FLIGHT.PASSAGEM;
- 
 
 create table FLIGHT.AERONAVE (
 ID integer not null auto_increment,
@@ -86,22 +78,6 @@ references FLIGHT.PESSOAFISICA (ID)
 )Engine=InnoDB;
 
 
-create table FLIGHT.REEMBOLSO (
-ID integer not null auto_increment,
-PASSAGEM_ID integer not null,
-BANCO integer not null,
-AGENCIA integer not null,
-CONTA integer not null,
-
-primary key(ID),
-unique key(BANCO,AGENCIA,CONTA,PASSAGEM_ID),
-
-constraint foreign key FK_PASSAGEM_REEMBOLSO (PASSAGEM_ID)
-references FLIGHT.PASSAGEM (ID)
-
-)Engine=InnoDB;
-
-
 create table FLIGHT.PASSAGEM(
 ID integer not null auto_increment,
 VOO_ID integer not null,
@@ -111,7 +87,6 @@ ASSENTO varchar(5) not null,
 
 primary key(ID),
 unique key(COD_BILHETE),
-unique key(PESSOAFISICA_ID,ASSENTO),
 
 constraint foreign key FK_VOO_PASSAGEM (VOO_ID)
 references FLIGHT.VOO (ID),
@@ -120,6 +95,24 @@ constraint foreign key FK_PESSOAFISICA_PASSAGEM (PESSOAFISICA_ID)
 references FLIGHT.PESSOAFISICA (ID)
 
 )Engine=InnoDB;
+
+
+create table FLIGHT.REEMBOLSO (
+ID integer not null auto_increment,
+PASSAGEM_ID integer not null,
+BANCO integer not null,
+AGENCIA integer not null,
+CONTA integer not null,
+VALOR double(10,2) not null,
+
+primary key(ID),
+unique key(PASSAGEM_ID),
+
+constraint foreign key FK_PASSAGEM_REEMBOLSO (PASSAGEM_ID)
+references FLIGHT.PASSAGEM (ID)
+
+)Engine=InnoDB;
+
 
 CREATE USER 'usjt'@'localhost' IDENTIFIED BY 'usjt';
 GRANT ALL PRIVILEGES ON FLIGHT.* TO 'usjt'@'localhost' WITH GRANT OPTION;

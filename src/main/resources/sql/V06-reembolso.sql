@@ -8,10 +8,10 @@ PASSAGEM_ID integer not null,
 BANCO integer not null,
 AGENCIA integer not null,
 CONTA integer not null,
-VALOR decimal(10,2) not null,
+VALOR double(10,2) not null,
 
 primary key(ID),
-unique key(BANCO,AGENCIA,CONTA,PASSAGEM_ID),
+unique key(PASSAGEM_ID),
 
 constraint foreign key FK_PASSAGEM_REEMBOLSO (PASSAGEM_ID)
 references FLIGHT.PASSAGEM (ID)

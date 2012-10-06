@@ -183,4 +183,30 @@ public class VooDAO implements Voo.Jdbc {
         .andExecute();
   }
 
+  @Override
+  public void incrementarAssento(int id) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.VOO set")
+        .with("ASSENTO_LIVRE = (ASSENTO_LIVRE+1)")
+
+        .with("where ID", id)
+
+        .andExecute();
+  }
+
+  @Override
+  public void decrementarAssento(int id) {
+    new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.VOO set")
+        .with("ASSENTO_LIVRE = (ASSENTO_LIVRE-1)")
+
+        .with("where ID", id)
+
+        .andExecute();
+  }
+
 }

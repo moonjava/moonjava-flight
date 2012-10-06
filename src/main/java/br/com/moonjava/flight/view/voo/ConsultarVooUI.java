@@ -185,8 +185,8 @@ public class ConsultarVooUI {
     if (getCountry().equals("US")) {
 
       String[] ampm = {
-          "AM",
-          "PM" };
+        "AM",
+        "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -204,7 +204,7 @@ public class ConsultarVooUI {
   }
 
   protected String getCountry() {
-    return bundle.getLocale().getCountry();
+    return bundle.getString("country");
   }
 
   protected void addConsultarListener(ActionListener a) {

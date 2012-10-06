@@ -68,7 +68,7 @@ public class PainelDeDecolagemTableModel extends AbstractTableModel {
       return voo.getEscala();
     case 4:
       String partida = null;
-      if (bundle.getLocale().getCountry().equals("US")) {
+      if (bundle.getString("country").equals("US")) {
         partida = voo.getDataDePartida().toString("MM/dd/yyyy HH:mm aa");
       } else {
         partida = voo.getDataDePartida().toString("dd/MM/yyyy HH:mm");
@@ -76,7 +76,7 @@ public class PainelDeDecolagemTableModel extends AbstractTableModel {
       return partida;
     case 5:
       String chegada = null;
-      if (bundle.getLocale().getCountry().equals("US")) {
+      if (bundle.getString("country").equals("US")) {
         chegada = voo.getDataDeChegada().toString("MM/dd/yyyy HH:mm aa");
       } else {
         chegada = voo.getDataDeChegada().toString("dd/MM/yyyy HH:mm");

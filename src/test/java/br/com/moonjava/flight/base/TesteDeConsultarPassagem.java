@@ -22,18 +22,19 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.dao.base.ReembolsoDAO;
+import br.com.moonjava.flight.dao.base.PassagemDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
-import br.com.moonjava.flight.model.base.Reembolso;
+import br.com.moonjava.flight.model.base.Passagem;
 
 /**
- * @version 1.0, Aug 14, 2012
+ * @version 1.0 06/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
+
 @Test
-public class TesteDeConsultarReembolso {
+public class TesteDeConsultarPassagem {
 
   @BeforeClass
   public void limparTabela() {
@@ -41,30 +42,31 @@ public class TesteDeConsultarReembolso {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void teste_de_consulta_por_id() {
-    ReembolsoDAO dao = new ReembolsoDAO();
+  public void consultar_por_id() {
+    PassagemDAO dao = new PassagemDAO();
 
-    int id = 2;
+    int id = 4;
 
-    Reembolso res = dao.consultarPorId(id);
-    assertThat(res.getTitular(), equalTo("Titular B"));
-    assertThat(res.getCpf().getDigito(), equalTo(33333333333l));
-    assertThat(res.getBanco(), equalTo(22));
-    assertThat(res.getAgencia(), equalTo(222));
-    assertThat(res.getConta(), equalTo(333366669));
+    Passagem res = dao.consultarPorId(id);
+
+    assertThat(res.getCodigoBilhete(), equalTo("P1003"));
+    assertThat(res.getAssento(), equalTo("A11"));
+    assertThat(res.getPessoaFisica().getNome(), equalTo("Nome D"));
+    assertThat(res.getVoo().getCodigo(), equalTo("V1001"));
   }
 
-  public void teste_de_consulta_por_passagem() {
-    ReembolsoDAO dao = new ReembolsoDAO();
+  public void consultar_por_codigo() {
+    PassagemDAO dao = new PassagemDAO();
 
-    int passagem = 2;
+    String codigo = "P1000";
 
-    Reembolso res = dao.consultarPorPassagemId(passagem);
+    Passagem res = dao.consultarPorCodigoBilhete(codigo);
 
-    assertThat(res.getTitular(), equalTo("Titular A"));
-    assertThat(res.getCpf().getDigito(), equalTo(22222222222l));
-    assertThat(res.getBanco(), equalTo(11));
-    assertThat(res.getAgencia(), equalTo(111));
-    assertThat(res.getConta(), equalTo(222255558));
+    assertThat(res.getCodigoBilhete(), equalTo(codigo));
+    assertThat(res.getAssento(), equalTo("B15"));
+    assertThat(res.getPessoaFisica().getNome(), equalTo("Nome A"));
+    assertThat(res.getVoo().getCodigo(), equalTo("V1002"));
+
   }
+
 }

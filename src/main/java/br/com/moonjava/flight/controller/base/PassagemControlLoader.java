@@ -21,79 +21,65 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbc;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcLoader;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
 import br.com.moonjava.flight.model.base.Passagem;
-import br.com.moonjava.flight.model.base.Reembolso;
-import br.com.moonjava.flight.model.base.ReembolsoModel;
-import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.model.base.PassagemModel;
+import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.Voo;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0 06/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
+public class PassagemControlLoader implements ResultSetJdbcLoader<Passagem> {
 
   private final String alias;
 
-  public ReembolsoControlLoader() {
-    this.alias = "REEMBOLSO";
+  public PassagemControlLoader() {
+    this.alias = "PASSAGEM";
   }
 
   @Override
-  public Reembolso get(ResultSet resultSet) {
+  public Passagem get(ResultSet resultSet) {
     ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, alias);
-    return new ReembolsoBuilder(rs).createInstance();
+    return new PassagemBuilder(rs).createInstance();
   }
 
-  private class ReembolsoBuilder implements Reembolso.Builder {
+  private class PassagemBuilder implements Passagem.Builder {
 
     private final ResultSetJdbc rs;
 
-    public ReembolsoBuilder(ResultSetJdbc rs) {
+    public PassagemBuilder(ResultSetJdbc rs) {
       this.rs = rs;
     }
 
     @Override
-    public Reembolso createInstance() {
-      ReembolsoModel impl = new ReembolsoModel(this);
+    public Passagem createInstance() {
+      PassagemModel impl = new PassagemModel(this);
       impl.setId(rs.getInt("ID"));
       return impl;
     }
 
     @Override
-    public Passagem getPassagem() {
+    public Voo getVoo() {
       ResultSet resultSet = rs.getResultSet();
-      return new PassagemControlLoader().get(resultSet);
+      return new VooLoader().get(resultSet);
     }
 
     @Override
-    public String getTitular() {
-      return rs.getString("TITULAR");
+    public PessoaFisica getPessoaFisica() {
+      ResultSet resultSet = rs.getResultSet();
+      return new PessoaFisicaControlLoader().get(resultSet);
     }
 
     @Override
-    public CPF getCpf() {
-      long value = rs.getLong("CPF");
-      return CPF.valueOf(value);
+    public String getCodigoBilhete() {
+      return rs.getString("COD_BILHETE");
     }
 
     @Override
-    public int getBanco() {
-      return rs.getInt("BANCO");
-    }
-
-    @Override
-    public int getAgencia() {
-      return rs.getInt("AGENCIA");
-    }
-
-    @Override
-    public int getConta() {
-      return rs.getInt("CONTA");
-    }
-
-    @Override
-    public double getValor() {
-      return rs.getDouble("VALOR");
+    public String getAssento() {
+      return rs.getString("ASSENTO");
     }
   }
+
 }

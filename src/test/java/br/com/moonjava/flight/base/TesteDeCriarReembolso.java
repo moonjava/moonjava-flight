@@ -48,6 +48,8 @@ public class TesteDeCriarReembolso {
     RequestParamWrapper request = new RequestParamWrapper();
 
     int passagem = 1;
+    String titular = "Teste de Criar Reebolso";
+    long cpf = 99999999999l;
     int banco = 99;
     int agencia = 999;
     int conta = 999955556;
@@ -57,6 +59,8 @@ public class TesteDeCriarReembolso {
     assertThat(antes, equalTo(null));
 
     request.set("passagem", passagem);
+    request.set("titular", titular);
+    request.set("cpf", cpf);
     request.set("banco", banco);
     request.set("agencia", agencia);
     request.set("conta", conta);
@@ -67,6 +71,8 @@ public class TesteDeCriarReembolso {
     dao.criar(reembolso);
 
     Reembolso res = dao.consultarPorPassagemId(passagem);
+    assertThat(res.getTitular(), equalTo(titular));
+    assertThat(res.getCpf().getDigito(), equalTo(cpf));
     assertThat(res.getBanco(), equalTo(banco));
     assertThat(res.getAgencia(), equalTo(agencia));
     assertThat(res.getConta(), equalTo(conta));

@@ -7,7 +7,7 @@ ID integer not null auto_increment,
 VOO_ID integer not null,
 PESSOAFISICA_ID integer not null,
 COD_BILHETE varchar(11) not null,
-ASSENTO varchar(5) not null,
+ASSENTO varchar(5) null,
 
 primary key(ID),
 unique key(COD_BILHETE),

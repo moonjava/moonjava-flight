@@ -30,6 +30,7 @@ import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -49,6 +50,7 @@ public class TesteDeConsultarUsuario {
   public void consultar_usuario_por_codigo() {
     UsuarioDAO dao = new UsuarioDAO();
     RequestParamWrapper request = new RequestParamWrapper();
+    EncryptPassword encrypt = new EncryptPassword();
 
     String codigo = "U1001";
     request.set("codigo", codigo);
@@ -58,21 +60,24 @@ public class TesteDeConsultarUsuario {
 
     assertThat(res.getPerfil(), equalTo(Perfil.SUPERVISOR));
     assertThat(res.getLogin(), equalTo("teste2"));
-    assertThat(res.getSenha(), equalTo("teste2"));
+    assertThat(res.getSenha(), equalTo(encrypt.toEncryptMD5("teste2")));
   }
+
   public void consultar_usuario_por_cpf() {
     UsuarioDAO dao = new UsuarioDAO();
+    EncryptPassword encrypt = new EncryptPassword();
 
     CPF cpf = CPF.parse("222.222.222-22");
     Usuario res = dao.consultarPorCpf(cpf);
     assertThat(res.getPerfil(), equalTo(Perfil.SUPERVISOR));
     assertThat(res.getLogin(), equalTo("teste2"));
-    assertThat(res.getSenha(), equalTo("teste2"));
+    assertThat(res.getSenha(), equalTo(encrypt.toEncryptMD5("teste2")));
   }
 
   public void consultar_usuario_por_login() {
     UsuarioDAO dao = new UsuarioDAO();
     RequestParamWrapper request = new RequestParamWrapper();
+    EncryptPassword encrypt = new EncryptPassword();
 
     request.set("login", "teste");
 
@@ -83,7 +88,7 @@ public class TesteDeConsultarUsuario {
     assertThat(r1.getCodigo(), equalTo("U1001"));
     assertThat(r1.getPerfil(), equalTo(Perfil.SUPERVISOR));
     assertThat(r1.getLogin(), equalTo("teste2"));
-    assertThat(r1.getSenha(), equalTo("teste2"));
+    assertThat(r1.getSenha(), equalTo(encrypt.toEncryptMD5("teste2")));
   }
 
 }

@@ -15,6 +15,9 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import br.com.moonjava.flight.dao.base.ReembolsoDAO;
+import br.com.moonjava.flight.util.CPF;
+
 /**
  * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
@@ -23,18 +26,25 @@ package br.com.moonjava.flight.model.base;
 public class ReembolsoModel implements Reembolso {
 
   private int id;
-  private final Passagem passagem;
-  private final int banco;
-  private final int agencia;
-  private final int conta;
-  private final double valor;
+  private Passagem passagem;
+  private String titular;
+  private CPF cpf;
+  private int banco;
+  private int agencia;
+  private int conta;
+  private double valor;
 
   public ReembolsoModel(Builder builder) {
     this.passagem = builder.getPassagem();
+    this.titular = builder.getTitular();
+    this.cpf = builder.getCpf();
     this.banco = builder.getBanco();
     this.agencia = builder.getAgencia();
     this.conta = builder.getConta();
     this.valor = builder.getValor();
+  }
+
+  public ReembolsoModel() {
   }
 
   public void setId(int id) {
@@ -49,6 +59,16 @@ public class ReembolsoModel implements Reembolso {
   @Override
   public Passagem getPassagem() {
     return passagem;
+  }
+
+  @Override
+  public String getTitular() {
+    return titular;
+  }
+
+  @Override
+  public CPF getCpf() {
+    return cpf;
   }
 
   @Override
@@ -69,6 +89,12 @@ public class ReembolsoModel implements Reembolso {
   @Override
   public double getValor() {
     return valor;
+  }
+
+  public boolean criarReembolso(Reembolso reembolso) {
+    ReembolsoDAO dao = new ReembolsoDAO();
+
+    return dao.criar(reembolso);
   }
 
 }

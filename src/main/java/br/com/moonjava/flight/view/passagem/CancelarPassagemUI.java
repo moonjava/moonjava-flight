@@ -57,6 +57,7 @@ public class CancelarPassagemUI extends AbstractFlightUI {
   private JLabel tituloAgencia;
   private JLabel tituloConta;
   private JLabel tituloBanco;
+  private JLabel tituloValor;
 
   private JTextField _bilhete;
   private JTextField _cpf;
@@ -78,7 +79,9 @@ public class CancelarPassagemUI extends AbstractFlightUI {
 
   private JButton solicitarCancelamento;
   private JButton cancelar;
-  private JButton oK;
+  private JLabel moeda;
+  private JLabel valor;
+  private int passagem;
 
   public CancelarPassagemUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -115,6 +118,7 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     tituloAgencia = new JLabel(bundle.getString("cancelar.passagem.titulo.agencia"));
     tituloConta = new JLabel(bundle.getString("cancelar.passagem.titulo.conta"));
     tituloCpf = new JLabel(bundle.getString("cancelar.passagem.titulo.cpf"));
+    tituloValor = new JLabel(bundle.getString("cancelar.passagem.titulo.valor"));
 
     _bilhete = new JTextField();
     _cpf = new JTextField();
@@ -123,6 +127,8 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     banco = new JTextField(bundle.getString("cancelar.passagem.banco"));
     agencia = new JTextField(bundle.getString("cancelar.passagem.agencia"));
     conta = new JTextField(bundle.getString("cancelar.passagem.conta"));
+    moeda = new JLabel(bundle.getString("cancelar.passagem.label.moeda"));
+    valor = new JLabel("valor");
 
     try {
       cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
@@ -132,7 +138,6 @@ public class CancelarPassagemUI extends AbstractFlightUI {
 
     solicitarCancelamento = new JButton(bundle.getString("cancelar.passagem.solicitarCancelamento"));
     cancelar = new JButton(bundle.getString("cancelar.passagem.cancelar"));
-    oK = new JButton("Ok");
 
     imagemCpf = new JLabel();
     imagemBanco = new JLabel();
@@ -144,11 +149,13 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     alertaAgencia = new JLabel();
     alertaConta = new JLabel();
 
+    Font fvalor = new Font("Arial", Font.BOLD, 13);
     Font font = new Font("Century Gothic", Font.ITALIC, 13);
     nomeTitular.setFont(font);
     banco.setFont(font);
     agencia.setFont(font);
     conta.setFont(font);
+    valor.setFont(fvalor);
 
     nomeTitular.setForeground(Color.GRAY);
     banco.setForeground(Color.GRAY);
@@ -157,10 +164,10 @@ public class CancelarPassagemUI extends AbstractFlightUI {
 
     imagem.setBounds(100, 70, 30, 30);
     filtroBilhete.setBounds(130, 45, 200, 30);
-    filtroCpf.setBounds(220, 45, 200, 30);
+    // filtroCpf.setBounds(220, 45, 200, 30);
 
     _bilhete.setBounds(130, 70, 80, 30);
-    _cpf.setBounds(220, 70, 80, 30);
+    // _cpf.setBounds(220, 70, 80, 30);
     solicitarCancelamento.setBounds(320, 70, 200, 30);
 
     imagemCpf.setBounds(510, 230, 100, 30);
@@ -178,14 +185,16 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     tituloBanco.setBounds(60, 270, 200, 30);
     tituloAgencia.setBounds(60, 310, 200, 30);
     tituloConta.setBounds(60, 350, 200, 30);
+    tituloValor.setBounds(60, 390, 200, 30);
 
     nomeTitular.setBounds(200, 190, 300, 30);
     cpf.setBounds(200, 230, 300, 30);
     banco.setBounds(200, 270, 300, 30);
     agencia.setBounds(200, 310, 300, 30);
     conta.setBounds(200, 350, 300, 30);
-    oK.setBounds(400, 390, 100, 30);
-    cancelar.setBounds(320, 475, 200, 30);
+    moeda.setBounds(202, 390, 50, 30);
+    valor.setBounds(230, 390, 150, 30);
+    cancelar.setBounds(400, 430, 200, 30);
 
     conteudo.add(imagem);
     conteudo.add(filtroBilhete);
@@ -199,13 +208,23 @@ public class CancelarPassagemUI extends AbstractFlightUI {
   }
 
   // Get parameters
-  protected RequestParamWrapper getParameters() {
+  protected RequestParamWrapper getParametersReebolso() {
     RequestParamWrapper request = new RequestParamWrapper();
-    request.set("nometitular", nomeTitular.getText());
+
+    request.set("titular", nomeTitular.getText());
     request.set("cpf", cpf.getText());
     request.set("banco", banco.getText());
     request.set("agencia", agencia.getText());
     request.set("conta", conta.getText());
+    request.set("valor", valor.getText());
+
+    return request;
+  }
+
+  protected RequestParamWrapper getParametersPassagem() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("codBilhete", _bilhete.getText());
+    request.set("cpf", _cpf.getText());
 
     return request;
   }
@@ -219,12 +238,13 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     return request;
   }
 
-  protected void addSolicitarCancelamentoListener(ActionListener a) {
-    solicitarCancelamento.addActionListener(a);
+  protected void setValor(double valor, int passagemId) {
+    this.valor.setText(String.format("%.2f", valor));
+    this.passagem = passagemId;
   }
 
-  protected void addOKListener(ActionListener a) {
-    oK.addActionListener(a);
+  protected void addSolicitarCancelamentoListener(ActionListener a) {
+    solicitarCancelamento.addActionListener(a);
   }
 
   protected void addEfetuarCancelamentoListener(ActionListener a) {
@@ -261,36 +281,51 @@ public class CancelarPassagemUI extends AbstractFlightUI {
   }
 
   protected void addCalcularPassagemButton() {
-    JOptionPane.showMessageDialog(null,
-        bundle.getString("cancelar.passagem.erro.solicitacao"),
-        bundle.getString("cancelar.passagem.titulo"),
-        JOptionPane.ERROR_MESSAGE);
-
     conteudo.add(tituloNomeTitular);
     conteudo.add(tituloBanco);
     conteudo.add(tituloAgencia);
     conteudo.add(tituloConta);
+    conteudo.add(tituloValor);
     conteudo.add(tituloCpf);
 
     conteudo.add(nomeTitular);
     conteudo.add(banco);
     conteudo.add(agencia);
     conteudo.add(conta);
+    conteudo.add(moeda);
+    conteudo.add(valor);
     conteudo.add(cpf);
-    conteudo.add(oK);
+    conteudo.add(cancelar);
 
     repaint();
   }
 
-  protected void addEfetuarCancelamentoButton() {
+  protected void messageReembolso() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("cancelar.passagem.ok.solicitacao"),
         bundle.getString("cancelar.passagem.titulo"),
         JOptionPane.INFORMATION_MESSAGE);
+  }
 
-    conteudo.add(cancelar);
+  protected void messagePassagemOff() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.erro.solicitacao"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
 
-    repaint();
+  protected void messageReebolsoZero() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.reembolso.zero"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  protected void messageVooRealizado() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.voo.realizado"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   protected void messageOK() {
@@ -302,17 +337,60 @@ public class CancelarPassagemUI extends AbstractFlightUI {
     refresh();
   }
 
+  protected void messageDbOff() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("erro.bd.off"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void messagemPasJaCancelada() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.ja.cancelada"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+
+    refresh();
+  }
+
   // add Layout
   protected void addImageCpfValido() {
-    FlightImageUI.add(imagemCpf, alertaCpf,
-        bundle.getString("criar.pessoafisica.cpf.alerta.ok"), bundle, conteudo);
-    repaint();
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_disponivel.png");
+      Image image;
+      image = ImageIO.read(stream);
+      ImageIcon icon = new ImageIcon(image);
+      imagemCpf.setIcon(icon);
+      alertaCpf.setText("");
+
+      conteudo.add(imagemCpf);
+      conteudo.add(alertaCpf);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   protected void addImageCpfInvalido() {
-    FlightImageUI.addError(imagemCpf, alertaCpf,
-        bundle.getString("criar.pessoafisica.cpf.alerta.erro"), bundle, conteudo);
-    repaint();
+    try {
+      InputStream stream = getClass().getResourceAsStream("/img/icon_indisponivel.png");
+      Image image = ImageIO.read(stream);
+
+      ImageIcon icon = new ImageIcon(image);
+      imagemCpf.setIcon(icon);
+
+      alertaCpf.setFont(new Font("Arial", Font.BOLD, 13));
+      alertaCpf.setForeground(Color.RED);
+      alertaCpf.setText(bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
+
+      conteudo.add(imagemCpf);
+      conteudo.add(alertaCpf);
+      conteudo.repaint();
+      conteudo.validate();
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
   }
 
   protected void addImageBancoParseException() {

@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.FlightKeyPressedListener;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.LoginUI;
@@ -57,6 +58,9 @@ public class LoginController extends LoginUI {
     private void logar() {
       RequestParamWrapper request = getLogin();
       UsuarioDAO dao = new UsuarioDAO();
+      EncryptPassword encrypt = new EncryptPassword();
+
+      request.set("senha", encrypt.toEncryptMD5(request.stringParam("senha")));
       Usuario usuarioLogado = dao.consultarUsuario(request);
 
       if (usuarioLogado != null) {

@@ -50,16 +50,22 @@ public class TesteDeAtualizarReembolso {
     int id = 1;
 
     Reembolso antes = dao.consultarPorId(id);
+    assertThat(antes.getTitular(), equalTo("Titular A"));
+    assertThat(antes.getCpf().getDigito(), equalTo(22222222222l));
     assertThat(antes.getBanco(), equalTo(11));
     assertThat(antes.getAgencia(), equalTo(111));
     assertThat(antes.getConta(), equalTo(222255558));
 
+    String titular = "Teste de Titular";
+    long cpf = 99999999999l;
     int banco = 99;
     int agencia = 999;
     int conta = 999999999;
     double valor = 100.50;
 
     request.set("id", id);
+    request.set("titular", titular);
+    request.set("cpf", cpf);
     request.set("banco", banco);
     request.set("agencia", agencia);
     request.set("conta", conta);
@@ -70,6 +76,8 @@ public class TesteDeAtualizarReembolso {
     dao.atualizar(reembolso);
 
     Reembolso res = dao.consultarPorId(id);
+    assertThat(res.getTitular(), equalTo(titular));
+    assertThat(res.getCpf().getDigito(), equalTo(cpf));
     assertThat(res.getBanco(), equalTo(banco));
     assertThat(res.getAgencia(), equalTo(agencia));
     assertThat(res.getConta(), equalTo(conta));

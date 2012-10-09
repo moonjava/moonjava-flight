@@ -17,8 +17,8 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -78,6 +78,7 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   private class ConsultarHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
@@ -131,7 +132,8 @@ public class ConsultarVooController extends ConsultarVooUI {
     }
   }
 
-  private class ItemTableSelectedHandler implements MouseListener {
+  private class ItemTableSelectedHandler extends MouseAdapter {
+
     @Override
     public void mouseClicked(MouseEvent e) {
       enableButtons();
@@ -152,21 +154,10 @@ public class ConsultarVooController extends ConsultarVooUI {
       ctrlStatus.setResult(false);
       status.addActionListener(ctrlStatus);
     }
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
   }
 
-  private class ItemTableSelectedPassagemHandler implements MouseListener {
+  private class ItemTableSelectedPassagemHandler extends MouseAdapter {
+
     @Override
     public void mouseClicked(MouseEvent e) {
       if (e.getClickCount() == 2) {
@@ -179,21 +170,10 @@ public class ConsultarVooController extends ConsultarVooUI {
         }
       }
     }
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
   }
 
   private class VenderPassagemHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
       // busca voo selecionada

@@ -15,6 +15,8 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import br.com.moonjava.flight.util.CPF;
+
 /**
  * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
@@ -25,6 +27,10 @@ public interface Reembolso {
   interface Builder extends br.com.moonjava.flight.util.Builder<Reembolso> {
 
     Passagem getPassagem();
+
+    String getTitular();
+
+    CPF getCpf();
 
     int getBanco();
 
@@ -37,7 +43,7 @@ public interface Reembolso {
 
   interface Jdbc {
 
-    void criar(Reembolso reembolso);
+    boolean criar(Reembolso reembolso);
 
     Reembolso consultarPorPassagemId(int passagemId);
 
@@ -53,6 +59,10 @@ public interface Reembolso {
   int getId();
 
   Passagem getPassagem();
+
+  String getTitular();
+
+  CPF getCpf();
 
   int getBanco();
 

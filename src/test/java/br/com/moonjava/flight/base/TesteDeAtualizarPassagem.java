@@ -19,58 +19,56 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
-import br.com.moonjava.flight.dao.base.VooDAO;
+import br.com.moonjava.flight.controller.base.PassagemControlUpdate;
+import br.com.moonjava.flight.dao.base.PassagemDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
-import br.com.moonjava.flight.model.base.Aeronave;
-import br.com.moonjava.flight.model.base.Status;
-import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, 25/07/2012
+ * @version 1.0 07/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
+
 @Test
-public class TesteDeDeletarAeronave {
+public class TesteDeAtualizarPassagem {
 
   @BeforeClass
-  public void beforeClass() {
+  public void limparTabela() {
     DbUnit dbUnit = new DbUnit();
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void deletar() {
-    VooDAO vooDAO = new VooDAO();
-    AeronaveDAO aeronaveDAO = new AeronaveDAO();
+  public void atualizar_voo_passagem() {
+    PassagemDAO dao = new PassagemDAO();
     RequestParamWrapper request = new RequestParamWrapper();
 
-    request.set("status", Status.DISPONIVEL);
-    request.set("aeronaveId", 1);
-
     int id = 1;
+    int voo = 3;
+    int pf = 1;
+    String codBilhete = "P1000";
 
-    List<Voo> antesVoo = vooDAO.consultar(request);
-    assertThat(antesVoo.size(), equalTo(3));
+    Passagem antes = dao.consultarPorId(id);
+    assertThat(antes.getVoo().getId(), equalTo(voo));
+    assertThat(antes.getPessoaFisica().getId(), equalTo(pf));
+    assertThat(antes.getCodigoBilhete(), equalTo(codBilhete));
 
-    List<Aeronave> antesAeronave = aeronaveDAO.consultar(request);
-    assertThat(antesAeronave.size(), equalTo(2));
+    int novoVoo = 2;
+    request.set("id", id);
+    request.set("voo", novoVoo);
 
-    vooDAO.deletarPorAeronaveId(id);
-    aeronaveDAO.deletar(id);
+    Passagem passagem = new PassagemControlUpdate(request).createInstance();
+    dao.atualizar(passagem);
 
-    List<Voo> resVoo = vooDAO.consultarPorAeronaveId(request);
-    assertThat(resVoo.size(), equalTo(0));
-
-    List<Aeronave> resAeronave = aeronaveDAO.consultar(request);
-    assertThat(resAeronave.size(), equalTo(1));
+    Passagem res = dao.consultarPorId(id);
+    assertThat(res.getVoo().getId(), equalTo(novoVoo));
+    assertThat(res.getPessoaFisica().getId(), equalTo(pf));
+    assertThat(res.getCodigoBilhete(), equalTo(codBilhete));
   }
 
 }

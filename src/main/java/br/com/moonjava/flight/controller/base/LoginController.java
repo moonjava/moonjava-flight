@@ -20,8 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.util.FlightKeyPressedListener;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.LoginUI;
@@ -56,8 +56,8 @@ public class LoginController extends LoginUI {
 
     private void logar() {
       RequestParamWrapper request = getLogin();
-      UsuarioDAO dao = new UsuarioDAO();
-      Usuario usuarioLogado = dao.consultarUsuario(request);
+      Usuario usuarioModel = new UsuarioModel();
+      Usuario usuarioLogado = usuarioModel.consultar(request);
 
       if (usuarioLogado != null) {
         new FlightController(usuarioLogado, bundle);

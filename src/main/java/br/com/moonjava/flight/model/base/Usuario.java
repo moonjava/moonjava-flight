@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0, Aug 10, 2012
@@ -59,6 +60,8 @@ public interface Usuario {
     void deletarPorPessoaFisicaId(int pessoaFisica);
 
   }
+
+  Usuario consultar(RequestParamWrapper request);
 
   int getId();
 

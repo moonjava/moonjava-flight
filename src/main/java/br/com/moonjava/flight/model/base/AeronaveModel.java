@@ -15,6 +15,11 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
+import br.com.moonjava.flight.dao.base.AeronaveDAO;
+import br.com.moonjava.flight.util.RequestParamWrapper;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -23,16 +28,31 @@ package br.com.moonjava.flight.model.base;
 public class AeronaveModel implements Aeronave {
 
   private int id;
-  private final String codigo;
-  private final String nome;
-  private final int qtdDeAssento;
-  private final boolean mapa;
+  private String codigo;
+  private String nome;
+  private int qtdDeAssento;
+  private boolean mapa;
+  private AeronaveDAO dao;
 
   public AeronaveModel(Builder builder) {
     this.codigo = builder.getCodigo();
     this.nome = builder.getNome();
     this.qtdDeAssento = builder.getQtdDeAssento();
     this.mapa = builder.isMapa();
+  }
+
+  public AeronaveModel() {
+    this.dao = new AeronaveDAO();
+  }
+
+  @Override
+  public List<Aeronave> consultar(RequestParamWrapper request) {
+    return dao.consultar(request);
+  }
+
+  @Override
+  public void criar(Aeronave pojo) {
+    dao.criar(pojo);
   }
 
   @Override

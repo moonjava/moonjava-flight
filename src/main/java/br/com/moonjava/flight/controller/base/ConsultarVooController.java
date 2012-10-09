@@ -19,12 +19,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 
 import org.joda.time.DateTime;
 
@@ -49,6 +51,7 @@ public class ConsultarVooController extends ConsultarVooUI {
   private JButton status;
 
   private List<Voo> list;
+  private ArrayList<Voo> voos;
 
   public ConsultarVooController(JPanel conteudo,
                                 ResourceBundle bundle,
@@ -68,8 +71,9 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   public ConsultarVooController(JPanel conteudo, ResourceBundle bundle) {
-    super(conteudo, bundle);
+    super(conteudo, bundle, true);
 
+    this.voos = new ArrayList<Voo>();
     this.conteudo = conteudo;
     this.bundle = bundle;
     addConsultarListener(new ConsultarHandler());
@@ -167,18 +171,39 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   private class ItemTableSelectedPassagemHandler implements MouseListener {
+
+    private boolean flag;
+
     @Override
     public void mouseClicked(MouseEvent e) {
       if (e.getClickCount() == 2) {
         int[] rows = getTable().getSelectedRows();
         if (rows.length == 1) {
-          Voo pojo = list.get(rows[0]);
-          new VenderPassagemController(conteudo, bundle, pojo);
+          voos.add(list.get(rows[0]));
+          // Verifica se o voo é de ida e volta
+          int res = 0;
+          if (!flag) {
+            res = messagePassagemIdaVolta();
+          }
+          if (res == 2) {
+            addVoo();
+          }
+          if (res != 2 && flag) {
+            addVoo();
+          }
+          flag = true;
         } else {
           messageSelectFailed();
         }
       }
     }
+
+    private void addVoo() {
+      new VenderPassagemController(conteudo, bundle, voos);
+      UIManager.put("OptionPane.okButtonText", "Ok");
+      UIManager.put("OptionPane.cancelButtonText", "Cancel");
+    }
+
     @Override
     public void mouseEntered(MouseEvent e) {
     }

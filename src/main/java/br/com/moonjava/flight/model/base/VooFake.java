@@ -15,21 +15,14 @@
  */
 package br.com.moonjava.flight.model.base;
 
-import java.util.List;
-
-import br.com.moonjava.flight.util.RequestParamWrapper;
+import org.joda.time.DateTime;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Oct 6, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class AeronaveFake implements Aeronave {
-
-  @Override
-  public List<Aeronave> consultar(RequestParamWrapper request) {
-    throw new UnsupportedOperationException();
-  }
+public class VooFake implements Voo {
 
   @Override
   public int getId() {
@@ -42,22 +35,55 @@ public class AeronaveFake implements Aeronave {
   }
 
   @Override
-  public String getNome() {
+  public Aeronave getAeronave() {
+    throw new UnsupportedOperationException();
+
+  }
+
+  @Override
+  public String getOrigem() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getQtdDeAssento() {
+  public String getDestino() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isMapa() {
+  public String getEscala() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void criar(Aeronave pojo) {
+  public DateTime getDataDePartida() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public DateTime getDataDeChegada() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getObservacao() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Status getStatus() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getAssentoLivre() {
+    throw new UnsupportedOperationException();
+
+  }
+
+  @Override
+  public double getPreco() {
+    throw new UnsupportedOperationException();
   }
 
 }

@@ -26,8 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.aeronave.ConsultarAeronaveUI;
 
@@ -65,7 +65,8 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
 
-      list = new AeronaveDAO().consultar(request);
+      Aeronave aeronave = new AeronaveModel();
+      list = aeronave.consultar(request);
 
       boolean isEmpty = showList(list);
 

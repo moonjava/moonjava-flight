@@ -76,4 +76,9 @@ public class PessoaFisicaFake implements PessoaFisica {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public boolean criar(PessoaFisica pojo) {
+    throw new UnsupportedOperationException();
+  }
+
 }

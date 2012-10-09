@@ -86,4 +86,6 @@ public interface PessoaFisica {
 
   String getEmail();
 
+  boolean criar(PessoaFisica pojo);
+
 }

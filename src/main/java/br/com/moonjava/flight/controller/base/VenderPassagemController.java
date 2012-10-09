@@ -18,17 +18,28 @@ package br.com.moonjava.flight.controller.base;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.AttributedString;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+
+import org.joda.time.LocalDate;
 
 import br.com.moonjava.flight.controller.financeiro.CartaoController;
 import br.com.moonjava.flight.controller.financeiro.ChequeController;
+import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.Tipo;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.PrintFileToPrinter;
@@ -42,10 +53,13 @@ import br.com.moonjava.flight.view.passagem.VenderPassagemUI;
 public class VenderPassagemController extends VenderPassagemUI {
 
   private Voo voo;
+  private List<Voo> voos;
+  private final List<PessoaFisica> pessoas;
 
   public VenderPassagemController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
 
+    pessoas = new ArrayList<PessoaFisica>();
     // add listeners
     addFocusListener(new FocusTextField());
     addFocusTelResidencialListener(new FocusTelResidencialHandler());
@@ -53,6 +67,7 @@ public class VenderPassagemController extends VenderPassagemUI {
     addFocusCpfListener(new FocusCpfHandler());
     addFocusDataDeNascimentoListener(new FocusDataDeNascimentoHandler());
     addPagamentoChangeListener(new PagamentoChangeHandler());
+    addChangeQuantidadeListener(new QuantidadeChangeHandler());
     addQuantidadeOKListener(new QuantidadeOKHandler());
     addSolicitarCompraListener(new SolicitarCompraHandler());
     addConcluirListener(new ConcluirHandler());
@@ -63,10 +78,16 @@ public class VenderPassagemController extends VenderPassagemUI {
     this.voo = voo;
   }
 
+  public VenderPassagemController(JPanel conteudo, ResourceBundle bundle, List<Voo> voos) {
+    this(conteudo, bundle);
+    this.voos = voos;
+
+  }
+
   private class FocusTelResidencialHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
-      String tel = getParameters().stringParam("telResidencial");
+      String tel = getParametersPF().stringParam("telResidencial");
       String defaultText = getDefaultTexts().stringParam("telResidencial");
 
       if (!tel.isEmpty() && !tel.equals(defaultText)) {
@@ -88,7 +109,7 @@ public class VenderPassagemController extends VenderPassagemUI {
   private class FocusTelCelularHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
-      String tel = getParameters().stringParam("telCelular");
+      String tel = getParametersPF().stringParam("telCelular");
       String defaultText = getDefaultTexts().stringParam("telCelular");
 
       if (!tel.isEmpty() && !tel.equals(defaultText)) {
@@ -110,12 +131,12 @@ public class VenderPassagemController extends VenderPassagemUI {
   private class FocusCpfHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
-      String cpf = getParameters().stringParam("cpf");
+      String cpf = getParametersPF().stringParam("cpf");
       if (!VerifierString.containsSpace(cpf)) {
         try {
           CPF.parse(cpf);
           addImageCpfValido();
-        } catch (Exception e1) {
+        } catch (CPFInvalidException e1) {
           addImageCpfInvalido();
         }
       }
@@ -125,7 +146,7 @@ public class VenderPassagemController extends VenderPassagemUI {
   private class FocusDataDeNascimentoHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
-      String dataDeNascimento = getParameters().stringParam("dataDeNascimento");
+      String dataDeNascimento = getParametersPF().stringParam("nascimento");
       if (!VerifierString.containsSpace(dataDeNascimento)) {
         if (VerifierString.isBirthDay(dataDeNascimento, bundle)) {
           addImageBirthDayValid();
@@ -139,7 +160,7 @@ public class VenderPassagemController extends VenderPassagemUI {
   private class PagamentoChangeHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      RequestParamWrapper request = getParameters();
+      RequestParamWrapper request = getParametersPF();
       int pagamento = request.intParam("pagamentoIndex");
 
       if (pagamento == 1) {
@@ -157,35 +178,108 @@ public class VenderPassagemController extends VenderPassagemUI {
     }
   }
 
+  private class QuantidadeChangeHandler implements KeyListener {
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+      try {
+        int qtd = Integer.parseInt(getQuantidade().getText());
+        addComboBoxTipo(qtd);
+      } catch (Exception e2) {
+      }
+    }
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+  }
+
   private class QuantidadeOKHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      addSolicitarCompraButton();
-      messageFailedQtd();
+      int qtd = Integer.parseInt(getQuantidade().getText());
+      int disponivel = voos.get(0).getAssentoLivre();
+      if (qtd <= disponivel) {
+
+        double valorTotal = 0;
+
+        for (int j = 0; j < voos.size(); j++) {
+          voo = voos.get(j);
+          List<JComboBox> tipos = getTipos();
+          for (int i = 0; i < tipos.size(); i++) {
+            String item = (String) tipos.get(i).getSelectedItem();
+            Tipo tipo = Tipo.fromString(item);
+
+            if (tipo == Tipo.CRIANCA) {
+              double taxa = 0.07 * voo.getPreco();
+              valorTotal += 0.7 * voo.getPreco() + taxa;
+            }
+            if (tipo == Tipo.ADULTO) {
+              double taxa = 0.07 * voo.getPreco();
+              valorTotal += voo.getPreco() + taxa;
+            }
+          }
+        }
+
+        setValorTotal(valorTotal);
+        addSolicitarCompraButton();
+
+      } else {
+        messageFailedQtd(disponivel);
+      }
     }
   }
 
   private class SolicitarCompraHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      addForm();
+      addForm(getTipos().get(getTipos().size() - 1));
     }
   }
 
   private class ConcluirHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
-      /** Location of a file to print **/
-      String fileName = "abc.txt";
+      RequestParamWrapper request = getParametersPF();
 
-      /** Read the text content from this location **/
-      String mText = PrintFileToPrinter.readContentFromFileToPrint(fileName);
+      String nascimento = request.stringParam("nascimento");
+      LocalDate date = FormatDateTime.parseToLocalDate(nascimento, bundle.getString("country"));
+      long _cpf = CPF.parse(request.stringParam("cpf")).getDigito();
+      int telResidencial = Integer.parseInt(request.stringParam("telResidencial"));
+      int telCelular = Integer.parseInt(request.stringParam("telCelular"));
+      request.set("nascimento", date);
+      request.set("cpf", _cpf);
+      request.set("telResidencial", telResidencial);
+      request.set("telCelular", telCelular);
 
-      /** Create an AttributedString object from the text read */
-      PrintFileToPrinter.myStyledText = new AttributedString(mText);
+      if (!getTipos().isEmpty()) {
+        PessoaFisica pojoPF = new PessoaFisicaControlCreate(request).createInstance();
+        pessoas.add(pojoPF);
 
-      PrintFileToPrinter.printToPrinter();
+        removeForm();
+      }
+      if (!getTipos().isEmpty()) {
+        addForm(getTipos().get(getTipos().size() - 1));
+      }
+
+      // new PessoaFisicaModel().criar(pojoPF);
+
+      if (getTipos().isEmpty()) {
+
+        /** Location of a file to print **/
+        String fileName = "abc.txt";
+
+        /** Read the text content from this location **/
+        String mText = PrintFileToPrinter.readContentFromFileToPrint(fileName);
+
+        /** Create an AttributedString object from the text read */
+        PrintFileToPrinter.myStyledText = new AttributedString(mText);
+
+        PrintFileToPrinter.printToPrinter();
+        refresh();
+      }
     }
   }
-
 }

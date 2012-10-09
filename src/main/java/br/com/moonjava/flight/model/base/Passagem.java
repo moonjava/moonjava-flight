@@ -17,6 +17,7 @@ package br.com.moonjava.flight.model.base;
 
 import java.util.List;
 
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
@@ -26,39 +27,41 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public interface Passagem {
 
-	interface Builder extends br.com.moonjava.flight.util.Builder<Passagem> {
+  interface Builder extends br.com.moonjava.flight.util.Builder<Passagem> {
 
-		Voo getVoo();
+    Voo getVoo();
 
-		PessoaFisica getPessoaFisica();
+    PessoaFisica getPessoaFisica();
 
-		String getCodigoBilhete();
+    String getCodigoBilhete();
 
-		String getAssento();
-	}
+    String getAssento();
+  }
 
-	interface Jdbc {
+  interface Jdbc {
 
-		boolean criar(Passagem passagem);
+    boolean criar(Passagem passagem);
 
-		List<Passagem> consultar(RequestParam request);
+    List<Passagem> consultar(RequestParam request);
 
-		Passagem consultarPorId(int id);
+    Passagem consultarPorId(int id);
 
-		Passagem consultarPorCodigoBilhete(String bilhete);
+    Passagem consultarPorCodigoBilhete(String bilhete);
 
-		boolean atualizar(Passagem passagem);
+    List<Passagem> consultarPorCpf(CPF cpf);
 
-		void deletar(int id);
-	}
+    boolean atualizar(Passagem passagem);
 
-	int getId();
+    void deletar(int id);
+  }
 
-	Voo getVoo();
+  int getId();
 
-	PessoaFisica getPessoaFisica();
+  Voo getVoo();
 
-	String getCodigoBilhete();
+  PessoaFisica getPessoaFisica();
 
-	String getAssento();
+  String getCodigoBilhete();
+
+  String getAssento();
 }

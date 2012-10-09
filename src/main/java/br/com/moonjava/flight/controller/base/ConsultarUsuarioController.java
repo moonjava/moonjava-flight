@@ -17,8 +17,8 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -74,6 +74,7 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
   }
 
   private class ConsultarHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
@@ -88,7 +89,8 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
     }
   }
 
-  private class ItemTableSelectedHandler implements MouseListener {
+  private class ItemTableSelectedHandler extends MouseAdapter {
+
     @Override
     public void mouseClicked(MouseEvent e) {
       enableButtons();
@@ -104,18 +106,6 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
       atualiza.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
       atualiza.setResult(false);
 
-    }
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
     }
   }
 

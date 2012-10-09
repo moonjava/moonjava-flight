@@ -83,7 +83,7 @@ ID integer not null auto_increment,
 VOO_ID integer not null,
 PESSOAFISICA_ID integer not null,
 COD_BILHETE varchar(11) not null,
-ASSENTO varchar(5) not null,
+ASSENTO varchar(5) null,
 
 primary key(ID),
 unique key(COD_BILHETE),
@@ -100,6 +100,8 @@ references FLIGHT.PESSOAFISICA (ID)
 create table FLIGHT.REEMBOLSO (
 ID integer not null auto_increment,
 PASSAGEM_ID integer not null,
+TITULAR varchar(80) not null,
+CPF bigint not null,
 BANCO integer not null,
 AGENCIA integer not null,
 CONTA integer not null,

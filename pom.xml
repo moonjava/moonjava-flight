@@ -57,6 +57,11 @@
 			<artifactId>dbunit</artifactId>
 			<version>${dbunit.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>

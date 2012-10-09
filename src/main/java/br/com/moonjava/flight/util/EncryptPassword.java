@@ -18,21 +18,22 @@ package br.com.moonjava.flight.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.codec.binary.Base64;
+import sun.misc.BASE64Encoder;
 
 /**
  * @version 1.0 07/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
+@SuppressWarnings("restriction")
 public class EncryptPassword {
 
   public String toEncryptMD5(String password) {
     try {
       MessageDigest digest = MessageDigest.getInstance("MD5");
       digest.update(password.getBytes());
-      Base64 base = new Base64();
-      return base.encodeAsString(digest.digest());
+      BASE64Encoder base = new BASE64Encoder();
+      return base.encode(digest.digest());
     } catch (NoSuchAlgorithmException ns) {
       ns.printStackTrace();
       return password;

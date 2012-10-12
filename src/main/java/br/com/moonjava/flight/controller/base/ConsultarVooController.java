@@ -30,9 +30,9 @@ import javax.swing.UIManager;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Status;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.ConsultarVooUI;
@@ -59,12 +59,12 @@ public class ConsultarVooController extends ConsultarVooUI {
                                 JButton deletar,
                                 JButton status) {
     super(conteudo, bundle, atualizar, deletar, status);
-
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
     this.status = status;
+
     addConsultarListener(new ConsultarHandler());
     addItemTableSelectedListener(new ItemTableSelectedHandler());
     addVenderPassagemListener(new VenderPassagemHandler());
@@ -124,8 +124,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       request.set("chegada", dataChegada);
       request.set("status", _status);
 
-      list = new VooDAO().consultar(request);
-
+      list = new VooModel().consultar(request);
       boolean isEmpty = showList(list);
 
       if (isEmpty) {
@@ -137,7 +136,6 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   private class ItemTableSelectedHandler extends MouseAdapter {
-
     @Override
     public void mouseClicked(MouseEvent e) {
       enableButtons();
@@ -160,8 +158,9 @@ public class ConsultarVooController extends ConsultarVooUI {
     }
   }
 
-
   private class ItemTableSelectedPassagemHandler extends MouseAdapter {
+
+    private boolean flag;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -196,12 +195,10 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   private class VenderPassagemHandler implements ActionListener {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       // busca voo selecionada
       int[] rows = getTable().getSelectedRows();
-
       if (rows.length == 1) {
         Voo pojo = list.get(rows[0]);
         new VenderPassagemController(conteudo, bundle, pojo);

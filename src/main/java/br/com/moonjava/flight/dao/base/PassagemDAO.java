@@ -51,15 +51,15 @@ public class PassagemDAO implements Passagem.Jdbc {
   }
 
   @Override
-  public boolean criar(Passagem passagem) {
+  public boolean vender(Passagem passagem) {
     boolean executed = new SqlStatementWrapper()
         .prepare()
 
         .with("insert into FLIGHT.PASSAGEM")
         .with("(VOO_ID, PESSOAFISICA_ID, COD_BILHETE, ASSENTO)")
         .with("values(")
-        .with("?,", passagem.getVoo())
-        .with("?,", passagem.getPessoaFisica())
+        .with("?,", passagem.getVoo().getId())
+        .with("?,", passagem.getPessoaFisica().getId())
         .with("?,", passagem.getCodigoBilhete())
         .with("?)", passagem.getAssento())
 
@@ -105,7 +105,7 @@ public class PassagemDAO implements Passagem.Jdbc {
   }
 
   @Override
-  public boolean atualizar(Passagem passagem) {
+  public boolean transferir(Passagem passagem) {
     boolean executed = new SqlStatementWrapper()
         .prepare()
 

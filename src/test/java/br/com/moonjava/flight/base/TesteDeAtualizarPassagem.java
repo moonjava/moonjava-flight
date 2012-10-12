@@ -63,7 +63,7 @@ public class TesteDeAtualizarPassagem {
     request.set("voo", novoVoo);
 
     Passagem passagem = new PassagemControlUpdate(request).createInstance();
-    dao.atualizar(passagem);
+    dao.transferir(passagem);
 
     Passagem res = dao.consultarPorId(id);
     assertThat(res.getVoo().getId(), equalTo(novoVoo));

@@ -24,28 +24,28 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.ConsultarVooController;
 import br.com.moonjava.flight.controller.base.CriarVooController;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 
 /**
  * @version 1.0 Aug 17, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class VooUI {
+public class VooUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
-  private final ResourceBundle bundle;
   private final Usuario usuarioLogado;
-
   private JPanel subConteudo;
   private JButton consultar;
-  private JButton status;
-  private JButton cadastrar;
-  private JButton atualizar;
-  private JButton deletar;
+
+  protected JButton status;
+  protected JButton cadastrar;
+  protected JButton atualizar;
+  protected JButton deletar;
+  protected final ResourceBundle bundle;
 
   public VooUI(JPanel conteudo, ResourceBundle bundle, Usuario usuarioLogado) {
     this.conteudo = conteudo;
@@ -55,7 +55,8 @@ public class VooUI {
     mainMenu();
   }
 
-  private void mainMenu() {
+  @Override
+  protected void mainMenu() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -86,13 +87,6 @@ public class VooUI {
     conteudo.add(deletar);
     conteudo.add(subConteudo);
 
-    consultar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new ConsultarVooController(subConteudo, bundle, atualizar, deletar, status);
-      }
-    });
-
     // Adiciona cadastrar se for Supervisor
     if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
       cadastrar = new JButton(bundle.getString("voo.cadastrar"));
@@ -116,6 +110,19 @@ public class VooUI {
       deletar.setBounds(0, 280, 200, 50);
     }
 
+  }
+
+  @Override
+  protected JPanel getConteudo() {
+    return subConteudo;
+  }
+
+  protected void addConsultarListener(ActionListener a) {
+    consultar.addActionListener(a);
+  }
+
+  protected void addCadastrarListener(ActionListener a) {
+    cadastrar.addActionListener(a);
   }
 
 }

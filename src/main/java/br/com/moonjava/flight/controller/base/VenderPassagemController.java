@@ -32,6 +32,8 @@ import org.joda.time.LocalDate;
 
 import br.com.moonjava.flight.controller.financeiro.CartaoController;
 import br.com.moonjava.flight.controller.financeiro.ChequeController;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.model.base.Tipo;
 import br.com.moonjava.flight.model.base.Voo;
@@ -55,11 +57,13 @@ public class VenderPassagemController extends VenderPassagemUI {
   private Voo voo;
   private List<Voo> voos;
   private final List<PessoaFisica> pessoas;
+  private final List<String> codigos;
 
   public VenderPassagemController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
 
     pessoas = new ArrayList<PessoaFisica>();
+    codigos = new ArrayList<String>();
     // add listeners
     addFocusListener(new FocusTextField());
     addFocusTelResidencialListener(new FocusTelResidencialHandler());
@@ -257,6 +261,7 @@ public class VenderPassagemController extends VenderPassagemUI {
       if (!getTipos().isEmpty()) {
         PessoaFisica pojoPF = new PessoaFisicaControlCreate(request).createInstance();
         pessoas.add(pojoPF);
+        codigos.add(request.stringParam("codigo"));
 
         removeForm();
       }
@@ -264,9 +269,15 @@ public class VenderPassagemController extends VenderPassagemUI {
         addForm(getTipos().get(getTipos().size() - 1));
       }
 
-      // new PessoaFisicaModel().criar(pojoPF);
-
       if (getTipos().isEmpty()) {
+        RequestParamWrapper req = new RequestParamWrapper();
+        for (int i = 0; i < pessoas.size(); i++) {
+          req.set("pessoaFisica", pessoas.get(i).getId());
+          req.set("voo", voos.get(0).getId());
+          req.set("codigo", codigos.get(i));
+          Passagem pojo = new PassagemCreate(request).createInstance();
+          new PassagemModel().venderPassagem(pojo);
+        }
 
         /** Location of a file to print **/
         String fileName = "abc.txt";

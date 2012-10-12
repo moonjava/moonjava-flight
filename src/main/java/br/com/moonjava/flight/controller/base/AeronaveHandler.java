@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.aeronave;
+package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,21 +39,21 @@ public class AeronaveHandler implements ActionListener, MenuListener {
   }
 
   @Override
-  public void menuSelected(MenuEvent e) {
-    new AeronaveUI(conteudo, bundle);
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    new AeronaveUI(conteudo, bundle);
-  }
-
-  @Override
   public void menuCanceled(MenuEvent e) {
   }
 
   @Override
   public void menuDeselected(MenuEvent e) {
+  }
+
+  @Override
+  public void menuSelected(MenuEvent e) {
+    new AeronaveController(conteudo, bundle);
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    new AeronaveController(conteudo, bundle);
   }
 
 }

@@ -15,6 +15,8 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 /**
@@ -78,11 +80,15 @@ public class VooFake implements Voo {
   @Override
   public int getAssentoLivre() {
     throw new UnsupportedOperationException();
-
   }
 
   @Override
   public double getPreco() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public List<Voo> consultaPainel() {
     throw new UnsupportedOperationException();
   }
 

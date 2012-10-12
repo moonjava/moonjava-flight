@@ -68,7 +68,7 @@ public class PassagemCreate implements Passagem.Builder {
 
   @Override
   public String getAssento() {
-    return request.stringParam("assento");
+    return null;
   }
 
 }

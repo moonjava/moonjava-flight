@@ -40,7 +40,7 @@ public interface Passagem {
 
   interface Jdbc {
 
-    boolean criar(Passagem passagem);
+    boolean vender(Passagem passagem);
 
     List<Passagem> consultar(RequestParam request);
 
@@ -50,7 +50,7 @@ public interface Passagem {
 
     List<Passagem> consultarPorCpf(CPF cpf);
 
-    boolean atualizar(Passagem passagem);
+    boolean transferir(Passagem passagem);
 
     void deletar(int id);
   }
@@ -64,4 +64,10 @@ public interface Passagem {
   String getCodigoBilhete();
 
   String getAssento();
+
+  double cancelarPassagem(Passagem passagem);
+
+  boolean transferirPassagem(Passagem passagem, Voo voo);
+
+  void venderPassagem(Passagem pojo);
 }

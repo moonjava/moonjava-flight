@@ -21,11 +21,7 @@ import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
 import br.com.moonjava.flight.model.base.Usuario;
-<<<<<<< HEAD
 import br.com.moonjava.flight.model.base.UsuarioModel;
-=======
-import br.com.moonjava.flight.util.EncryptPassword;
->>>>>>> origin/miqueias_transf_canc_passagem
 import br.com.moonjava.flight.util.FlightKeyPressedListener;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.LoginUI;
@@ -60,11 +56,11 @@ public class LoginController extends LoginUI {
 
     private void logar() {
       RequestParamWrapper request = getLogin();
-      UsuarioDAO dao = new UsuarioDAO(); 
-      EncryptPassword encrypt = new EncryptPassword();
+      Usuario usuarioLogado = new UsuarioModel().consultar(request);
+      // EncryptPassword encrypt = new EncryptPassword();
 
-      request.set("senha", encrypt.toEncryptMD5(request.stringParam("senha")));
-      Usuario usuarioLogado = dao.consultarUsuario(request);
+      // request.set("senha",
+      // encrypt.toEncryptMD5(request.stringParam("senha")));
 
       if (usuarioLogado != null) {
         new FlightController(usuarioLogado, bundle);

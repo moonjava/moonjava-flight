@@ -282,6 +282,7 @@ public class VenderPassagemUI extends AbstractFlightUI {
     request.set("telResidencial", telResidencial.getText());
     request.set("telCelular", telCelular.getText());
     request.set("pagamentoIndex", pagamento.getSelectedIndex());
+    request.set("codigo", codigo.getText());
 
     return request;
   }

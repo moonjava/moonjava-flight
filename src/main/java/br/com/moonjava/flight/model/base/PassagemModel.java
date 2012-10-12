@@ -14,6 +14,7 @@ public class PassagemModel implements Passagem {
   private PessoaFisica pf;
   private String codigoBilhete;
   private String assento;
+  private PassagemDAO dao;
 
   public PassagemModel(Builder builder) {
     this.voo = builder.getVoo();
@@ -23,6 +24,7 @@ public class PassagemModel implements Passagem {
   }
 
   public PassagemModel() {
+    dao = new PassagemDAO();
   }
 
   public void setId(int id) {
@@ -54,6 +56,7 @@ public class PassagemModel implements Passagem {
     return assento;
   }
 
+  @Override
   public double cancelarPassagem(Passagem passagem) {
     Voo voo = passagem.getVoo();
 
@@ -78,8 +81,8 @@ public class PassagemModel implements Passagem {
     }
   }
 
+  @Override
   public boolean transferirPassagem(Passagem passagem, Voo voo) {
-    PassagemDAO dao = new PassagemDAO();
     RequestParamWrapper request = new RequestParamWrapper();
 
     request.set("id", passagem.getId());
@@ -87,6 +90,12 @@ public class PassagemModel implements Passagem {
 
     Passagem pojo = new PassagemControlUpdate(request).createInstance();
 
-    return dao.atualizar(pojo);
+    return dao.transferir(pojo);
   }
+
+  @Override
+  public void venderPassagem(Passagem pojo) {
+    dao.vender(pojo);
+  }
+
 }

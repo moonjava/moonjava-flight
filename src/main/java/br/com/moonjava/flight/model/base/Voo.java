@@ -20,6 +20,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -102,5 +103,17 @@ public interface Voo {
   int getAssentoLivre();
 
   double getPreco();
+
+  List<Voo> consultaPainel();
+
+  boolean criar(Voo pojo);
+
+  List<Voo> consultar(RequestParamWrapper request);
+
+  void deletar(int id);
+
+  boolean atualizar(Voo pojo);
+
+  void controlarStatus(int id, Status fromString);
 
 }

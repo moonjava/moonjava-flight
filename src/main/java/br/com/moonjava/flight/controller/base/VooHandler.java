@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.voo;
+package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,12 +52,12 @@ public class VooHandler implements ActionListener, MenuListener {
 
   @Override
   public void menuSelected(MenuEvent e) {
-    new VooUI(conteudo, bundle, usuarioLogado);
+    new VooController(conteudo, bundle, usuarioLogado);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    new VooUI(conteudo, bundle, usuarioLogado);
+    new VooController(conteudo, bundle, usuarioLogado);
   }
 
 }

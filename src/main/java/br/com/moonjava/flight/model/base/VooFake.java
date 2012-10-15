@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import br.com.moonjava.flight.util.RequestParamWrapper;
+
 /**
  * @version 1.0 Oct 6, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -89,6 +91,31 @@ public class VooFake implements Voo {
 
   @Override
   public List<Voo> consultaPainel() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean criar(Voo pojo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public List<Voo> consultar(RequestParamWrapper request) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void deletar(int id) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean atualizar(Voo pojo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void controlarStatus(int id, Status fromString) {
     throw new UnsupportedOperationException();
   }
 

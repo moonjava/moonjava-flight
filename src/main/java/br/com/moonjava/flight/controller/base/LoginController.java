@@ -56,7 +56,7 @@ public class LoginController extends LoginUI {
 
     private void logar() {
       RequestParamWrapper request = getLogin();
-      Usuario usuarioLogado = new UsuarioModel().consultar(request);
+      Usuario usuarioLogado = new UsuarioModel().consultarUsuario(request);
       // EncryptPassword encrypt = new EncryptPassword();
 
       // request.set("senha",

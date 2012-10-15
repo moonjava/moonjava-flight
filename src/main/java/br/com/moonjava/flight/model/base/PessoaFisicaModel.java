@@ -115,4 +115,9 @@ public class PessoaFisicaModel implements PessoaFisica {
     return true;
   }
 
+  @Override
+  public void atualizar(PessoaFisica pojo) {
+    dao.atualizar(pojo);
+  }
+
 }

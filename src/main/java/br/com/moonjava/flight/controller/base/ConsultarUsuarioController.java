@@ -26,8 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.usuario.ConsultarUsuarioUI;
 
@@ -79,7 +79,7 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
 
-      list = new UsuarioDAO().consultar(request);
+      list = new UsuarioModel().consultar(request);
 
       boolean isEmpty = showList(list);
 

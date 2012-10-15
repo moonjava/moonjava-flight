@@ -15,22 +15,40 @@
  */
 package br.com.moonjava.flight.controller.base;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.view.checkin.CheckinUI;
+import br.com.moonjava.flight.view.usuario.UsuarioUI;
 
 /**
  * @version 1.0 Oct 15, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CheckinController extends CheckinUI {
+public class UsuarioController extends UsuarioUI {
 
-  public CheckinController(JPanel conteudo, ResourceBundle bundle) {
+  public UsuarioController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
-    new EfetuarCheckinController(getConteudo(), bundle);
+
+    addConsultarListener(new ConsultarHandler());
+    addCadastrarListener(new CadastrarHandler());
+  }
+
+  private class ConsultarHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      new ConsultarUsuarioController(getConteudo(), bundle, atualizar, deletar);
+    }
+  }
+
+  private class CadastrarHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      new CriarUsuarioController(getConteudo(), bundle, atualizar, deletar);
+    }
   }
 
 }

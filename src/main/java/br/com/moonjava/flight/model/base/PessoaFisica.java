@@ -88,4 +88,6 @@ public interface PessoaFisica {
 
   boolean criar(PessoaFisica pojo);
 
+  void atualizar(PessoaFisica pojo);
+
 }

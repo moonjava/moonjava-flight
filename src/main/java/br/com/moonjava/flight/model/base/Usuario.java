@@ -61,8 +61,6 @@ public interface Usuario {
 
   }
 
-  Usuario consultar(RequestParamWrapper request);
-
   int getId();
 
   String getCodigo();
@@ -74,5 +72,13 @@ public interface Usuario {
   String getLogin();
 
   String getSenha();
+
+  List<Usuario> consultar(RequestParamWrapper request);
+
+  void deletar(int id);
+
+  void atualizar(Usuario pojo);
+
+  Usuario consultarUsuario(RequestParamWrapper request);
 
 }

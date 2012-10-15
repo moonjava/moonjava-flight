@@ -15,6 +15,8 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
 import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -43,11 +45,6 @@ public class UsuarioModel implements Usuario {
 
   public UsuarioModel() {
     this.dao = new UsuarioDAO();
-  }
-
-  @Override
-  public Usuario consultar(RequestParamWrapper request) {
-    return dao.consultarUsuario(request);
   }
 
   public void setId(int id) {
@@ -82,6 +79,26 @@ public class UsuarioModel implements Usuario {
   @Override
   public String getSenha() {
     return senha;
+  }
+
+  @Override
+  public List<Usuario> consultar(RequestParamWrapper request) {
+    return dao.consultar(request);
+  }
+
+  @Override
+  public void deletar(int id) {
+    dao.deletar(id);
+  }
+
+  @Override
+  public void atualizar(Usuario pojo) {
+    dao.atualizar(pojo);
+  }
+
+  @Override
+  public Usuario consultarUsuario(RequestParamWrapper request) {
+    return dao.consultarUsuario(request);
   }
 
 }

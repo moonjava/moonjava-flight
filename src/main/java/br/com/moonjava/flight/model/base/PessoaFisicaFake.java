@@ -81,4 +81,9 @@ public class PessoaFisicaFake implements PessoaFisica {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public void atualizar(PessoaFisica pojo) {
+    throw new UnsupportedOperationException();
+  }
+
 }

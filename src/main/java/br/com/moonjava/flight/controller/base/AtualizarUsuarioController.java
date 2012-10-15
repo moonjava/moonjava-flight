@@ -28,10 +28,10 @@ import javax.swing.JTable;
 
 import org.joda.time.LocalDate;
 
-import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.PessoaFisicaModel;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FocusTextField;
@@ -226,15 +226,16 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
         requestPf.set("telResidencial", _telResidencial);
         requestPf.set("telCelular", _telCelular);
 
-        PessoaFisica pFisica = new PessoaFisicaControlUpdate(requestPf).createInstance();
-        new PessoaFisicaDAO().atualizar(pFisica);
+        PessoaFisica pojoPF = new PessoaFisicaControlUpdate(requestPf).createInstance();
+        new PessoaFisicaModel().atualizar(pojoPF);
 
-        Usuario usuario = new UsuarioControlUpdate(requestUsu).createInstance();
-        new UsuarioDAO().atualizar(usuario);
+        Usuario pojoUsuario = new UsuarioControlUpdate(requestUsu).createInstance();
+        new UsuarioModel().atualizar(pojoUsuario);
 
         messageOK();
         refresh();
       }
     }
   }
+
 }

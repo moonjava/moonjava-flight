@@ -29,6 +29,8 @@ public class App {
 
   public static void main(String[] args) {
     try {
+
+      // Configura último 'Look and Feel' da Sun (Nimbus)
       UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();

@@ -44,6 +44,7 @@ public class IdiomaController extends IdiomaUI {
 
   private class IdiomaHandler extends MouseAdapter {
 
+    // Verifica qual idioma será carregado
     @Override
     public void mouseClicked(MouseEvent e) {
       if (e.getSource() == getPortugues()) {
@@ -55,10 +56,12 @@ public class IdiomaController extends IdiomaUI {
       if (e.getSource() == getEspanhol()) {
         bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
       }
+      // Finaliza Frame de idiomas e inicia Login
       getIdioma().dispose();
       new LoginController(bundle);
     }
 
+    // Mudando o cursor para 'Hands' ao entrar nas imagens
     @Override
     public void mouseEntered(MouseEvent e) {
       getPortugues().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -68,6 +71,10 @@ public class IdiomaController extends IdiomaUI {
 
   }
 
+  /*
+   * Classe que define o padrão UTF-8 aos arquivos 'properties'
+   * 
+   */
   private static class ResourceControl extends ResourceBundle.Control {
     @Override
     public ResourceBundle newBundle(String baseName, Locale locale,

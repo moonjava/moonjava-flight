@@ -50,6 +50,7 @@ public class PainelDeDecolagemUI {
     conteudo.add(painel);
   }
 
+  // Adiciona o dados da tabela (DB) através do método setModel(voos);
   protected boolean showList(List<Voo> lista) {
     PainelDeDecolagemTableModel voos = new PainelDeDecolagemTableModel(lista, bundle);
     tabela.setModel(voos);
@@ -63,6 +64,7 @@ public class PainelDeDecolagemUI {
     int frameWidth = 1126;
     int frameHeight = 512;
 
+    // Centraliza a frame
     conteudo.setLocation((width / 2) - (frameWidth / 2), (height / 2) - (frameHeight / 2));
     conteudo.setSize(frameWidth, frameHeight);
     conteudo.setResizable(false);

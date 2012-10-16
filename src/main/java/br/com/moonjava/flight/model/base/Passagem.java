@@ -70,4 +70,10 @@ public interface Passagem {
   boolean transferirPassagem(Passagem passagem, Voo voo);
 
   void venderPassagem(Passagem pojo);
+
+  Passagem consultarPorCodigoBilhete(String bilhete);
+
+  List<Passagem> consultarPorVoo(Voo voo);
+
+  boolean efetuarCheckin(Passagem pojo, String assento);
 }

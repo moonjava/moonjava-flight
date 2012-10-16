@@ -90,4 +90,6 @@ public interface PessoaFisica {
 
   void atualizar(PessoaFisica pojo);
 
+  PessoaFisica consultarPorCPF(CPF cpf);
+
 }

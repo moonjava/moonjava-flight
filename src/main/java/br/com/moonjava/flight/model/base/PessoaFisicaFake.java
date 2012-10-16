@@ -86,4 +86,9 @@ public class PessoaFisicaFake implements PessoaFisica {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public PessoaFisica consultarPorCPF(CPF cpf) {
+    throw new UnsupportedOperationException();
+  }
+
 }

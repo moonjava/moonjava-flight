@@ -21,6 +21,7 @@ import br.com.moonjava.flight.controller.base.PassagemControlLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
 
@@ -56,12 +57,11 @@ public class PassagemDAO implements Passagem.Jdbc {
         .prepare()
 
         .with("insert into FLIGHT.PASSAGEM")
-        .with("(VOO_ID, PESSOAFISICA_ID, COD_BILHETE, ASSENTO)")
+        .with("(VOO_ID, PESSOAFISICA_ID, COD_BILHETE)")
         .with("values(")
         .with("?,", passagem.getVoo().getId())
         .with("?,", passagem.getPessoaFisica().getId())
-        .with("?,", passagem.getCodigoBilhete())
-        .with("?)", passagem.getAssento())
+        .with("?)", passagem.getCodigoBilhete())
 
         .andExecute();
     return executed;
@@ -128,6 +128,27 @@ public class PassagemDAO implements Passagem.Jdbc {
         .with("where PASSAGEM.ID = ?", id)
 
         .andExecute();
+  }
+
+  public List<Passagem> consultarPorVoo(Voo voo) {
+    return query()
+
+        .with("where PASSAGEM.VOO_ID = ?", voo.getId())
+
+        .andList();
+  }
+
+  public boolean efetuarCheckin(Passagem pojo, String assento) {
+    boolean executed = new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.PASSAGEM as PASSAGEM set")
+        .with("ASSENTO = ?", assento)
+
+        .with("where ID = ?", pojo.getId())
+
+        .andExecute();
+    return executed;
   }
 
 }

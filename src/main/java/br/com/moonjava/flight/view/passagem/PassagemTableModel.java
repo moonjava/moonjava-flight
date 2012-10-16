@@ -15,47 +15,53 @@
  */
 package br.com.moonjava.flight.view.passagem;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.JPanel;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+import javax.swing.table.AbstractTableModel;
 
-import br.com.moonjava.flight.controller.base.PassagemController;
+import br.com.moonjava.flight.model.base.Passagem;
 
 /**
- * @version 1.0 Aug 31, 2012
+ * @version 1.0 Oct 15, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class PassagemHandler implements MenuListener, ActionListener {
+@SuppressWarnings("serial")
+public class PassagemTableModel extends AbstractTableModel {
 
-  private final JPanel conteudo;
   private final ResourceBundle bundle;
+  private final List<Passagem> passagens;
 
-  public PassagemHandler(JPanel conteudo, ResourceBundle bundle) {
-    this.conteudo = conteudo;
+  public PassagemTableModel(List<Passagem> passagens, ResourceBundle bundle) {
+    this.passagens = passagens;
     this.bundle = bundle;
   }
 
   @Override
-  public void menuCanceled(MenuEvent e) {
+  public boolean isCellEditable(int rowIndex, int columnIndex) {
+    return false;
   }
 
   @Override
-  public void menuDeselected(MenuEvent e) {
+  public int getColumnCount() {
+    return 1;
   }
 
   @Override
-  public void menuSelected(MenuEvent e) {
-    new PassagemController(conteudo, bundle);
+  public int getRowCount() {
+    return passagens.size();
   }
 
   @Override
-  public void actionPerformed(ActionEvent e) {
-    new PassagemController(conteudo, bundle);
+  public Object getValueAt(int linha, int coluna) {
+    Passagem passagem = passagens.get(linha);
+    return passagem.getAssento();
+  }
+
+  @Override
+  public String getColumnName(int column) {
+    return bundle.getString("vender.passagem.quantidade.indisponivel");
   }
 
 }

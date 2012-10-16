@@ -1,5 +1,7 @@
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 
@@ -96,6 +98,21 @@ public class PassagemModel implements Passagem {
   @Override
   public void venderPassagem(Passagem pojo) {
     dao.vender(pojo);
+  }
+
+  @Override
+  public Passagem consultarPorCodigoBilhete(String bilhete) {
+    return dao.consultarPorCodigoBilhete(bilhete);
+  }
+
+  @Override
+  public List<Passagem> consultarPorVoo(Voo voo) {
+    return dao.consultarPorVoo(voo);
+  }
+
+  @Override
+  public boolean efetuarCheckin(Passagem pojo, String assento) {
+    return dao.efetuarCheckin(pojo, assento);
   }
 
 }

@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.util.ResourceBundle;
 
+import br.com.moonjava.flight.model.financeiro.Cartao;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
@@ -109,7 +110,9 @@ public class CartaoController extends CartaoUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       dispose();
-      setParameterValid(true);
+      Cartao cartao = new CartaoControlCreate(getParameters()).createInstance();
+      boolean created = new CartaoControl().creditar(cartao);
+      setParameterValid(created);
     }
   }
 

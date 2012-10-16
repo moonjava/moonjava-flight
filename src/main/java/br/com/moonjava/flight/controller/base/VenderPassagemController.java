@@ -35,6 +35,7 @@ import br.com.moonjava.flight.controller.financeiro.ChequeController;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.PessoaFisicaModel;
 import br.com.moonjava.flight.model.base.Tipo;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.CPF;
@@ -85,7 +86,6 @@ public class VenderPassagemController extends VenderPassagemUI {
   public VenderPassagemController(JPanel conteudo, ResourceBundle bundle, List<Voo> voos) {
     this(conteudo, bundle);
     this.voos = voos;
-
   }
 
   private class FocusTelResidencialHandler extends FlightFocusLostListener {
@@ -260,11 +260,18 @@ public class VenderPassagemController extends VenderPassagemUI {
 
       if (!getTipos().isEmpty()) {
         PessoaFisica pojoPF = new PessoaFisicaControlCreate(request).createInstance();
-        pessoas.add(pojoPF);
-        codigos.add(request.stringParam("codigo"));
+        boolean created = new PessoaFisicaModel().criar(pojoPF);
 
-        removeForm();
+        if (created) {
+          PessoaFisica pf = new PessoaFisicaModel().consultarPorCPF(pojoPF.getCpf());
+          pessoas.add(pf);
+          codigos.add(request.stringParam("codigo"));
+
+          removeForm();
+        }
+
       }
+
       if (!getTipos().isEmpty()) {
         addForm(getTipos().get(getTipos().size() - 1));
       }
@@ -275,7 +282,7 @@ public class VenderPassagemController extends VenderPassagemUI {
           req.set("pessoaFisica", pessoas.get(i).getId());
           req.set("voo", voos.get(0).getId());
           req.set("codigo", codigos.get(i));
-          Passagem pojo = new PassagemCreate(request).createInstance();
+          Passagem pojo = new PassagemCreate(req).createInstance();
           new PassagemModel().venderPassagem(pojo);
         }
 
@@ -293,4 +300,5 @@ public class VenderPassagemController extends VenderPassagemUI {
       }
     }
   }
+
 }

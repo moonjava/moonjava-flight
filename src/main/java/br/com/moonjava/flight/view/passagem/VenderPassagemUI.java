@@ -40,6 +40,7 @@ import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
 import br.com.moonjava.flight.util.FlightImageUI;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -358,7 +359,7 @@ public class VenderPassagemUI extends AbstractFlightUI {
 
   protected void addSolicitarCompraButton() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("vender.passagem.valor") + ": R$" + String.format("%,2f", valorTotal),
+        bundle.getString("vender.passagem.valor") + ": R$" + String.format("%,.2f", valorTotal),
         bundle.getString("vender.passagem.titulo"),
         JOptionPane.INFORMATION_MESSAGE);
 
@@ -411,7 +412,8 @@ public class VenderPassagemUI extends AbstractFlightUI {
     tipoLabel = new JLabel(item);
     tipoLabel.setBounds(200, 75, 300, 30);
 
-    codigo = new JLabel(item);
+    String cod = new GerarCodigo("PASSAGEM").getCodigo();
+    codigo = new JLabel(cod);
     codigo.setBounds(200, 40, 100, 30);
     conteudo.add(codigo);
     conteudo.add(tipoLabel);

@@ -34,7 +34,7 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
  * 
  */
 @Test
-public class TesteDePagementoCartao {
+public class TesteDePagamentoCartao {
 
   public void pagamento_com_cartao_credito_deve_funcionar() {
     RequestParamWrapper request = new RequestParamWrapper();

@@ -120,4 +120,9 @@ public class PessoaFisicaModel implements PessoaFisica {
     dao.atualizar(pojo);
   }
 
+  @Override
+  public PessoaFisica consultarPorCPF(CPF cpf) {
+    return dao.consultarPorCpf(cpf);
+  }
+
 }

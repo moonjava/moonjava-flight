@@ -70,6 +70,9 @@ public class ConsultarVooController extends ConsultarVooUI {
     addVenderPassagemListener(new VenderPassagemHandler());
   }
 
+  /*
+   * Construtor apenas para consultar voo vinda de vender passagem
+   */
   public ConsultarVooController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle, true);
 

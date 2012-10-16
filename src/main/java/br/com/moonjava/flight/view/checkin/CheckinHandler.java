@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import br.com.moonjava.flight.controller.base.CheckinController;
+
 /**
  * @version 1.0 Sep 8, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -48,12 +50,12 @@ public class CheckinHandler implements MenuListener, ActionListener {
 
   @Override
   public void menuSelected(MenuEvent e) {
-    new CheckinUI(conteudo, bundle);
+    new CheckinController(conteudo, bundle);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    new CheckinUI(conteudo, bundle);
+    new CheckinController(conteudo, bundle);
   }
 
 }

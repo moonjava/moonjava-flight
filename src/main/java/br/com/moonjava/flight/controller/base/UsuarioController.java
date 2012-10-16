@@ -13,47 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.aeronave;
+package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+
+import br.com.moonjava.flight.view.usuario.UsuarioUI;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Oct 15, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class AeronaveHandler implements ActionListener, MenuListener {
+public class UsuarioController extends UsuarioUI {
 
-  private final JPanel conteudo;
-  private final ResourceBundle bundle;
+  public UsuarioController(JPanel conteudo, ResourceBundle bundle) {
+    super(conteudo, bundle);
 
-  public AeronaveHandler(JPanel conteudo, ResourceBundle bundle) {
-    this.conteudo = conteudo;
-    this.bundle = bundle;
+    addConsultarListener(new ConsultarHandler());
+    addCadastrarListener(new CadastrarHandler());
   }
 
-  @Override
-  public void menuSelected(MenuEvent e) {
-    new AeronaveUI(conteudo, bundle);
+  private class ConsultarHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      new ConsultarUsuarioController(getConteudo(), bundle, atualizar, deletar);
+    }
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    new AeronaveUI(conteudo, bundle);
-  }
-
-  @Override
-  public void menuCanceled(MenuEvent e) {
-  }
-
-  @Override
-  public void menuDeselected(MenuEvent e) {
+  private class CadastrarHandler implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      new CriarUsuarioController(getConteudo(), bundle, atualizar, deletar);
+    }
   }
 
 }

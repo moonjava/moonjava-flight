@@ -28,6 +28,7 @@ import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -47,13 +48,14 @@ public class TesteDeAtualizarUsuario {
   public void atualizar_usuario_com_sucesso() {
     UsuarioDAO dao = new UsuarioDAO();
     RequestParamWrapper request = new RequestParamWrapper();
+    EncryptPassword encrypt = new EncryptPassword();
 
     int id = 1;
     String codigo = "U1000";
     int pessoaFisica = 1;
     Perfil perfil = Perfil.ATENDENTE;
     String login = "teste1";
-    String senha = "teste1";
+    String senha = "6VkIjGBJ8RBMhMm95VYKEw==";
 
     Usuario antes = dao.consultarPorId(id);
     assertThat(antes.getCodigo(), equalTo(codigo));
@@ -64,7 +66,7 @@ public class TesteDeAtualizarUsuario {
 
     Perfil novoPerfil = Perfil.SUPERVISOR;
     String novoLogin = "testeDeUpdate";
-    String novaSenha = "testeDeUpdate";
+    String novaSenha = encrypt.toEncryptMD5("testeDeUpdate");
 
     request.set("id", id);
     request.set("perfil", novoPerfil);
@@ -91,7 +93,7 @@ public class TesteDeAtualizarUsuario {
 
     Perfil novoPerfil = Perfil.SUPERVISOR;
     String novoLogin = "teste2";
-    String novaSenha = "teste2";
+    String novaSenha = "OIUVNth3AdIZGZDiSn+NTg==";
 
     request.set("id", id);
     request.set("perfil", novoPerfil);

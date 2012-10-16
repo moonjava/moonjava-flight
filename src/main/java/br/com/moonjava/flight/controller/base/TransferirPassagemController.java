@@ -17,10 +17,22 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.dao.base.PassagemDAO;
+import br.com.moonjava.flight.dao.base.ReembolsoDAO;
+import br.com.moonjava.flight.dao.base.VooDAO;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemModel;
+import br.com.moonjava.flight.model.base.Reembolso;
+import br.com.moonjava.flight.model.base.Status;
+import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.passagem.TransferirPassagemUI;
 
 /**
@@ -30,25 +42,97 @@ import br.com.moonjava.flight.view.passagem.TransferirPassagemUI;
  */
 public class TransferirPassagemController extends TransferirPassagemUI {
 
+  private List<Voo> list;
+  private Passagem passagem;
+
   public TransferirPassagemController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
 
     addConsultarListener(new ConsultarHandler());
     addTransferirListener(new TransferirHandler());
+    addItemTableSelectedListener(new ItemTableSelectedHandler());
+  }
+
+  public void setList(List<Voo> list) {
+    this.list = list;
+  }
+
+  private class ItemTableSelectedHandler extends MouseAdapter {
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      abilitarBotao();
+    }
+
   }
 
   private class ConsultarHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
+      VooDAO vDao = new VooDAO();
+      PassagemDAO pDao = new PassagemDAO();
+      ReembolsoDAO rDao = new ReembolsoDAO();
+
+      RequestParamWrapper request = getParametersPassagem();
+      String codBilhete = request.stringParam("codBilhete");
+
+      passagem = pDao.consultarPorCodigoBilhete(codBilhete);
+
+      if (passagem == null) {
+        messagePassagemOff();
+        return;
+      }
+
+      Reembolso verifCancel = rDao.consultarPorPassagemId(passagem.getId());
+
+      if (verifCancel != null) {
+        messagemPasJaCancelada();
+        return;
+      }
+
+      Status status = Status.DISPONIVEL;
+      // DateTime agora = new DateTime().toDateTime();
+      request.set("status", status);
+      // request.set("partida", agora);
+
+      List<Voo> voos = vDao.consultar(request);
+
+      setList(voos);
+      showList(voos);
       addVooTable();
     }
   }
 
   private class TransferirHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
-      messageOK();
-      messageFailed();
+      int[] rows = getTable().getSelectedRows();
+
+      if (rows.length == 1) {
+        Voo pojo = list.get(rows[0]);
+
+        if (pojo.getAssentoLivre() == 0) {
+          messageFailed();
+          return;
+
+        } else {
+          PassagemModel model = new PassagemModel();
+
+          if (model.transferirPassagem(passagem, pojo)) {
+            messageOK();
+            return;
+          } else {
+            messageDbOff();
+            return;
+          }
+
+        }
+      } else {
+        messageSelectFailed();
+        return;
+      }
     }
   }
 

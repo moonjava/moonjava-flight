@@ -23,6 +23,7 @@ import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
+import br.com.moonjava.flight.util.CPF;
 
 /**
  * @version 1.0, Aug 13, 2012
@@ -60,9 +61,19 @@ public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
 
     @Override
     public Passagem getPassagem() {
-      // ResultSet resultSet = rs.getResultSet();
-      // return new PassagemLoader().get(resultSet);
-      return null;
+      ResultSet resultSet = rs.getResultSet();
+      return new PassagemControlLoader().get(resultSet);
+    }
+
+    @Override
+    public String getTitular() {
+      return rs.getString("TITULAR");
+    }
+
+    @Override
+    public CPF getCpf() {
+      long value = rs.getLong("CPF");
+      return CPF.valueOf(value);
     }
 
     @Override

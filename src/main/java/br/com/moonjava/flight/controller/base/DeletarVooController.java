@@ -24,8 +24,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.view.voo.DeletarVooUI;
 
 /**
@@ -76,11 +76,11 @@ public class DeletarVooController extends DeletarVooUI {
       if (!result) {
         result = true;
         int[] rows = tabela.getSelectedRows();
-        VooDAO vooDAO = new VooDAO();
+        Voo vooModel = new VooModel();
 
         for (int i = 0; i < rows.length; i++) {
           Voo pojo = list.get(rows[i]);
-          vooDAO.deletar(pojo.getId());
+          vooModel.deletar(pojo.getId());
         }
 
         messageDeleteOK();

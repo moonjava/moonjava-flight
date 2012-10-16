@@ -25,8 +25,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.util.CopyFile;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.aeronave.CriarAeronaveUI;
@@ -106,7 +106,8 @@ public class CriarAeronaveController extends CriarAeronaveUI {
       // Executa se nome de arquivo for igual a aeronave
       if (fileName.equals(res)) {
         Aeronave pojo = new AeronaveCreate(request).createInstance();
-        new AeronaveDAO().criar(pojo);
+        Aeronave aeronave = new AeronaveModel();
+        aeronave.criar(pojo);
         messageOK();
       } else {
         messageFailed();

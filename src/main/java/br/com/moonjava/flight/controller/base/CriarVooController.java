@@ -25,10 +25,10 @@ import javax.swing.JPanel;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.CriarVooUI;
@@ -53,7 +53,7 @@ public class CriarVooController extends CriarVooUI {
   @Override
   public List<Aeronave> getList() {
     RequestParamWrapper request = new RequestParamWrapper();
-    return new AeronaveDAO().consultar(request);
+    return new AeronaveModel().consultar(request);
   }
 
   private class CadastrarHandler implements ActionListener {
@@ -91,7 +91,7 @@ public class CriarVooController extends CriarVooUI {
         request.set("chegada", _chegada);
 
         Voo pojo = new VooCreate(request).createInstance();
-        boolean executed = new VooDAO().criar(pojo);
+        boolean executed = new VooModel().criar(pojo);
 
         if (executed) {
           messageOK();

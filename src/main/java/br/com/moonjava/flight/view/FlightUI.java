@@ -36,25 +36,22 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.event.MenuListener;
 
 import org.joda.time.DateTime;
 
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
 import br.com.moonjava.flight.util.FormatDateTime;
-import br.com.moonjava.flight.view.aeronave.AeronaveHandler;
-import br.com.moonjava.flight.view.checkin.CheckinHandler;
-import br.com.moonjava.flight.view.passagem.PassagemHandler;
-import br.com.moonjava.flight.view.usuario.UsuarioHandler;
-import br.com.moonjava.flight.view.voo.VooHandler;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class FlightUI {
+public class FlightUI extends AbstractFlightUI {
 
   private final ResourceBundle bundle;
   private JFrame frame;
@@ -63,6 +60,19 @@ public class FlightUI {
   private JMenu relogio;
 
   private final Usuario usuarioLogado;
+  private JButton aeronave;
+  private JButton usuario;
+  private JButton voo;
+  private JButton passagem;
+  private JButton checkin;
+
+  private JMenu _aeronave;
+  private JMenu _usuario;
+  private JMenu _voo;
+  private JMenu _passagem;
+  private JMenu _checkin;
+  private JMenu _sobre;
+  private JMenu _sair;
 
   public FlightUI(Usuario usuarioLogado, ResourceBundle bundle) {
     this.bundle = bundle;
@@ -72,6 +82,11 @@ public class FlightUI {
     panel();
     mainMenu();
     showAll();
+  }
+
+  @Override
+  protected JPanel getConteudo() {
+    return conteudo;
   }
 
   private void window() {
@@ -86,13 +101,14 @@ public class FlightUI {
 
   private void panel() {
     JMenu flight = new JMenu("FLIGHT :: FLIGHT");
-    JMenu voo = new JMenu(bundle.getString("menubar.voo"));
-    JMenu passagem = new JMenu(bundle.getString("menubar.passagem"));
-    JMenu checkin = new JMenu(bundle.getString("menubar.checkin"));
-    JMenu sobre = new JMenu(bundle.getString("menubar.sobre"));
-    JMenu sair = new JMenu(bundle.getString("menubar.sair"));
+    _voo = new JMenu(bundle.getString("menubar.voo"));
+    _passagem = new JMenu(bundle.getString("menubar.passagem"));
+    _checkin = new JMenu(bundle.getString("menubar.checkin"));
+    _sobre = new JMenu(bundle.getString("menubar.sobre"));
+    _sair = new JMenu(bundle.getString("menubar.sair"));
     relogio = new JMenu();
 
+    // Inicializa o tempo atual na aplicação (data e horário)
     String country = bundle.getString("country");
     Timer timer = new Timer(1000, new Clock(country));
     timer.start();
@@ -107,38 +123,30 @@ public class FlightUI {
     rodape.setBounds(50, 630, 500, 40);
 
     menuBar.add(flight);
-    menuBar.add(voo);
-    menuBar.add(passagem);
-    menuBar.add(checkin);
+    menuBar.add(_voo);
+    menuBar.add(_passagem);
+    menuBar.add(_checkin);
 
     // Adiciona botoes caso supervisor
     if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
-      JMenu aeronave = new JMenu(bundle.getString("menubar.aeronave"));
-      JMenu usuario = new JMenu(bundle.getString("menubar.usuario"));
+      _aeronave = new JMenu(bundle.getString("menubar.aeronave"));
+      _usuario = new JMenu(bundle.getString("menubar.usuario"));
 
-      menuBar.add(usuario);
-      menuBar.add(aeronave);
-
-      aeronave.addMenuListener(new AeronaveHandler(conteudo, bundle));
-      usuario.addMenuListener(new UsuarioHandler(conteudo, bundle));
+      menuBar.add(_usuario);
+      menuBar.add(_aeronave);
     }
 
-    menuBar.add(sobre);
-    menuBar.add(sair);
+    menuBar.add(_sobre);
+    menuBar.add(_sair);
     menuBar.add(relogio);
 
     body.add(menuBar);
     body.add(rodape);
     body.add(conteudo);
-
-    voo.addMenuListener(new VooHandler(conteudo, bundle, usuarioLogado));
-    passagem.addMenuListener(new PassagemHandler(conteudo, bundle));
-    checkin.addMenuListener(new CheckinHandler(conteudo, bundle));
-    sobre.addMenuListener(new SobreHandler(bundle));
-    sair.addMenuListener(new SairHandler());
   }
 
-  private void mainMenu() {
+  @Override
+  protected void mainMenu() {
     Image image = null;
     InputStream stream = getClass().getResourceAsStream("/img/aviao_principal.svg.png");
     try {
@@ -148,9 +156,9 @@ public class FlightUI {
     }
     ImageIcon imageIcon = new ImageIcon(image);
     JLabel imagem = new JLabel(imageIcon);
-    JButton voo = new JButton(bundle.getString("menubar.voo"));
-    JButton passagem = new JButton(bundle.getString("menubar.passagem"));
-    JButton checkin = new JButton(bundle.getString("menubar.checkin"));
+    voo = new JButton(bundle.getString("menubar.voo"));
+    passagem = new JButton(bundle.getString("menubar.passagem"));
+    checkin = new JButton(bundle.getString("menubar.checkin"));
 
     voo.setBounds(50, 80, 200, 50);
     passagem.setBounds(50, 150, 200, 50);
@@ -164,23 +172,16 @@ public class FlightUI {
     conteudo.add(checkin);
     conteudo.add(imagem);
 
-    voo.addActionListener(new VooHandler(conteudo, bundle, usuarioLogado));
-    passagem.addActionListener(new PassagemHandler(conteudo, bundle));
-    checkin.addActionListener(new CheckinHandler(conteudo, bundle));
-
     // Adiciona botoes caso supervisor
     if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
-      JButton aeronave = new JButton(bundle.getString("menubar.aeronave"));
-      JButton usuario = new JButton(bundle.getString("menubar.usuario"));
+      aeronave = new JButton(bundle.getString("menubar.aeronave"));
+      usuario = new JButton(bundle.getString("menubar.usuario"));
 
       aeronave.setBounds(50, 290, 200, 50);
       usuario.setBounds(50, 360, 200, 50);
 
       conteudo.add(aeronave);
       conteudo.add(usuario);
-
-      aeronave.addActionListener(new AeronaveHandler(conteudo, bundle));
-      usuario.addActionListener(new UsuarioHandler(conteudo, bundle));
     }
   }
 
@@ -199,6 +200,57 @@ public class FlightUI {
     frame.setVisible(true);
   }
 
+  protected void addMenuVooListener(MenuListener a) {
+    _voo.addMenuListener(a);
+  }
+
+  protected void addMenuAeronaveListener(MenuListener a) {
+    _aeronave.addMenuListener(a);
+  }
+
+  protected void addMenuPassagemListener(MenuListener a) {
+    _passagem.addMenuListener(a);
+  }
+
+  protected void addMenuCheckinListener(MenuListener a) {
+    _checkin.addMenuListener(a);
+  }
+
+  protected void addMenuUsuarioListener(MenuListener a) {
+    _usuario.addMenuListener(a);
+  }
+
+  protected void addMenuSobreListener(MenuListener a) {
+    _sobre.addMenuListener(a);
+  }
+
+  protected void addMenuSairListener(MenuListener a) {
+    _sair.addMenuListener(a);
+  }
+
+  protected void addVooListener(ActionListener a) {
+    voo.addActionListener(a);
+  }
+
+  protected void addAeronaveListener(ActionListener a) {
+    aeronave.addActionListener(a);
+  }
+
+  protected void addPassagemListener(ActionListener a) {
+    passagem.addActionListener(a);
+  }
+
+  protected void addUsuarioListener(ActionListener a) {
+    usuario.addActionListener(a);
+  }
+
+  protected void addCheckinListener(ActionListener a) {
+    checkin.addActionListener(a);
+  }
+
+  /*
+   * Esta classe inicia o evento de acordo com o tempo definido anteriormente
+   */
   private class Clock implements ActionListener {
 
     private final String country;

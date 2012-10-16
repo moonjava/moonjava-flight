@@ -35,30 +35,42 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
         .with("select * from")
         .with("FLIGHT.REEMBOLSO as REEMBOLSO")
 
-        .with("join FLIGHT.PASSAGEM as PASSAGEM")
+        .with("inner join FLIGHT.PASSAGEM as PASSAGEM")
         .with("on PASSAGEM_ID = REEMBOLSO.PASSAGEM_ID")
+
+        .with("inner join FLIGHT.PESSOAFISICA AS PESSOAFISICA")
+        .with("on PASSAGEM.PESSOAFISICA_ID = PESSOAFISICA.ID")
+
+        .with("inner join FLIGHT.VOO AS VOO")
+        .with("on PASSAGEM.VOO_ID = VOO.ID")
+
+        .with("inner join FLIGHT.AERONAVE AS AERONAVE")
+        .with("on VOO.AERONAVE_ID = AERONAVE.ID")
 
         .load(new ReembolsoControlLoader());
   }
 
   @Override
-  public void criar(Reembolso reembolso) {
+  public boolean criar(Reembolso reembolso) {
     Passagem passagem = reembolso.getPassagem();
-    new SqlStatementWrapper()
+    boolean executed = new SqlStatementWrapper()
         .prepare()
 
         .with("insert into FLIGHT.REEMBOLSO")
-        .with("(ID, PASSAGEM_ID, BANCO, AGENCIA, CONTA, VALOR)")
+        .with("(ID, PASSAGEM_ID, TITULAR, CPF, BANCO, AGENCIA, CONTA, VALOR)")
 
         .with("values (")
         .with("?,", reembolso.getId())
         .with("?,", passagem.getId())
+        .with("?,", reembolso.getTitular())
+        .with("?,", reembolso.getCpf().getDigito())
         .with("?,", reembolso.getBanco())
         .with("?,", reembolso.getAgencia())
         .with("?,", reembolso.getConta())
         .with("?)", reembolso.getValor())
 
         .andExecute();
+    return executed;
   }
 
   @Override
@@ -88,6 +100,8 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
 
         .with("update FLIGHT.REEMBOLSO set")
 
+        .with("TITULAR = ?,", reembolso.getTitular())
+        .with("CPF = ?,", reembolso.getCpf().getDigito())
         .with("BANCO = ?,", reembolso.getBanco())
         .with("AGENCIA = ?,", reembolso.getAgencia())
         .with("CONTA = ?,", reembolso.getConta())

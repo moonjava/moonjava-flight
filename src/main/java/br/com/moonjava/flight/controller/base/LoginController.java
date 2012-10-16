@@ -20,8 +20,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.FlightKeyPressedListener;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.LoginUI;
@@ -47,6 +48,7 @@ public class LoginController extends LoginUI {
       logar();
     }
 
+    // Adiciona a ação de login quando a tecla 'Enter'(10) for pressionada
     @Override
     public void keyPressed(KeyEvent e) {
       if (e.getKeyCode() == 10) {
@@ -55,10 +57,13 @@ public class LoginController extends LoginUI {
     }
 
     private void logar() {
+      // Encriptografia para senha utilizando codigos 'sun.misc.BASE64Encoder'
+      EncryptPassword encrypt = new EncryptPassword();
       RequestParamWrapper request = getLogin();
-      UsuarioDAO dao = new UsuarioDAO();
-      Usuario usuarioLogado = dao.consultarUsuario(request);
+      request.set("senha", encrypt.toEncryptMD5(request.stringParam("senha")));
+      Usuario usuarioLogado = new UsuarioModel().consultarUsuario(request);
 
+      // Usuario Logado finaliza Frame atual e inicializa a Frame principal
       if (usuarioLogado != null) {
         new FlightController(usuarioLogado, bundle);
         new PainelController(bundle);

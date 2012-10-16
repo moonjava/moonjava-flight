@@ -17,20 +17,22 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Status;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.ConsultarVooUI;
@@ -49,6 +51,7 @@ public class ConsultarVooController extends ConsultarVooUI {
   private JButton status;
 
   private List<Voo> list;
+  private ArrayList<Voo> voos;
 
   public ConsultarVooController(JPanel conteudo,
                                 ResourceBundle bundle,
@@ -56,20 +59,21 @@ public class ConsultarVooController extends ConsultarVooUI {
                                 JButton deletar,
                                 JButton status) {
     super(conteudo, bundle, atualizar, deletar, status);
-
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
     this.deletar = deletar;
     this.status = status;
+
     addConsultarListener(new ConsultarHandler());
     addItemTableSelectedListener(new ItemTableSelectedHandler());
     addVenderPassagemListener(new VenderPassagemHandler());
   }
 
   public ConsultarVooController(JPanel conteudo, ResourceBundle bundle) {
-    super(conteudo, bundle);
+    super(conteudo, bundle, true);
 
+    this.voos = new ArrayList<Voo>();
     this.conteudo = conteudo;
     this.bundle = bundle;
     addConsultarListener(new ConsultarHandler());
@@ -78,6 +82,7 @@ public class ConsultarVooController extends ConsultarVooUI {
   }
 
   private class ConsultarHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
@@ -119,8 +124,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       request.set("chegada", dataChegada);
       request.set("status", _status);
 
-      list = new VooDAO().consultar(request);
-
+      list = new VooModel().consultar(request);
       boolean isEmpty = showList(list);
 
       if (isEmpty) {
@@ -131,7 +135,7 @@ public class ConsultarVooController extends ConsultarVooUI {
     }
   }
 
-  private class ItemTableSelectedHandler implements MouseListener {
+  private class ItemTableSelectedHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
       enableButtons();
@@ -152,45 +156,42 @@ public class ConsultarVooController extends ConsultarVooUI {
       ctrlStatus.setResult(false);
       status.addActionListener(ctrlStatus);
     }
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
   }
 
-  private class ItemTableSelectedPassagemHandler implements MouseListener {
+  private class ItemTableSelectedPassagemHandler extends MouseAdapter {
+
+    private boolean flag;
+
     @Override
     public void mouseClicked(MouseEvent e) {
       if (e.getClickCount() == 2) {
         int[] rows = getTable().getSelectedRows();
         if (rows.length == 1) {
-          Voo pojo = list.get(rows[0]);
-          new VenderPassagemController(conteudo, bundle, pojo);
+          voos.add(list.get(rows[0]));
+          // Verifica se o voo é de ida e volta
+          int res = 0;
+          if (!flag) {
+            res = messagePassagemIdaVolta();
+          }
+          if (res == 2) {
+            addVoo();
+          }
+          if (res != 2 && flag) {
+            addVoo();
+          }
+          flag = true;
         } else {
           messageSelectFailed();
         }
       }
     }
-    @Override
-    public void mouseEntered(MouseEvent e) {
+
+    private void addVoo() {
+      new VenderPassagemController(conteudo, bundle, voos);
+      UIManager.put("OptionPane.okButtonText", "Ok");
+      UIManager.put("OptionPane.cancelButtonText", "Cancel");
     }
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+
   }
 
   private class VenderPassagemHandler implements ActionListener {
@@ -198,7 +199,6 @@ public class ConsultarVooController extends ConsultarVooUI {
     public void actionPerformed(ActionEvent e) {
       // busca voo selecionada
       int[] rows = getTable().getSelectedRows();
-
       if (rows.length == 1) {
         Voo pojo = list.get(rows[0]);
         new VenderPassagemController(conteudo, bundle, pojo);

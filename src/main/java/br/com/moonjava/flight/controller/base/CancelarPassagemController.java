@@ -22,9 +22,16 @@ import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
+import br.com.moonjava.flight.dao.base.PassagemDAO;
+import br.com.moonjava.flight.dao.base.ReembolsoDAO;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemModel;
+import br.com.moonjava.flight.model.base.Reembolso;
+import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.CancelarPassagemUI;
 
@@ -35,6 +42,8 @@ import br.com.moonjava.flight.view.passagem.CancelarPassagemUI;
  */
 public class CancelarPassagemController extends CancelarPassagemUI {
 
+  private Passagem passagem;
+
   public CancelarPassagemController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
 
@@ -44,14 +53,14 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     addFocusContaListener(new FocusContaHandler());
     addFocusCpfListener(new FocusCpfHandler());
     addSolicitarCancelamentoListener(new SolicitarCancelamentoHandler());
-    addOKListener(new OKHandler());
     addEfetuarCancelamentoListener(new EfetuarCancelamentoHandler());
   }
 
   private class FocusBancoHandler extends FlightFocusLostListener {
+
     @Override
     public void focusLost(FocusEvent e) {
-      String banco = getParameters().stringParam("banco");
+      String banco = getParametersReebolso().stringParam("banco");
       String defaultText = getDefaultTexts().stringParam("banco");
 
       if (!banco.isEmpty() && !banco.equals(defaultText)) {
@@ -71,9 +80,10 @@ public class CancelarPassagemController extends CancelarPassagemUI {
   }
 
   private class FocusAgenciaHandler extends FlightFocusLostListener {
+
     @Override
     public void focusLost(FocusEvent e) {
-      String agencia = getParameters().stringParam("agencia");
+      String agencia = getParametersReebolso().stringParam("agencia");
       String defaultText = getDefaultTexts().stringParam("agencia");
 
       if (!agencia.isEmpty() && !agencia.equals(defaultText)) {
@@ -93,9 +103,10 @@ public class CancelarPassagemController extends CancelarPassagemUI {
   }
 
   private class FocusContaHandler extends FlightFocusLostListener {
+
     @Override
     public void focusLost(FocusEvent e) {
-      String conta = getParameters().stringParam("conta");
+      String conta = getParametersReebolso().stringParam("conta");
       String defaultText = getDefaultTexts().stringParam("conta");
 
       if (!conta.isEmpty() && !conta.equals(defaultText)) {
@@ -115,12 +126,13 @@ public class CancelarPassagemController extends CancelarPassagemUI {
   }
 
   private class FocusCpfHandler extends FlightFocusLostListener {
+
     @Override
     public void focusLost(FocusEvent e) {
-      String cpf = getParameters().stringParam("cpf");
+      String cpf = getParametersReebolso().stringParam("cpf");
       if (!VerifierString.containsSpace(cpf)) {
         try {
-          CPF.parse(cpf);
+          CPF _cpf = CPF.parse(cpf);
           addImageCpfValido();
         } catch (Exception e1) {
           addImageCpfInvalido();
@@ -130,23 +142,74 @@ public class CancelarPassagemController extends CancelarPassagemUI {
   }
 
   private class SolicitarCancelamentoHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      addCalcularPassagemButton();
-    }
-  }
 
-  private class OKHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      addEfetuarCancelamentoButton();
+      PassagemDAO dao = new PassagemDAO();
+      ReembolsoDAO rDao = new ReembolsoDAO();
+
+      RequestParamWrapper request = getParametersPassagem();
+      String codBilhete = request.stringParam("codBilhete");
+
+      passagem = dao.consultarPorCodigoBilhete(codBilhete);
+
+      if (passagem == null) {
+        messagePassagemOff();
+        return;
+      }
+
+      Reembolso verifCancel = rDao.consultarPorPassagemId(passagem.getId());
+
+      if (verifCancel == null) {
+        PassagemModel pasModel = new PassagemModel();
+        double reembolso = pasModel.cancelarPassagem(passagem);
+
+        if (reembolso > 0.0) {
+          setValor(reembolso, passagem.getId());
+          addCalcularPassagemButton();
+        } else if (reembolso == 0.0) {
+          messageReebolsoZero();
+        } else {
+          messageVooRealizado();
+        }
+      } else {
+        messagemPasJaCancelada();
+      }
+
     }
   }
 
   private class EfetuarCancelamentoHandler implements ActionListener {
+
     @Override
     public void actionPerformed(ActionEvent e) {
-      messageOK();
+      RequestParamWrapper request = getParametersReebolso();
+      String valor = request.stringParam("valor").replace(",", ".");
+
+      CPF _cpf = null;
+      try {
+        _cpf = CPF.parse(request.stringParam("cpf"));
+        request.set("passagem", passagem.getId());
+        request.set("banco", Integer.parseInt(request.stringParam("banco")));
+        request.set("agencia", Integer.parseInt(request.stringParam("agencia")));
+        request.set("conta", Integer.parseInt(request.stringParam("conta")));
+        request.set("valor", Double.parseDouble(valor));
+        request.set("cpf", _cpf.getDigito());
+      } catch (Exception e2) {
+        return;
+      }
+
+      Reembolso reembolso = new ReembolsoControlCreate(request).createInstance();
+      ReembolsoModel model = new ReembolsoModel();
+
+      boolean status = model.criarReembolso(reembolso);
+
+      if (status) {
+        messageReembolso();
+        messageOK();
+      } else {
+        messageDbOff();
+      }
     }
   }
 

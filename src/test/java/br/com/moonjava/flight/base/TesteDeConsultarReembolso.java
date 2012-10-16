@@ -47,6 +47,8 @@ public class TesteDeConsultarReembolso {
     int id = 2;
 
     Reembolso res = dao.consultarPorId(id);
+    assertThat(res.getTitular(), equalTo("Titular B"));
+    assertThat(res.getCpf().getDigito(), equalTo(33333333333l));
     assertThat(res.getBanco(), equalTo(22));
     assertThat(res.getAgencia(), equalTo(222));
     assertThat(res.getConta(), equalTo(333366669));
@@ -59,6 +61,8 @@ public class TesteDeConsultarReembolso {
 
     Reembolso res = dao.consultarPorPassagemId(passagem);
 
+    assertThat(res.getTitular(), equalTo("Titular A"));
+    assertThat(res.getCpf().getDigito(), equalTo(22222222222l));
     assertThat(res.getBanco(), equalTo(11));
     assertThat(res.getAgencia(), equalTo(111));
     assertThat(res.getConta(), equalTo(222255558));

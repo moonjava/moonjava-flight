@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import br.com.moonjava.flight.controller.base.PassagemController;
+
 /**
  * @version 1.0 Aug 31, 2012
  * @contact tiago.aguiar@moonjava.com.br
@@ -48,12 +50,12 @@ public class PassagemHandler implements MenuListener, ActionListener {
 
   @Override
   public void menuSelected(MenuEvent e) {
-    new PassagemUI(conteudo, bundle);
+    new PassagemController(conteudo, bundle);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    new PassagemUI(conteudo, bundle);
+    new PassagemController(conteudo, bundle);
   }
 
 }

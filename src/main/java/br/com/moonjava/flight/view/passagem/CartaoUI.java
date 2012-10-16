@@ -235,10 +235,12 @@ public class CartaoUI extends AbstractFlightUI {
 
   protected RequestParamWrapper getParameters() {
     RequestParamWrapper request = new RequestParamWrapper();
+    request.set("titular", nomeTitular.getText());
     request.set("numero", numero.getText());
+    request.set("validade", validade.getText());
+    request.set("bandeira", bandeira.getSelectedItem());
     request.set("cpf", cpf.getText());
     request.set("codigo", codSeguranca.getText());
-    request.set("validade", validade.getText());
 
     return request;
   }

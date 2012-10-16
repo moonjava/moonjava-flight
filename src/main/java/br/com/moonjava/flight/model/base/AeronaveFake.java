@@ -15,12 +15,21 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
+import br.com.moonjava.flight.util.RequestParamWrapper;
+
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
 public class AeronaveFake implements Aeronave {
+
+  @Override
+  public List<Aeronave> consultar(RequestParamWrapper request) {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public int getId() {
@@ -45,6 +54,10 @@ public class AeronaveFake implements Aeronave {
   @Override
   public boolean isMapa() {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void criar(Aeronave pojo) {
   }
 
 }

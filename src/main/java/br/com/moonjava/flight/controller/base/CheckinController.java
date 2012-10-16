@@ -15,52 +15,22 @@
  */
 package br.com.moonjava.flight.controller.base;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.view.checkin.EfetuarCheckinUI;
+import br.com.moonjava.flight.view.checkin.CheckinUI;
 
 /**
- * @version 1.0 Sep 8, 2012
+ * @version 1.0 Oct 15, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CheckinController extends EfetuarCheckinUI {
+public class CheckinController extends CheckinUI {
 
   public CheckinController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle);
-
-    addConsultarListener(new ConsultarHandler());
-    addAlocarAssentoListener(new AlocarAssentoHandler());
-    addFinalizarCheckinListener(new FinalizarCheckinHandler());
-  }
-
-  private class ConsultarHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      // Carrega imagem do mapa de assento de acordo
-      // com o passageiro
-      String pathFile = String.format("airplanes/%s.jpg", "airbus_320");
-      showSeatMap(pathFile);
-      addVooTable();
-    }
-  }
-
-  private class AlocarAssentoHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      messageAssentoOK();
-    }
-  }
-
-  private class FinalizarCheckinHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      messageOK();
-    }
+    new EfetuarCheckinController(getConteudo(), bundle);
   }
 
 }

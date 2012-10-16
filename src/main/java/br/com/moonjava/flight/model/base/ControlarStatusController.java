@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.moonjava.flight.view.voo;
+package br.com.moonjava.flight.model.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,8 +26,6 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 
 import br.com.moonjava.flight.dao.base.VooDAO;
-import br.com.moonjava.flight.model.base.Status;
-import br.com.moonjava.flight.model.base.Voo;
 
 /**
  * @version 1.0 Aug 17, 2012

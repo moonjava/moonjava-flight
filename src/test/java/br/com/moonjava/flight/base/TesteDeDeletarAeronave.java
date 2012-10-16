@@ -53,6 +53,7 @@ public class TesteDeDeletarAeronave {
     RequestParamWrapper request = new RequestParamWrapper();
 
     request.set("status", Status.DISPONIVEL);
+    request.set("aeronaveId", 1);
 
     int id = 1;
 
@@ -65,8 +66,8 @@ public class TesteDeDeletarAeronave {
     vooDAO.deletarPorAeronaveId(id);
     aeronaveDAO.deletar(id);
 
-    List<Voo> resVoo = vooDAO.consultar(request);
-    assertThat(resVoo.size(), equalTo(1));
+    List<Voo> resVoo = vooDAO.consultarPorAeronaveId(request);
+    assertThat(resVoo.size(), equalTo(0));
 
     List<Aeronave> resAeronave = aeronaveDAO.consultar(request);
     assertThat(resAeronave.size(), equalTo(1));

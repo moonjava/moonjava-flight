@@ -30,6 +30,7 @@ import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -51,12 +52,13 @@ public class TesteDeCriarUsuario {
     UsuarioDAO dao = new UsuarioDAO();
     RequestParamWrapper request = new RequestParamWrapper();
     RequestParamWrapper request2 = new RequestParamWrapper();
+    EncryptPassword encrypt = new EncryptPassword();
 
     int pessoaFisica = 3;
     String codigo = new GerarCodigo("USUARIO").getCodigo();
     Perfil perfil = Perfil.ATENDENTE;
     String login = "teste3";
-    String senha = "teste3";
+    String senha = encrypt.toEncryptMD5("teste3");
 
     request.set("login", "teste");
     List<Usuario> antes = dao.consultar(request);

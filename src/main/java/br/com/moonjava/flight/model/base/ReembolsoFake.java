@@ -15,6 +15,8 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import br.com.moonjava.flight.util.CPF;
+
 /**
  * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
@@ -29,6 +31,16 @@ public class ReembolsoFake implements Reembolso {
 
   @Override
   public Passagem getPassagem() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getTitular() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public CPF getCpf() {
     throw new UnsupportedOperationException();
   }
 

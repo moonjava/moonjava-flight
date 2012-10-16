@@ -15,7 +15,12 @@
  */
 package br.com.moonjava.flight.model.base;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
+
+import br.com.moonjava.flight.dao.base.VooDAO;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -25,17 +30,18 @@ import org.joda.time.DateTime;
 public class VooModel implements Voo {
 
   private int id;
-  private final String codigo;
-  private final Aeronave aeronave;
-  private final String origem;
-  private final String destino;
-  private final String escala;
-  private final DateTime dataDePartida;
-  private final DateTime dataDeChegada;
-  private final String observacao;
-  private final Status status;
-  private final int assentoLivre;
-  private final double preco;
+  private String codigo;
+  private Aeronave aeronave;
+  private String origem;
+  private String destino;
+  private String escala;
+  private DateTime dataDePartida;
+  private DateTime dataDeChegada;
+  private String observacao;
+  private Status status;
+  private int assentoLivre;
+  private double preco;
+  private VooDAO dao;
 
   public VooModel(Builder builder) {
     this.codigo = builder.getCodigo();
@@ -49,6 +55,10 @@ public class VooModel implements Voo {
     this.status = builder.getStatus();
     this.assentoLivre = builder.getAssentoLivre();
     this.preco = builder.getPreco();
+  }
+
+  public VooModel() {
+    dao = new VooDAO();
   }
 
   @Override
@@ -113,6 +123,36 @@ public class VooModel implements Voo {
   @Override
   public double getPreco() {
     return preco;
+  }
+
+  @Override
+  public List<Voo> consultaPainel() {
+    return dao.consultaPainel();
+  }
+
+  @Override
+  public boolean criar(Voo pojo) {
+    return dao.criar(pojo);
+  }
+
+  @Override
+  public List<Voo> consultar(RequestParamWrapper request) {
+    return dao.consultar(request);
+  }
+
+  @Override
+  public void deletar(int id) {
+    dao.deletar(id);
+  }
+
+  @Override
+  public boolean atualizar(Voo pojo) {
+    return dao.atualizar(pojo);
+  }
+
+  @Override
+  public void controlarStatus(int id, Status fromString) {
+    dao.controlarStatus(id, fromString);
   }
 
 }

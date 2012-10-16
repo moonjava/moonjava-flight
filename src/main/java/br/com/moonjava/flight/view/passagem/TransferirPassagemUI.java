@@ -16,10 +16,13 @@
 package br.com.moonjava.flight.view.passagem;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -34,8 +37,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
+import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.view.voo.VooTableModel;
 
 /**
  * @version 1.0 Sep 8, 2012
@@ -51,6 +57,7 @@ public class TransferirPassagemUI extends AbstractFlightUI {
   private JButton transferir;
   private JTable tabela;
   private JLabel tituloVooDisp;
+  private JScrollPane scroll;
 
   public TransferirPassagemUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -86,6 +93,18 @@ public class TransferirPassagemUI extends AbstractFlightUI {
     consultar = new JButton(bundle.getString("transferir.passagem.consultar"));
     transferir = new JButton(bundle.getString("transferir.passagem.transferir"));
 
+    tabela = new JTable();
+    tabela.setBorder(new LineBorder(Color.black));
+    tabela.setGridColor(Color.black);
+    tabela.setShowGrid(true);
+    tabela.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+
+    scroll = new JScrollPane();
+    scroll.getViewport().setBorder(null);
+    scroll.getViewport().add(tabela);
+    scroll.setBounds(130, 250, 750, 200);
+    scroll.setSize(750, 200);
+
     imagem.setBounds(100, 70, 30, 30);
     filtroBilhete.setBounds(130, 45, 200, 30);
     tituloVooDisp.setBounds(130, 130, 750, 200);
@@ -113,26 +132,9 @@ public class TransferirPassagemUI extends AbstractFlightUI {
   }
 
   protected void addVooTable() {
-    JOptionPane.showMessageDialog(null,
-        bundle.getString("transferir.passagem.erro.solicitacao"),
-        bundle.getString("transferir.passagem.titulo"),
-        JOptionPane.ERROR_MESSAGE);
-
-    tabela = new JTable();
-    tabela.setBorder(new LineBorder(Color.black));
-    tabela.setGridColor(Color.black);
-    tabela.setShowGrid(true);
-
-    JScrollPane scroll = new JScrollPane();
-    scroll.getViewport().setBorder(null);
-    scroll.getViewport().add(tabela);
-    scroll.setBounds(130, 250, 750, 200);
-    scroll.setSize(750, 200);
-
     conteudo.add(tituloVooDisp);
     conteudo.add(scroll);
     conteudo.add(transferir);
-    transferir.setEnabled(true);
 
     repaint();
   }
@@ -153,6 +155,59 @@ public class TransferirPassagemUI extends AbstractFlightUI {
         JOptionPane.ERROR_MESSAGE);
 
     refresh();
+  }
+
+  protected void messageSelectFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("consultar.voo.joption.err.selecao"),
+        bundle.getString("consultar.voo.joption.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void messagePassagemOff() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.erro.solicitacao"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void messagemPasJaCancelada() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cancelar.passagem.ja.cancelada"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  protected void messageDbOff() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("erro.bd.off"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected RequestParamWrapper getParametersPassagem() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("codBilhete", _bilhete.getText());
+
+    return request;
+  }
+
+  protected boolean showList(List<Voo> lista) {
+    VooTableModel voos = new VooTableModel(lista, bundle);
+    tabela.setModel(voos);
+    return tabela.getRowCount() == 0 ? true : false;
+  }
+
+  protected void addItemTableSelectedListener(MouseListener a) {
+    tabela.addMouseListener(a);
+  }
+
+  protected JTable getTable() {
+    return tabela;
+  }
+
+  protected void abilitarBotao() {
+    transferir.setEnabled(true);
   }
 
 }

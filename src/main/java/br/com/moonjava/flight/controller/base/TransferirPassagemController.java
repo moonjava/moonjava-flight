@@ -78,7 +78,6 @@ public class TransferirPassagemController extends TransferirPassagemUI {
       String codBilhete = request.stringParam("codBilhete");
 
       passagem = pDao.consultarPorCodigoBilhete(codBilhete);
-      System.out.println(passagem.getCodigoBilhete());
 
       if (passagem == null) {
         messagePassagemOff();

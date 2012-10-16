@@ -108,6 +108,7 @@ public class FlightUI extends AbstractFlightUI {
     _sair = new JMenu(bundle.getString("menubar.sair"));
     relogio = new JMenu();
 
+    // Inicializa o tempo atual na aplicação (data e horário)
     String country = bundle.getString("country");
     Timer timer = new Timer(1000, new Clock(country));
     timer.start();
@@ -247,6 +248,9 @@ public class FlightUI extends AbstractFlightUI {
     checkin.addActionListener(a);
   }
 
+  /*
+   * Esta classe inicia o evento de acordo com o tempo definido anteriormente
+   */
   private class Clock implements ActionListener {
 
     private final String country;

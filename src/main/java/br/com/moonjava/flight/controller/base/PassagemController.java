@@ -38,6 +38,9 @@ public class PassagemController extends PassagemUI {
     addTransferirListener(new TransferirHandler());
   }
 
+  /*
+   * Ação para vender 
+   */
   private class VenderHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -45,6 +48,9 @@ public class PassagemController extends PassagemUI {
     }
   }
 
+  /*
+   * Ação para cancelar 
+   */
   private class CancelarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -52,6 +58,9 @@ public class PassagemController extends PassagemUI {
     }
   }
 
+  /*
+   * Ação para transferir 
+   */
   private class TransferirHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {

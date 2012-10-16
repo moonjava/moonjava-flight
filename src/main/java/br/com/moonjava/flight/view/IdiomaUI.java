@@ -47,6 +47,7 @@ public class IdiomaUI {
   }
 
   private void window() {
+    // Adiciona dois Panel, onde conteudo está dentro de body
     idioma = new JFrame("Flight :: Flight");
     body = new JPanel(null);
     conteudo = new JPanel(null);
@@ -92,6 +93,7 @@ public class IdiomaUI {
   }
 
   private void showAll() {
+    // Inicializa a Frame no centro
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
     int height = dimension.height;

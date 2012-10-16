@@ -38,6 +38,9 @@ public class VooController extends VooUI {
     addCadastrarListener(new CadastrarHandler());
   }
 
+  /*
+   * Ação para consultar 
+   */
   private class ConsultarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -45,6 +48,9 @@ public class VooController extends VooUI {
     }
   }
 
+  /*
+   * Ação para cadastrar 
+   */
   private class CadastrarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -16,7 +16,6 @@
 package br.com.moonjava.flight.view.voo;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
@@ -24,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.CriarVooController;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.AbstractFlightUI;
@@ -95,13 +93,6 @@ public class VooUI extends AbstractFlightUI {
       status.setBounds(0, 210, 200, 50);
       atualizar.setBounds(0, 280, 200, 50);
       deletar.setBounds(0, 350, 200, 50);
-
-      cadastrar.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          new CriarVooController(subConteudo, bundle, atualizar, deletar, status);
-        }
-      });
 
       conteudo.add(cadastrar);
     } else {

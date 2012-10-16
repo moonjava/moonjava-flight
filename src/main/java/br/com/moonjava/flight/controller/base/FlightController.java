@@ -33,6 +33,8 @@ import br.com.moonjava.flight.view.usuario.UsuarioHandler;
  */
 public class FlightController extends FlightUI {
 
+  // Este construtor instância todos as logicas de negócio, isto é,
+  // todos os controladores necessários
   public FlightController(Usuario usuarioLogado, ResourceBundle bundle) {
     super(usuarioLogado, bundle);
 
@@ -52,10 +54,11 @@ public class FlightController extends FlightUI {
     addPassagemListener(passagemHandler);
     addCheckinListener(checkinHandler);
 
+    // Somente algumas funcionalidades são exibidas ao Atendente
     if (usuarioLogado.getPerfil() == Perfil.SUPERVISOR) {
       addMenuAeronaveListener(aeronaveHandler);
-
       addMenuUsuarioListener(usuarioHandler);
+
       addAeronaveListener(aeronaveHandler);
       addUsuarioListener(usuarioHandler);
     }

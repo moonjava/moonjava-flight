@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0, Aug 10, 2012
@@ -71,5 +72,13 @@ public interface Usuario {
   String getLogin();
 
   String getSenha();
+
+  List<Usuario> consultar(RequestParamWrapper request);
+
+  void deletar(int id);
+
+  void atualizar(Usuario pojo);
+
+  Usuario consultarUsuario(RequestParamWrapper request);
 
 }

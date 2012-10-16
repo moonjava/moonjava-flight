@@ -16,7 +16,6 @@
 package br.com.moonjava.flight.view.aeronave;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
@@ -24,24 +23,23 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.ConsultarAeronaveController;
-import br.com.moonjava.flight.controller.base.CriarAeronaveController;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class AeronaveUI {
+public class AeronaveUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
-  private final ResourceBundle bundle;
+  protected final ResourceBundle bundle;
 
   private JPanel subConteudo;
   private JButton consultar;
   private JButton cadastrar;
-  private JButton atualizar;
-  private JButton deletar;
+  protected JButton atualizar;
+  protected JButton deletar;
 
   public AeronaveUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -50,7 +48,8 @@ public class AeronaveUI {
     mainMenu();
   }
 
-  private void mainMenu() {
+  @Override
+  protected void mainMenu() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -82,20 +81,19 @@ public class AeronaveUI {
     conteudo.add(atualizar);
     conteudo.add(deletar);
     conteudo.add(subConteudo);
+  }
 
-    consultar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new ConsultarAeronaveController(subConteudo, bundle, atualizar, deletar);
-      }
-    });
+  @Override
+  protected JPanel getConteudo() {
+    return subConteudo;
+  }
 
-    cadastrar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new CriarAeronaveController(subConteudo, bundle, atualizar, deletar);
-      }
-    });
+  protected void addConsultarListener(ActionListener a) {
+    consultar.addActionListener(a);
+  }
+
+  protected void addCadastrarListener(ActionListener a) {
+    cadastrar.addActionListener(a);
   }
 
 }

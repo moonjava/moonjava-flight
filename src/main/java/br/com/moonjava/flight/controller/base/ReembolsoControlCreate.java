@@ -19,6 +19,7 @@ import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemFake;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
@@ -28,44 +29,56 @@ import br.com.moonjava.flight.util.RequestParam;
  */
 public class ReembolsoControlCreate implements Reembolso.Builder {
 
-	private final RequestParam request;
+  private final RequestParam request;
 
-	public ReembolsoControlCreate(RequestParam request) {
-		this.request = request;
-	}
+  public ReembolsoControlCreate(RequestParam request) {
+    this.request = request;
+  }
 
-	@Override
-	public Reembolso createInstance() {
-		return new ReembolsoModel(this);
-	}
+  @Override
+  public Reembolso createInstance() {
+    return new ReembolsoModel(this);
+  }
 
-	@Override
-	public Passagem getPassagem() {
-		return new PassagemFake() {
-			@Override
-			public int getId() {
-				return request.intParam("passagem");
-			}
-		};
-	}
+  @Override
+  public Passagem getPassagem() {
+    return new PassagemFake() {
 
-	@Override
-	public int getBanco() {
-		return request.intParam("banco");
-	}
+      @Override
+      public int getId() {
+        return request.intParam("passagem");
+      }
+    };
+  }
 
-	@Override
-	public int getAgencia() {
-		return request.intParam("agencia");
-	}
+  @Override
+  public String getTitular() {
+    return request.stringParam("titular");
+  }
 
-	@Override
-	public int getConta() {
-		return request.intParam("conta");
-	}
+  @Override
+  public CPF getCpf() {
+    Long value = request.longParam("cpf");
+    return CPF.valueOf(value);
+  }
 
-	@Override
-	public double getValor() {
-		return request.doubleParam("valor");
-	}
+  @Override
+  public int getBanco() {
+    return request.intParam("banco");
+  }
+
+  @Override
+  public int getAgencia() {
+    return request.intParam("agencia");
+  }
+
+  @Override
+  public int getConta() {
+    return request.intParam("conta");
+  }
+
+  @Override
+  public double getValor() {
+    return request.doubleParam("valor");
+  }
 }

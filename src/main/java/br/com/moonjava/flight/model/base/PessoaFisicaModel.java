@@ -17,6 +17,7 @@ package br.com.moonjava.flight.model.base;
 
 import org.joda.time.LocalDate;
 
+import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
 import br.com.moonjava.flight.util.CPF;
 
 /**
@@ -27,15 +28,16 @@ import br.com.moonjava.flight.util.CPF;
 public class PessoaFisicaModel implements PessoaFisica {
 
   private int id;
-  private final String nome;
-  private final String sobrenome;
-  private final LocalDate dataDeNascimento;
-  private final CPF cpf;
-  private final String rg;
-  private final String endereco;
-  private final int telResidencial;
-  private final int telCelular;
-  private final String email;
+  private String nome;
+  private String sobrenome;
+  private LocalDate dataDeNascimento;
+  private CPF cpf;
+  private String rg;
+  private String endereco;
+  private int telResidencial;
+  private int telCelular;
+  private String email;
+  private PessoaFisicaDAO dao;
 
   public PessoaFisicaModel(Builder builder) {
     this.nome = builder.getNome();
@@ -47,6 +49,10 @@ public class PessoaFisicaModel implements PessoaFisica {
     this.telResidencial = builder.getTelResidencial();
     this.telCelular = builder.getTelCelular();
     this.email = builder.getEmail();
+  }
+
+  public PessoaFisicaModel() {
+    dao = new PessoaFisicaDAO();
   }
 
   public void setId(int id) {
@@ -101,6 +107,22 @@ public class PessoaFisicaModel implements PessoaFisica {
   @Override
   public String getEmail() {
     return email;
+  }
+
+  @Override
+  public boolean criar(PessoaFisica pojo) {
+    dao.criar(pojo);
+    return true;
+  }
+
+  @Override
+  public void atualizar(PessoaFisica pojo) {
+    dao.atualizar(pojo);
+  }
+
+  @Override
+  public PessoaFisica consultarPorCPF(CPF cpf) {
+    return dao.consultarPorCpf(cpf);
   }
 
 }

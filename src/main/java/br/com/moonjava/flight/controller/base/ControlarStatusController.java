@@ -25,9 +25,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Status;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 
 /**
  * @version 1.0 Aug 17, 2012
@@ -78,13 +78,13 @@ public class ControlarStatusController implements ActionListener {
       String status = (String) JOptionPane.showInputDialog(null, "Status:", "Status", 1, null,
           nomes, Status.DISPONIVEL);
 
-      VooDAO dao = new VooDAO();
+      Voo vooModel = new VooModel();
 
       if (status != null) {
         int[] rows = tabela.getSelectedRows();
         for (int i = 0; i < rows.length; i++) {
           Voo pojo = list.get(rows[i]);
-          dao.controlarStatus(pojo.getId(), Status.fromString(status));
+          vooModel.controlarStatus(pojo.getId(), Status.fromString(status));
         }
 
         JOptionPane.showMessageDialog(null, bundle.getString("status.voo.joption.ok"));

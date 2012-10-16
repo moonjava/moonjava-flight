@@ -20,6 +20,7 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -35,8 +36,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
+import br.com.moonjava.flight.util.JTextFieldLimit;
+import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.view.passagem.PassagemTableModel;
 
 /**
  * @version 1.0 Sep 8, 2012
@@ -53,6 +58,7 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
   private JButton alocarAssento;
   private JTable tabela;
   private JDialog dialog;
+  private JTextField _alocarAssento;
 
   public EfetuarCheckinUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -87,6 +93,8 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
     consultar = new JButton(bundle.getString("checkin.consultar"));
     finalizarCheckin = new JButton(bundle.getString("checkin.finalizar"));
     alocarAssento = new JButton(bundle.getString("checkin.alocarAssento"));
+    _alocarAssento = new JTextField();
+    _alocarAssento.setDocument(new JTextFieldLimit(4));
 
     imagem.setBounds(0, 70, 30, 30);
     filtroBilhete.setBounds(30, 45, 200, 30);
@@ -94,6 +102,7 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
     _bilhete.setBounds(30, 70, 80, 30);
     consultar.setBounds(120, 70, 100, 30);
     alocarAssento.setBounds(30, 225, 170, 30);
+    _alocarAssento.setBounds(220, 225, 80, 30);
     finalizarCheckin.setBounds(30, 475, 100, 30);
 
     conteudo.add(imagem);
@@ -102,6 +111,14 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
     conteudo.add(consultar);
 
     repaint();
+  }
+
+  protected RequestParamWrapper getParameters() {
+    RequestParamWrapper request = new RequestParamWrapper();
+    request.set("bilhete", _bilhete.getText());
+    request.set("assento", _alocarAssento.getText());
+
+    return request;
   }
 
   protected void addConsultarListener(ActionListener a) {
@@ -117,12 +134,8 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
   }
 
   protected void showSeatMap(String pathFile) {
-    JOptionPane.showMessageDialog(null,
-        bundle.getString("checkin.erro.solicitacao"),
-        bundle.getString("checkin.titulo"),
-        JOptionPane.ERROR_MESSAGE);
-
     conteudo.add(alocarAssento);
+    conteudo.add(_alocarAssento);
 
     Icon image = new ImageIcon(pathFile);
     int width = image.getIconWidth();
@@ -139,8 +152,10 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
     repaint();
   }
 
-  protected void addVooTable() {
+  protected void showList(List<Passagem> passagens) {
+    PassagemTableModel assentos = new PassagemTableModel(passagens, bundle);
     tabela = new JTable();
+    tabela.setModel(assentos);
     tabela.setBorder(new LineBorder(Color.black));
     tabela.setGridColor(Color.black);
     tabela.setShowGrid(true);
@@ -164,6 +179,20 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
 
     conteudo.add(finalizarCheckin);
     repaint();
+  }
+
+  protected void messageAssentoFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("checkin.assento.failed"),
+        bundle.getString("checkin.titulo"),
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void messageSolicitacaoErro() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("checkin.erro.solicitacao"),
+        bundle.getString("checkin.titulo"),
+        JOptionPane.ERROR_MESSAGE);
   }
 
   protected void messageOK() {

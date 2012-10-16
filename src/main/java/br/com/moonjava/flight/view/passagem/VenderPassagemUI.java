@@ -19,7 +19,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -37,6 +40,7 @@ import br.com.moonjava.flight.util.AbstractFlightUI;
 import br.com.moonjava.flight.util.ErrorSystem;
 import br.com.moonjava.flight.util.FlightImageUI;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -80,10 +84,11 @@ public class VenderPassagemUI extends AbstractFlightUI {
   private JTextField telCelular;
   private JTextField email;
 
+  private String[] valTipos;
+
   private JFormattedTextField nascimento;
   private JFormattedTextField cpf;
 
-  private JComboBox tipo;
   private JComboBox tratamento;
   private JComboBox pagamento;
 
@@ -94,6 +99,8 @@ public class VenderPassagemUI extends AbstractFlightUI {
   private JLabel imagemTelCelular;
   private JLabel alertaTelResidencial;
   private JLabel alertaTelCelular;
+  private ArrayList<JComboBox> tipos;
+  private double valorTotal;
 
   public VenderPassagemUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -120,20 +127,20 @@ public class VenderPassagemUI extends AbstractFlightUI {
     tituloTelRes = new JLabel(bundle.getString("criar.pessoafisica.titulo.telResidencial"));
     tituloTelCelular = new JLabel(bundle.getString("criar.pessoafisica.titulo.telCelular"));
     tituloEmail = new JLabel(bundle.getString("criar.pessoafisica.titulo.email"));
+    tipos = new ArrayList<JComboBox>();
 
     // Botoes e caixas de textos
     // GerarCodigo gerarCodigo = new GerarCodigo("PASSAGEM");
     MaskFormatter mask = null;
     try {
-      mask = new MaskFormatter("##");
-      mask.setValidCharacters("0123456789");
+      mask = new MaskFormatter("#");
+      mask.setValidCharacters("123456789");
       nascimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
       cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
     } catch (ParseException e1) {
       ErrorSystem.addException(e1, bundle);
     }
     quantidade = new JFormattedTextField(mask);
-    codigo = new JLabel("Teste");
     nome = new JTextField(bundle.getString("criar.pessoafisica.antes.nome"));
     sobrenome = new JTextField(bundle.getString("criar.pessoafisica.antes.sobrenome"));
     rg = new JTextField(bundle.getString("criar.pessoafisica.antes.rg"));
@@ -145,10 +152,9 @@ public class VenderPassagemUI extends AbstractFlightUI {
     quantidadeOK = new JButton("Ok");
     solicitarCompra = new JButton(bundle.getString("vender.passagem.botao.solicitarCompra"));
     concluir = new JButton(bundle.getString("vender.passagem.botao.concluir"));
-    concluir.setEnabled(false);
 
     Tipo[] tipos = Tipo.values();
-    String valTipos[] = new String[tipos.length];
+    valTipos = new String[tipos.length];
     for (int i = 0; i < valTipos.length; i++) {
       valTipos[i] = tipos[i].setBundle(bundle);
     }
@@ -164,7 +170,6 @@ public class VenderPassagemUI extends AbstractFlightUI {
         bundle.getString("vender.passagem.pagamento.cheque")
     };
 
-    tipo = new JComboBox(valTipos);
     tratamento = new JComboBox(valTratamentos);
     pagamento = new JComboBox(valPagamentos);
     pagamento.setSelectedItem(null);
@@ -212,11 +217,9 @@ public class VenderPassagemUI extends AbstractFlightUI {
     tituloPagamento.setBounds(60, 475, 160, 30);
 
     quantidade.setBounds(150, 35, 100, 30);
-    tipo.setBounds(150, 75, 100, 30);
     quantidadeOK.setBounds(420, 35, 100, 30);
     solicitarCompra.setBounds(350, 75, 170, 30);
 
-    codigo.setBounds(200, 40, 100, 30);
     nome.setBounds(200, 110, 300, 30);
     sobrenome.setBounds(200, 145, 300, 30);
     nascimento.setBounds(200, 180, 180, 30);
@@ -245,7 +248,6 @@ public class VenderPassagemUI extends AbstractFlightUI {
     conteudo.add(tituloTipo);
 
     conteudo.add(quantidade);
-    conteudo.add(tipo);
     conteudo.add(quantidadeOK);
 
     repaint();
@@ -256,14 +258,32 @@ public class VenderPassagemUI extends AbstractFlightUI {
     return conteudo;
   }
 
+  protected JTextField getQuantidade() {
+    return quantidade;
+  }
+
+  protected List<JComboBox> getTipos() {
+    return tipos;
+  }
+
+  protected void setValorTotal(double valor) {
+    this.valorTotal = valor;
+  }
+
   // Get parameters
-  protected RequestParamWrapper getParameters() {
+  protected RequestParamWrapper getParametersPF() {
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("cpf", cpf.getText());
-    request.set("dataDeNascimento", nascimento.getText());
+    request.set("nome", nome.getText());
+    request.set("sobrenome", sobrenome.getText());
+    request.set("rg", rg.getText());
+    request.set("endereco", endereco.getText());
+    request.set("email", email.getText());
+    request.set("nascimento", nascimento.getText());
     request.set("telResidencial", telResidencial.getText());
     request.set("telCelular", telCelular.getText());
     request.set("pagamentoIndex", pagamento.getSelectedIndex());
+    request.set("codigo", codigo.getText());
 
     return request;
   }
@@ -279,6 +299,10 @@ public class VenderPassagemUI extends AbstractFlightUI {
   // Add listeners
   protected void addSolicitarCompraListener(ActionListener a) {
     solicitarCompra.addActionListener(a);
+  }
+
+  protected void addChangeQuantidadeListener(KeyListener a) {
+    quantidade.addKeyListener(a);
   }
 
   protected void addQuantidadeOKListener(ActionListener a) {
@@ -335,7 +359,7 @@ public class VenderPassagemUI extends AbstractFlightUI {
 
   protected void addSolicitarCompraButton() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("vender.passagem.valor"),
+        bundle.getString("vender.passagem.valor") + ": R$" + String.format("%,.2f", valorTotal),
         bundle.getString("vender.passagem.titulo"),
         JOptionPane.INFORMATION_MESSAGE);
 
@@ -343,14 +367,31 @@ public class VenderPassagemUI extends AbstractFlightUI {
     repaint();
   }
 
-  protected void messageFailedQtd() {
+  protected void messageFailedQtd(int qtd) {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("vender.passagem.quantidade.erro"),
+        bundle.getString("vender.passagem.quantidade.erro") + " " + qtd + " " +
+            bundle.getString("vender.passagem.quantidade.disponivel"),
         bundle.getString("vender.passagem.titulo"),
         JOptionPane.QUESTION_MESSAGE);
   }
 
-  protected void addForm() {
+  protected void addComboBoxTipo(int qtd) {
+    int y = 75;
+    for (int i = 0; i < tipos.size(); i++) {
+      conteudo.remove(tipos.get(i));
+    }
+    tipos.clear();
+
+    for (int i = 0; i < qtd; i++) {
+      tipos.add(new JComboBox(valTipos));
+      tipos.get(i).setBounds(150, y, 100, 30);
+      conteudo.add(tipos.get(i));
+      y += 40;
+    }
+    repaint();
+  }
+
+  protected void addForm(JComboBox element) {
     refresh();
 
     tituloTipo.setBounds(60, 75, 100, 30);
@@ -366,14 +407,16 @@ public class VenderPassagemUI extends AbstractFlightUI {
     conteudo.add(tituloTelCelular);
     conteudo.add(tituloEmail);
     conteudo.add(tituloTratamento);
-    conteudo.add(tituloPagamento);
 
-    String item = (String) tipo.getSelectedItem();
+    String item = (String) element.getSelectedItem();
     tipoLabel = new JLabel(item);
     tipoLabel.setBounds(200, 75, 300, 30);
 
-    conteudo.add(tipoLabel);
+    String cod = new GerarCodigo("PASSAGEM").getCodigo();
+    codigo = new JLabel(cod);
+    codigo.setBounds(200, 40, 100, 30);
     conteudo.add(codigo);
+    conteudo.add(tipoLabel);
     conteudo.add(nome);
     conteudo.add(sobrenome);
     conteudo.add(nascimento);
@@ -384,9 +427,18 @@ public class VenderPassagemUI extends AbstractFlightUI {
     conteudo.add(telCelular);
     conteudo.add(email);
     conteudo.add(tratamento);
-    conteudo.add(pagamento);
+    if (tipos.size() == 1) {
+      conteudo.add(tituloPagamento);
+      conteudo.add(pagamento);
+      concluir.setEnabled(false);
+    }
     conteudo.add(concluir);
 
+    repaint();
+  }
+
+  protected void removeForm() {
+    tipos.remove(tipos.size() - 1);
     repaint();
   }
 

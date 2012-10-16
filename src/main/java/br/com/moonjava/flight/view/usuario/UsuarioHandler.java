@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import br.com.moonjava.flight.controller.base.UsuarioController;
+
 /**
  * @version 1.0 Aug 21, 2012
  * @contact miqueias@moonjava.com.br
@@ -48,12 +50,11 @@ public class UsuarioHandler implements ActionListener, MenuListener {
 
   @Override
   public void menuSelected(MenuEvent e) {
-    new UsuarioUI(conteudo, bundle);
+    new UsuarioController(conteudo, bundle);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    new UsuarioUI(conteudo, bundle);
+    new UsuarioController(conteudo, bundle);
   }
-
 }

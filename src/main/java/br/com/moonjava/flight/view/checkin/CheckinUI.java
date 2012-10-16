@@ -21,14 +21,14 @@ import java.util.ResourceBundle;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.CheckinController;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 
 /**
  * @version 1.0 Sep 8, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CheckinUI {
+public class CheckinUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
   private final ResourceBundle bundle;
@@ -41,7 +41,8 @@ public class CheckinUI {
     mainMenu();
   }
 
-  private void mainMenu() {
+  @Override
+  protected void mainMenu() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -58,8 +59,11 @@ public class CheckinUI {
 
     conteudo.add(titulo);
     conteudo.add(subConteudo);
+  }
 
-    new CheckinController(subConteudo, bundle);
+  @Override
+  protected JPanel getConteudo() {
+    return subConteudo;
   }
 
 }

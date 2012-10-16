@@ -18,6 +18,7 @@ package br.com.moonjava.flight.model.base;
 import java.util.List;
 
 import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0 Apr 10, 2012
@@ -51,6 +52,8 @@ public interface Aeronave {
     void deletar(int id);
   }
 
+  List<Aeronave> consultar(RequestParamWrapper request);
+
   int getId();
 
   String getCodigo();
@@ -60,5 +63,7 @@ public interface Aeronave {
   int getQtdDeAssento();
 
   boolean isMapa();
+
+  void criar(Aeronave pojo);
 
 }

@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
@@ -72,6 +73,7 @@ public class ConsultarVooUI {
   private JComboBox timeChegada;
 
   private JTable tabela;
+  private boolean passagem;
 
   public ConsultarVooUI(JPanel conteudo,
                         ResourceBundle bundle,
@@ -89,7 +91,8 @@ public class ConsultarVooUI {
     mainMenu();
   }
 
-  public ConsultarVooUI(JPanel conteudo, ResourceBundle bundle) {
+  public ConsultarVooUI(JPanel conteudo, ResourceBundle bundle, boolean passagem) {
+    this.passagem = passagem;
     this.conteudo = conteudo;
     this.bundle = bundle;
     refresh();
@@ -170,13 +173,16 @@ public class ConsultarVooUI {
     conteudo.add(tituloDestino);
     conteudo.add(tituloPartida);
     conteudo.add(tituloChegada);
-    conteudo.add(tituloStatus);
 
     conteudo.add(origem);
     conteudo.add(destino);
     conteudo.add(partida);
     conteudo.add(chegada);
-    conteudo.add(status);
+
+    if (!passagem) {
+      conteudo.add(tituloStatus);
+      conteudo.add(status);
+    }
 
     conteudo.add(imagem);
     conteudo.add(filtrar);
@@ -185,8 +191,8 @@ public class ConsultarVooUI {
     if (getCountry().equals("US")) {
 
       String[] ampm = {
-        "AM",
-        "PM" };
+          "AM",
+          "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -259,6 +265,16 @@ public class ConsultarVooUI {
         bundle.getString("consultar.voo.joption.err.selecao"),
         bundle.getString("consultar.voo.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected int messagePassagemIdaVolta() {
+    UIManager.put("OptionPane.okButtonText", bundle.getString("sim"));
+    UIManager.put("OptionPane.cancelButtonText", bundle.getString("nao"));
+    return JOptionPane.showConfirmDialog(null,
+        bundle.getString("consultar.voo.ida.volta"),
+        bundle.getString("consultar.voo.joption.titulo"),
+        JOptionPane.OK_CANCEL_OPTION,
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   protected void enableButtons() {

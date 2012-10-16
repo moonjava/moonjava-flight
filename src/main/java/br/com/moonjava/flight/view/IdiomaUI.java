@@ -16,37 +16,26 @@
 package br.com.moonjava.flight.view;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.LoginController;
-
 /**
  * @version 1.0 Apr 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class IdiomaUI implements MouseListener {
+public class IdiomaUI {
 
   private JFrame idioma;
   private JPanel body;
   private JPanel conteudo;
-  private ResourceBundle bundle;
 
   private JLabel portugues;
   private JLabel ingles;
@@ -58,6 +47,7 @@ public class IdiomaUI implements MouseListener {
   }
 
   private void window() {
+    // Adiciona dois Panel, onde conteudo está dentro de body
     idioma = new JFrame("Flight :: Flight");
     body = new JPanel(null);
     conteudo = new JPanel(null);
@@ -100,13 +90,10 @@ public class IdiomaUI implements MouseListener {
     conteudo.add(entrar);
     conteudo.add(enter);
     conteudo.add(_entrar);
-
-    portugues.addMouseListener(this);
-    ingles.addMouseListener(this);
-    espanhol.addMouseListener(this);
   }
 
   private void showAll() {
+    // Inicializa a Frame no centro
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int width = dimension.width;
     int height = dimension.height;
@@ -120,51 +107,32 @@ public class IdiomaUI implements MouseListener {
     idioma.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  private static class ResourceControl extends ResourceBundle.Control {
-    @Override
-    public ResourceBundle newBundle(String baseName, Locale locale,
-        String format, ClassLoader loader,
-        boolean reload)
-        throws IllegalAccessException, InstantiationException, IOException {
-      String bundlename = toBundleName(baseName, locale);
-      String resName = toResourceName(bundlename, "properties");
-      InputStream stream = loader.getResourceAsStream(resName);
-      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
-    }
+  protected void addPortuguesListener(MouseListener a) {
+    portugues.addMouseListener(a);
   }
 
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    if (e.getSource() == portugues) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
-    }
-    if (e.getSource() == ingles) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo_en_US", new ResourceControl());
-    }
-    if (e.getSource() == espanhol) {
-      bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
-    }
-    idioma.dispose();
-    new LoginController(bundle);
+  protected void addInglesListener(MouseListener a) {
+    ingles.addMouseListener(a);
   }
 
-  @Override
-  public void mouseEntered(MouseEvent e) {
-    portugues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    ingles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    espanhol.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+  protected void addEspanholListener(MouseListener a) {
+    espanhol.addMouseListener(a);
   }
 
-  @Override
-  public void mouseExited(MouseEvent e) {
+  public JFrame getIdioma() {
+    return idioma;
   }
 
-  @Override
-  public void mousePressed(MouseEvent e) {
+  public JLabel getPortugues() {
+    return portugues;
   }
 
-  @Override
-  public void mouseReleased(MouseEvent e) {
+  public JLabel getIngles() {
+    return ingles;
+  }
+
+  public JLabel getEspanhol() {
+    return espanhol;
   }
 
 }

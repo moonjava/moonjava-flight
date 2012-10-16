@@ -15,6 +15,16 @@
  */
 package br.com.moonjava.flight.controller.base;
 
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
 import br.com.moonjava.flight.view.IdiomaUI;
 
 /**
@@ -24,7 +34,57 @@ import br.com.moonjava.flight.view.IdiomaUI;
  */
 public class IdiomaController extends IdiomaUI {
 
+  private ResourceBundle bundle;
+
   public IdiomaController() {
+    addPortuguesListener(new IdiomaHandler());
+    addInglesListener(new IdiomaHandler());
+    addEspanholListener(new IdiomaHandler());
+  }
+
+  private class IdiomaHandler extends MouseAdapter {
+
+    // Verifica qual idioma será carregado
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (e.getSource() == getPortugues()) {
+        bundle = ResourceBundle.getBundle("idioma/arquivo_pt_BR", new ResourceControl());
+      }
+      if (e.getSource() == getIngles()) {
+        bundle = ResourceBundle.getBundle("idioma/arquivo_en_US", new ResourceControl());
+      }
+      if (e.getSource() == getEspanhol()) {
+        bundle = ResourceBundle.getBundle("idioma/arquivo_es_ES", new ResourceControl());
+      }
+      // Finaliza Frame de idiomas e inicia Login
+      getIdioma().dispose();
+      new LoginController(bundle);
+    }
+
+    // Mudando o cursor para 'Hands' ao entrar nas imagens
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      getPortugues().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      getIngles().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      getEspanhol().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+
+  }
+
+  /*
+   * Classe que define o padrão UTF-8 aos arquivos 'properties'
+   * 
+   */
+  private static class ResourceControl extends ResourceBundle.Control {
+    @Override
+    public ResourceBundle newBundle(String baseName, Locale locale,
+                                    String format, ClassLoader loader, boolean reload)
+        throws IllegalAccessException, InstantiationException, IOException {
+      String bundlename = toBundleName(baseName, locale);
+      String resName = toResourceName(bundlename, "properties");
+      InputStream stream = loader.getResourceAsStream(resName);
+      return new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+    }
   }
 
 }

@@ -26,8 +26,8 @@ import javax.swing.JTable;
 
 import org.joda.time.DateTime;
 
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.voo.AtualizarVooUI;
@@ -126,8 +126,8 @@ public class AtualizarVooController extends AtualizarVooUI {
       request.set("partida", _partida);
       request.set("chegada", _chegada);
 
-      Voo voo = new VooUpdate(request).createInstance();
-      boolean executed = new VooDAO().atualizar(voo);
+      Voo pojo = new VooUpdate(request).createInstance();
+      boolean executed = new VooModel().atualizar(pojo);
       if (executed) {
         messageOK();
         refresh();

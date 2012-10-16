@@ -16,7 +16,6 @@
 package br.com.moonjava.flight.view.passagem;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
@@ -24,19 +23,17 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.controller.base.CancelarPassagemController;
-import br.com.moonjava.flight.controller.base.ConsultarVooController;
-import br.com.moonjava.flight.controller.base.TransferirPassagemController;
+import br.com.moonjava.flight.util.AbstractFlightUI;
 
 /**
  * @version 1.0 Aug 31, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class PassagemUI {
+public class PassagemUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
-  private final ResourceBundle bundle;
+  protected final ResourceBundle bundle;
   private JPanel subConteudo;
 
   private JButton vender;
@@ -50,7 +47,8 @@ public class PassagemUI {
     mainMenu();
   }
 
-  private void mainMenu() {
+  @Override
+  protected void mainMenu() {
     conteudo.removeAll();
     conteudo.validate();
     conteudo.repaint();
@@ -77,27 +75,23 @@ public class PassagemUI {
     conteudo.add(cancelar);
     conteudo.add(transferir);
     conteudo.add(subConteudo);
+  }
 
-    vender.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new ConsultarVooController(subConteudo, bundle);
-      }
-    });
+  @Override
+  protected JPanel getConteudo() {
+    return subConteudo;
+  }
 
-    cancelar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new CancelarPassagemController(subConteudo, bundle);
-      }
-    });
+  protected void addVenderListener(ActionListener a) {
+    vender.addActionListener(a);
+  }
 
-    transferir.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        new TransferirPassagemController(subConteudo, bundle);
-      }
-    });
+  protected void addCancelarListener(ActionListener a) {
+    cancelar.addActionListener(a);
+  }
+
+  protected void addTransferirListener(ActionListener a) {
+    transferir.addActionListener(a);
   }
 
 }

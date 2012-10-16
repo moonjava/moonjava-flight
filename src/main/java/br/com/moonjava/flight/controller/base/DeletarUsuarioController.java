@@ -24,8 +24,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.view.usuario.DeletarUsuarioUI;
 
 /**
@@ -47,8 +47,11 @@ public class DeletarUsuarioController extends DeletarUsuarioUI {
     return ui;
   }
 
-  public void setAttributes(JTable tabela, JPanel subConteudo,
-      ResourceBundle bundle, JButton atualizar, JButton deletar) {
+  public void setAttributes(JTable tabela,
+                            JPanel subConteudo,
+                            ResourceBundle bundle,
+                            JButton atualizar,
+                            JButton deletar) {
     this.tabela = tabela;
     super.setAttributes(subConteudo, bundle, atualizar, deletar);
     addDeletarListener(new DeletarHandler());
@@ -73,11 +76,11 @@ public class DeletarUsuarioController extends DeletarUsuarioUI {
 
         if (res == 0) {
           int[] rows = tabela.getSelectedRows();
-          UsuarioDAO usuarioDAO = new UsuarioDAO();
+          Usuario usuarioModel = new UsuarioModel();
 
           for (int i = 0; i < rows.length; i++) {
             Usuario pojo = list.get(rows[i]);
-            usuarioDAO.deletar(pojo.getId());
+            usuarioModel.deletar(pojo.getId());
           }
 
           messageDeleteOK();
@@ -86,4 +89,5 @@ public class DeletarUsuarioController extends DeletarUsuarioUI {
       }
     }
   }
+
 }

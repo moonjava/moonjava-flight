@@ -115,4 +115,9 @@ public class PassagemModel implements Passagem {
     return dao.efetuarCheckin(pojo, assento);
   }
 
+  @Override
+  public boolean cancelarPorVoo(Voo pojo) {
+    return dao.cancelarPorVoo(pojo);
+  }
+
 }

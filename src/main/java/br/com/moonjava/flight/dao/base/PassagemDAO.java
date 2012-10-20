@@ -42,10 +42,10 @@ public class PassagemDAO implements Passagem.Jdbc {
         .with("join FLIGHT.PESSOAFISICA as PESSOAFISICA")
         .with("on PASSAGEM.PESSOAFISICA_ID = PESSOAFISICA.ID")
 
-        .with("join FLIGHT.VOO as VOO")
+        .with("left join FLIGHT.VOO as VOO")
         .with("on PASSAGEM.VOO_ID = VOO.ID")
 
-        .with("join FLIGHT.AERONAVE as AERONAVE")
+        .with("left join FLIGHT.AERONAVE as AERONAVE")
         .with("on VOO.AERONAVE_ID = AERONAVE.ID")
 
         .load(new PassagemControlLoader());
@@ -72,6 +72,7 @@ public class PassagemDAO implements Passagem.Jdbc {
     return query()
 
         .with("where 1 = 1 ")
+        .with("order by PASSAGEM.ID asc")
 
         .andList();
   }
@@ -134,6 +135,7 @@ public class PassagemDAO implements Passagem.Jdbc {
     return query()
 
         .with("where PASSAGEM.VOO_ID = ?", voo.getId())
+        .with("and VOO.ASSENTO_LIVRE > 0")
 
         .andList();
   }
@@ -146,6 +148,19 @@ public class PassagemDAO implements Passagem.Jdbc {
         .with("ASSENTO = ?", assento)
 
         .with("where ID = ?", pojo.getId())
+
+        .andExecute();
+    return executed;
+  }
+
+  public boolean cancelarPorVoo(Voo pojo) {
+    boolean executed = new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.PASSAGEM as PASSAGEM set")
+        .with("VOO_ID = NULL")
+
+        .with("where VOO_ID = ?", pojo.getId())
 
         .andExecute();
     return executed;

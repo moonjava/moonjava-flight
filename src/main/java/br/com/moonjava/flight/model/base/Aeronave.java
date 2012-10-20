@@ -66,4 +66,6 @@ public interface Aeronave {
 
   void criar(Aeronave pojo);
 
+  void deletar(int id);
+
 }

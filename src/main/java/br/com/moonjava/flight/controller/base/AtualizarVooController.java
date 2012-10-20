@@ -17,6 +17,7 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -28,8 +29,10 @@ import org.joda.time.DateTime;
 
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.model.base.VooModel;
+import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.voo.AtualizarVooUI;
 
 /**
@@ -46,6 +49,9 @@ public class AtualizarVooController extends AtualizarVooUI {
   private JTable tabela;
 
   private Voo pojo;
+
+  private DateTime _partida;
+  private DateTime _chegada;
 
   private AtualizarVooController() {
   }
@@ -64,6 +70,8 @@ public class AtualizarVooController extends AtualizarVooUI {
     setAttributes(subConteudo, bundle, atualizar, deletar, status);
     addAtualizarListener(new AtualizarHandler());
     addEnviarListener(new EnviarHandler());
+    addFocusDataPartidaListener(new FocusDataPartidaHandler());
+    addFocusDataChegadaListener(new FocusDataChegadaHandler());
   }
 
   public void setResult(boolean result) {
@@ -72,6 +80,66 @@ public class AtualizarVooController extends AtualizarVooUI {
 
   public void setList(List<Voo> list) {
     this.list = list;
+  }
+
+  private class FocusDataPartidaHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      // Valida a data de acordo com o país
+      try {
+        RequestParamWrapper request = getParameters();
+        String country = getCountry();
+        String partida = request.stringParam("partida");
+        String dataPartida = null;
+
+        if (country.equals("US")) {
+          String timePartida = request.stringParam("timePartida");
+          dataPartida = String.format("%s %s", partida, timePartida);
+        } else {
+          dataPartida = partida;
+        }
+        if (VerifierString.isDateValid(dataPartida, bundle)) {
+          addImagePartidaValid();
+          _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+        } else {
+          addImagePartidaInvalid();
+        }
+      } catch (Exception e2) {
+        addImagePartidaInvalid();
+      }
+    }
+  }
+
+  private class FocusDataChegadaHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      // Valida a data de acordo com o país
+      try {
+        RequestParamWrapper request = getParameters();
+        String country = getCountry();
+        String chegada = request.stringParam("chegada");
+        String dataChegada = null;
+
+        if (country.equals("US")) {
+          String timeChegada = request.stringParam("timeChegada");
+          dataChegada = String.format("%s %s", chegada, timeChegada);
+        } else {
+          dataChegada = chegada;
+        }
+        if (VerifierString.isDateValid(dataChegada, bundle)) {
+          _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
+          if (_chegada.isAfter(_partida)) {
+            addImageChegadaValid();
+          } else {
+            addImageChegadaInvalid();
+          }
+        } else {
+          addImageChegadaInvalid();
+        }
+      } catch (Exception e2) {
+        addImageChegadaInvalid();
+      }
+    }
   }
 
   private class AtualizarHandler implements ActionListener {
@@ -100,39 +168,22 @@ public class AtualizarVooController extends AtualizarVooUI {
   private class EnviarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      RequestParamWrapper request = getParameters();
+      try {
+        RequestParamWrapper request = getParameters();
+        request.set("id", pojo.getId());
+        request.set("partida", _partida);
+        request.set("chegada", _chegada);
 
-      String country = getCountry();
-      String partida = request.stringParam("partida");
-      String chegada = request.stringParam("chegada");
-      String dataPartida = null;
-      String dataChegada = null;
-
-      if (country.equals("US")) {
-        String timePartida = request.stringParam("timePartida");
-        String timeChegada = request.stringParam("timeChegada");
-
-        dataPartida = String.format("%s %s", partida, timePartida);
-        dataChegada = String.format("%s %s", chegada, timeChegada);
-      } else {
-        dataPartida = partida;
-        dataChegada = chegada;
-      }
-
-      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
-
-      request.set("id", pojo.getId());
-      request.set("partida", _partida);
-      request.set("chegada", _chegada);
-
-      Voo pojo = new VooUpdate(request).createInstance();
-      boolean executed = new VooModel().atualizar(pojo);
-      if (executed) {
-        messageOK();
-        refresh();
-      } else {
-        messageTimeException();
+        Voo pojo = new VooUpdate(request).createInstance();
+        boolean executed = new VooModel().atualizar(pojo);
+        if (executed) {
+          messageOK();
+          refresh();
+        } else {
+          messageTimeException();
+        }
+      } catch (Exception e2) {
+        addMessageFailed();
       }
     }
   }

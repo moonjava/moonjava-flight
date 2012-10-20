@@ -59,4 +59,9 @@ public class PassagemFake implements Passagem {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public boolean cancelarPorVoo(Voo voo) {
+    throw new UnsupportedOperationException();
+  }
+
 }

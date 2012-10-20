@@ -58,16 +58,13 @@ public class TransferirPassagemController extends TransferirPassagemUI {
   }
 
   private class ItemTableSelectedHandler extends MouseAdapter {
-
     @Override
     public void mouseClicked(MouseEvent e) {
-      abilitarBotao();
+      habilitarBotao();
     }
-
   }
 
   private class ConsultarHandler implements ActionListener {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       VooDAO vDao = new VooDAO();
@@ -92,9 +89,7 @@ public class TransferirPassagemController extends TransferirPassagemUI {
       }
 
       Status status = Status.DISPONIVEL;
-      // DateTime agora = new DateTime().toDateTime();
       request.set("status", status);
-      // request.set("partida", agora);
 
       List<Voo> voos = vDao.consultar(request);
 
@@ -105,7 +100,6 @@ public class TransferirPassagemController extends TransferirPassagemUI {
   }
 
   private class TransferirHandler implements ActionListener {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       int[] rows = getTable().getSelectedRows();

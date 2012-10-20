@@ -161,12 +161,10 @@ public class TesteDeConsultarVoo {
 
   public void consultar_por_aeronave() {
     VooDAO dao = new VooDAO();
-    RequestParamWrapper request = new RequestParamWrapper();
 
     int aeronaveId = 2;
-    request.set("aeronaveId", aeronaveId);
 
-    List<Voo> res = dao.consultarPorAeronaveId(request);
+    List<Voo> res = dao.consultarPorAeronaveId(aeronaveId);
     assertThat(res.size(), equalTo(1));
 
     Voo voo = res.get(0);

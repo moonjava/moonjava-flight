@@ -88,6 +88,13 @@ public class AtualizarAeronaveUI {
     conteudo.validate();
   }
 
+  protected void addMessageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("dadoincorreto"),
+        "flight",
+        JOptionPane.ERROR_MESSAGE);
+  }
+  
   public void messageFailed() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("atualizar.joption.err"),

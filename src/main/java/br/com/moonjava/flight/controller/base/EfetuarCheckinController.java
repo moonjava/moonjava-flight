@@ -69,6 +69,7 @@ public class EfetuarCheckinController extends EfetuarCheckinUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       String assento = getParameters().stringParam("assento").toUpperCase();
+      // Verifica se o assento já existe
       boolean assentoExist = false;
       for (Passagem passagem : passagens) {
         if (passagem.getAssento().toUpperCase().equals(assento)) {

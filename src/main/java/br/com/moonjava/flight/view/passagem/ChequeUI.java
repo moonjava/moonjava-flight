@@ -79,9 +79,11 @@ public class ChequeUI extends AbstractFlightUI {
   private JButton oK;
 
   private boolean valid;
+  private final double valorTotal;
 
-  public ChequeUI(ResourceBundle bundle) {
+  public ChequeUI(ResourceBundle bundle, double valorTotal) {
     this.bundle = bundle;
+    this.valorTotal = valorTotal;
 
     frame = new JDialog();
     frame.setTitle(bundle.getString("cheque.titulo"));
@@ -252,6 +254,7 @@ public class ChequeUI extends AbstractFlightUI {
     request.set("banco", banco.getText());
     request.set("agencia", agencia.getText());
     request.set("conta", conta.getText());
+    request.set("valor", valorTotal);
 
     return request;
   }

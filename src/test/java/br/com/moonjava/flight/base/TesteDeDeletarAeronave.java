@@ -25,6 +25,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.dao.base.AeronaveDAO;
+import br.com.moonjava.flight.dao.base.PassagemDAO;
 import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
@@ -48,25 +49,29 @@ public class TesteDeDeletarAeronave {
   }
 
   public void deletar() {
+    PassagemDAO passagemDAO = new PassagemDAO();
     VooDAO vooDAO = new VooDAO();
     AeronaveDAO aeronaveDAO = new AeronaveDAO();
     RequestParamWrapper request = new RequestParamWrapper();
 
     request.set("status", Status.DISPONIVEL);
-    request.set("aeronaveId", 1);
 
     int id = 1;
 
-    List<Voo> antesVoo = vooDAO.consultar(request);
+    List<Voo> antesVoo = vooDAO.consultarPorAeronaveId(id);
     assertThat(antesVoo.size(), equalTo(3));
 
     List<Aeronave> antesAeronave = aeronaveDAO.consultar(request);
     assertThat(antesAeronave.size(), equalTo(2));
 
+    for (Voo voo : antesVoo) {
+      passagemDAO.cancelarPorVoo(voo);
+    }
+
     vooDAO.deletarPorAeronaveId(id);
     aeronaveDAO.deletar(id);
 
-    List<Voo> resVoo = vooDAO.consultarPorAeronaveId(request);
+    List<Voo> resVoo = vooDAO.consultarPorAeronaveId(id);
     assertThat(resVoo.size(), equalTo(0));
 
     List<Aeronave> resAeronave = aeronaveDAO.consultar(request);

@@ -23,7 +23,7 @@ import org.joda.time.LocalDate;
 import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.controller.financeiro.CartaoControl;
-import br.com.moonjava.flight.controller.financeiro.CartaoControlCreate;
+import br.com.moonjava.flight.controller.financeiro.CartaoCreate;
 import br.com.moonjava.flight.model.financeiro.Bandeira;
 import br.com.moonjava.flight.model.financeiro.Cartao;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -41,7 +41,10 @@ public class TesteDePagamentoCartao {
 
     String titular = "Titular3";
     long numero = 555566667777l;
-    LocalDate validade = new LocalDate(2016, 1, 1);
+    LocalDate validade = new LocalDate()
+        .withYear(2016)
+        .withMonthOfYear(1)
+        .withDayOfMonth(1);
     Bandeira bandeira = Bandeira.AMERICAN_EXPRESS;
     double valor = 500.50;
 
@@ -51,10 +54,13 @@ public class TesteDePagamentoCartao {
     request.set("bandeira", bandeira);
     request.set("valor", valor);
 
-    Cartao cartao = new CartaoControlCreate(request).createInstance();
+    Cartao cartao = new CartaoCreate(request).createInstance();
     assertThat(cartao.getTitular(), equalTo("Titular3"));
     assertThat(cartao.getNumero(), equalTo(555566667777l));
-    assertThat(cartao.getDataDeValidade(), equalTo(new LocalDate(2016, 1, 1)));
+    assertThat(cartao.getDataDeValidade(), equalTo(new LocalDate()
+        .withYear(2016)
+        .withMonthOfYear(1)
+        .withDayOfMonth(1)));
     assertThat(cartao.getBandeira(), equalTo(Bandeira.AMERICAN_EXPRESS));
     assertThat(cartao.getValor(), equalTo(500.50));
 

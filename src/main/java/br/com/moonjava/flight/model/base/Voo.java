@@ -63,8 +63,6 @@ public interface Voo {
 
     Voo consultarPorId(int id);
 
-    List<Voo> consultarPorAeronaveId(RequestParam request);
-
     List<Voo> consultaPainel();
 
     boolean atualizar(Voo voo);
@@ -78,6 +76,8 @@ public interface Voo {
     void incrementarAssento(int id);
 
     void decrementarAssento(int id);
+
+    List<Voo> consultarPorAeronaveId(int id);
   }
 
   int getId();
@@ -115,5 +115,11 @@ public interface Voo {
   boolean atualizar(Voo pojo);
 
   void controlarStatus(int id, Status fromString);
+
+  void decrementarAssento(int vooId);
+
+  void deletaPorAeronaveId(int aeronaveId);
+
+  List<Voo> consultarPorAeronaveId(int id);
 
 }

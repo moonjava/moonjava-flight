@@ -155,4 +155,19 @@ public class VooModel implements Voo {
     dao.controlarStatus(id, fromString);
   }
 
+  @Override
+  public void decrementarAssento(int vooId) {
+    dao.decrementarAssento(vooId);
+  }
+
+  @Override
+  public void deletaPorAeronaveId(int aeronaveId) {
+    dao.deletarPorAeronaveId(aeronaveId);
+  }
+
+  @Override
+  public List<Voo> consultarPorAeronaveId(int id) {
+    return dao.consultarPorAeronaveId(id);
+  }
+
 }

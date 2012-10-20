@@ -89,4 +89,9 @@ public class AeronaveModel implements Aeronave {
     return nome;
   }
 
+  @Override
+  public void deletar(int id) {
+    dao.deletar(id);
+  }
+
 }

@@ -51,7 +51,7 @@ public class ConsultarVooController extends ConsultarVooUI {
   private JButton status;
 
   private List<Voo> list;
-  private ArrayList<Voo> voos;
+  private final List<Voo> voos = new ArrayList<Voo>();
 
   public ConsultarVooController(JPanel conteudo,
                                 ResourceBundle bundle,
@@ -76,7 +76,6 @@ public class ConsultarVooController extends ConsultarVooUI {
   public ConsultarVooController(JPanel conteudo, ResourceBundle bundle) {
     super(conteudo, bundle, true);
 
-    this.voos = new ArrayList<Voo>();
     this.conteudo = conteudo;
     this.bundle = bundle;
     addConsultarListener(new ConsultarHandler());
@@ -96,6 +95,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       String _partida = null;
       String _chegada = null;
 
+      // Teste para atribuir o padrão AM e PM
       if (country.equals("US")) {
         String timePartida = request.stringParam("timePartida");
         String timeChegada = request.stringParam("timeChegada");
@@ -111,6 +111,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       Status[] values = Status.values();
       Status _status = values[index];
 
+      // Mascara padrão para a data
       String maskEmpty = "  /  /       :  ";
       DateTime dataPartida = null;
       DateTime dataChegada = null;
@@ -127,6 +128,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       request.set("chegada", dataChegada);
       request.set("status", _status);
 
+      // Exibe os vôos
       list = new VooModel().consultar(request);
       boolean isEmpty = showList(list);
 
@@ -144,6 +146,14 @@ public class ConsultarVooController extends ConsultarVooUI {
       enableButtons();
       JTable tabela = getTable();
 
+      // Os controladores de Deletar, Atualizar e Controlar Status
+      // são objetos Singleton pois a cada evento (mouseClicked)
+      // um objeto seria instanciado, ocasionando a ação
+      // dos JOptionPane (definidos nestas classes) mais de uma vez.
+      // Ex.: Deletar mais de um item sem um Singleton executará a JOptionPane
+      // em questão a mesma quantidade de clicks (isso porque o HashCode de cada
+      // objeto é diferente). Com Singleton, isso não ocorrerá porque há somente
+      // um HashCode, logo, há somente um JOptionPane.
       DeletarVooController delete = DeletarVooController.getInstance();
       delete.setAttributes(tabela, conteudo, bundle, atualizar, deletar, status);
       delete.setResult(false);
@@ -161,6 +171,10 @@ public class ConsultarVooController extends ConsultarVooUI {
     }
   }
 
+  /*
+   * Usado somente na tela de vender passagem 
+   * 
+   */
   private class ItemTableSelectedPassagemHandler extends MouseAdapter {
 
     private boolean flag;
@@ -189,6 +203,7 @@ public class ConsultarVooController extends ConsultarVooUI {
       }
     }
 
+    // Substitui os nomes padrões dos OptionPane
     private void addVoo() {
       new VenderPassagemController(conteudo, bundle, voos);
       UIManager.put("OptionPane.okButtonText", "Ok");
@@ -203,8 +218,8 @@ public class ConsultarVooController extends ConsultarVooUI {
       // busca voo selecionada
       int[] rows = getTable().getSelectedRows();
       if (rows.length == 1) {
-        Voo pojo = list.get(rows[0]);
-        new VenderPassagemController(conteudo, bundle, pojo);
+        voos.add(list.get(rows[0]));
+        new VenderPassagemController(conteudo, bundle, voos);
       } else {
         messageSelectFailed();
       }

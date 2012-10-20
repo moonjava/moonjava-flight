@@ -24,9 +24,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.AeronaveModel;
+import br.com.moonjava.flight.model.base.PassagemModel;
+import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.view.aeronave.DeletarAeronaveUI;
 
 /**
@@ -78,13 +80,19 @@ public class DeletarAeronaveController extends DeletarAeronaveUI {
 
         if (res == 0) {
           int[] rows = tabela.getSelectedRows();
-          VooDAO vooDAO = new VooDAO();
-          AeronaveDAO aeronaveDAO = new AeronaveDAO();
 
+          // Busca os vôos dessa aeronave, cancela as suas passagens,
+          // deletar os vôos e, por fim, a aeronave
           for (int i = 0; i < rows.length; i++) {
             Aeronave pojo = list.get(rows[i]);
-            vooDAO.deletarPorAeronaveId(pojo.getId());
-            aeronaveDAO.deletar(pojo.getId());
+            VooModel vooModel = new VooModel();
+            List<Voo> voos = vooModel.consultarPorAeronaveId(pojo.getId());
+
+            for (Voo voo : voos) {
+              new PassagemModel().cancelarPorVoo(voo);
+            }
+            vooModel.deletaPorAeronaveId(pojo.getId());
+            new AeronaveModel().deletar(pojo.getId());
           }
 
           messageDeleteOK();

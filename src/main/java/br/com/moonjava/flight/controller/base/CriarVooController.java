@@ -66,6 +66,7 @@ public class CriarVooController extends CriarVooUI {
       String dataPartida = null;
       String dataChegada = null;
 
+      // Teste para atribuir o padrão AM e PM
       if (country.equals("US")) {
         String timePartida = request.stringParam("timePartida");
         String timeChegada = request.stringParam("timeChegada");

@@ -29,6 +29,7 @@ import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -56,6 +57,10 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     addEfetuarCancelamentoListener(new EfetuarCancelamentoHandler());
   }
 
+  /*
+   * As InnerClasses de focus mudam os textos nos campos quando necessário 
+   * 
+   */
   private class FocusBancoHandler extends FlightFocusLostListener {
 
     @Override
@@ -132,7 +137,7 @@ public class CancelarPassagemController extends CancelarPassagemUI {
       String cpf = getParametersReebolso().stringParam("cpf");
       if (!VerifierString.containsSpace(cpf)) {
         try {
-          CPF _cpf = CPF.parse(cpf);
+          CPF.parse(cpf);
           addImageCpfValido();
         } catch (Exception e1) {
           addImageCpfInvalido();
@@ -184,6 +189,9 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParametersReebolso();
+
+      // Caso o usuario adicione virgula, o sistema atribuirá ponto
+      // para cadastrar o dado no banco de dados
       String valor = request.stringParam("valor").replace(",", ".");
 
       CPF _cpf = null;
@@ -195,7 +203,9 @@ public class CancelarPassagemController extends CancelarPassagemUI {
         request.set("conta", Integer.parseInt(request.stringParam("conta")));
         request.set("valor", Double.parseDouble(valor));
         request.set("cpf", _cpf.getDigito());
-      } catch (Exception e2) {
+      } catch (CPFInvalidException e2) {
+        return;
+      } catch (IllegalArgumentException e2) {
         return;
       }
 

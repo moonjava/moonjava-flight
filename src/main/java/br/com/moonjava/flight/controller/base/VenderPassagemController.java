@@ -38,6 +38,7 @@ import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.model.base.PessoaFisicaModel;
 import br.com.moonjava.flight.model.base.Tipo;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
@@ -168,12 +169,12 @@ public class VenderPassagemController extends VenderPassagemUI {
       int pagamento = request.intParam("pagamentoIndex");
 
       if (pagamento == 1) {
-        ChequeController chequeController = new ChequeController(bundle);
+        ChequeController chequeController = new ChequeController(bundle, getValorTotal());
         if (chequeController.isParemeterValid()) {
           addConcluirButton();
         }
       } else {
-        CartaoController cartaoController = new CartaoController(bundle);
+        CartaoController cartaoController = new CartaoController(bundle, getValorTotal());
         if (cartaoController.isParameterValid()) {
           addConcluirButton();
         }
@@ -279,11 +280,13 @@ public class VenderPassagemController extends VenderPassagemUI {
       if (getTipos().isEmpty()) {
         RequestParamWrapper req = new RequestParamWrapper();
         for (int i = 0; i < pessoas.size(); i++) {
+          int vooId = voos.get(0).getId();
+          req.set("voo", vooId);
+          req.set("codBilhete", codigos.get(i));
           req.set("pessoaFisica", pessoas.get(i).getId());
-          req.set("voo", voos.get(0).getId());
-          req.set("codigo", codigos.get(i));
           Passagem pojo = new PassagemCreate(req).createInstance();
           new PassagemModel().venderPassagem(pojo);
+          new VooModel().decrementarAssento(vooId);
         }
 
         /** Location of a file to print **/

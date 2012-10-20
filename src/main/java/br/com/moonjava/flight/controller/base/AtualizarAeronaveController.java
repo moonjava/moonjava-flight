@@ -100,16 +100,20 @@ public class AtualizarAeronaveController extends AtualizarAeronaveUI {
       RequestParamWrapper request = getParameters();
       request.set("id", pojo.getId());
 
-      Aeronave aeronave = new AeronaveUpdate(request).createInstance();
-      new AeronaveDAO().atualizar(aeronave);
+      if (!request.stringParam("nome").isEmpty()) {
+        Aeronave aeronave = new AeronaveUpdate(request).createInstance();
+        new AeronaveDAO().atualizar(aeronave);
 
-      // Renomeia arquivo do mapa de assento conforme o nome
-      File oldFile = new File("airplanes/" + pojo.getNome() + ".jpg");
-      File newFile = new File("airplanes/" + request.stringParam("nome") + ".jpg");
-      oldFile.renameTo(newFile);
+        // Renomeia arquivo do mapa de assento conforme o nome
+        File oldFile = new File("airplanes/" + pojo.getNome() + ".jpg");
+        File newFile = new File("airplanes/" + request.stringParam("nome") + ".jpg");
+        oldFile.renameTo(newFile);
 
-      messageOK();
-      refresh();
+        messageOK();
+        refresh();
+      } else {
+        addMessageFailed();
+      }
     }
   }
 

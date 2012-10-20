@@ -52,7 +52,7 @@ public class TesteDeConsultarPassagem {
     assertThat(res.getCodigoBilhete(), equalTo("P1003"));
     assertThat(res.getAssento(), equalTo("A11"));
     assertThat(res.getPessoaFisica().getNome(), equalTo("Nome D"));
-    assertThat(res.getVoo().getCodigo(), equalTo("V1001"));
+    assertThat(res.getVoo().getCodigo(), equalTo(null));
   }
 
   public void consultar_por_codigo() {

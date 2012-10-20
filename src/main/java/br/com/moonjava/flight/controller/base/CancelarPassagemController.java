@@ -150,7 +150,6 @@ public class CancelarPassagemController extends CancelarPassagemUI {
       String codBilhete = request.stringParam("codBilhete");
 
       passagem = dao.consultarPorCodigoBilhete(codBilhete);
-      passagem.getVoo();
 
       if (passagem == null) {
         messagePassagemOff();

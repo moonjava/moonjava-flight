@@ -115,4 +115,8 @@ public class PassagemModel implements Passagem {
     return dao.efetuarCheckin(pojo, assento);
   }
 
+  public boolean efetuarCancelamento(Passagem pojo) {
+    return dao.efetuarCancelamento(pojo);
+  }
+
 }

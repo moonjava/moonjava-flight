@@ -29,7 +29,6 @@ import br.com.moonjava.flight.dao.base.ReembolsoDAO;
 import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
-import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.Status;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -84,7 +83,7 @@ public class TransferirPassagemController extends TransferirPassagemUI {
         return;
       }
 
-      Reembolso verifCancel = rDao.consultarPorPassagemId(passagem.getId());
+      String verifCancel = passagem.getVoo().getCodigo();
 
       if (verifCancel != null) {
         messagemPasJaCancelada();
@@ -92,9 +91,7 @@ public class TransferirPassagemController extends TransferirPassagemUI {
       }
 
       Status status = Status.DISPONIVEL;
-      // DateTime agora = new DateTime().toDateTime();
       request.set("status", status);
-      // request.set("partida", agora);
 
       List<Voo> voos = vDao.consultar(request);
 

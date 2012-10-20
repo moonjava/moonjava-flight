@@ -153,14 +153,28 @@ public class PassagemDAO implements Passagem.Jdbc {
     return executed;
   }
 
+  @Override
   public boolean cancelarPorVoo(Voo pojo) {
     boolean executed = new SqlStatementWrapper()
         .prepare()
 
         .with("update FLIGHT.PASSAGEM as PASSAGEM set")
         .with("VOO_ID = NULL")
-
         .with("where VOO_ID = ?", pojo.getId())
+
+        .andExecute();
+    return executed;
+
+  }
+
+  @Override
+  public boolean efetuarCancelamento(Passagem pojo) {
+    boolean executed = new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.PASSAGEM as PASSAGEM set")
+        .with("VOO_ID = null")
+        .with("where ID = ?", pojo.getId())
 
         .andExecute();
     return executed;

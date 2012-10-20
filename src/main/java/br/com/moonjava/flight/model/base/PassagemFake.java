@@ -64,4 +64,9 @@ public class PassagemFake implements Passagem {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public boolean efetuarCancelamento(Passagem pojo) {
+    throw new UnsupportedOperationException();
+  }
+
 }

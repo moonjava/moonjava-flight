@@ -120,4 +120,9 @@ public class PassagemModel implements Passagem {
     return dao.cancelarPorVoo(pojo);
   }
 
+  @Override
+  public boolean efetuarCancelamento(Passagem pojo) {
+    return dao.efetuarCancelamento(pojo);
+  }
+
 }

@@ -52,7 +52,11 @@ public interface Passagem {
 
     boolean transferir(Passagem passagem);
 
+    boolean efetuarCancelamento(Passagem pojo);
+
     void deletar(int id);
+
+    boolean cancelarPorVoo(Voo pojo);
 
   }
 
@@ -79,5 +83,7 @@ public interface Passagem {
   boolean efetuarCheckin(Passagem pojo, String assento);
 
   boolean cancelarPorVoo(Voo voo);
+
+  boolean efetuarCancelamento(Passagem pojo);
 
 }

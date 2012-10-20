@@ -23,13 +23,11 @@ import java.util.ResourceBundle;
 import javax.swing.JPanel;
 
 import br.com.moonjava.flight.dao.base.PassagemDAO;
-import br.com.moonjava.flight.dao.base.ReembolsoDAO;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -151,7 +149,6 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       PassagemDAO dao = new PassagemDAO();
-      ReembolsoDAO rDao = new ReembolsoDAO();
 
       RequestParamWrapper request = getParametersPassagem();
       String codBilhete = request.stringParam("codBilhete");
@@ -163,9 +160,9 @@ public class CancelarPassagemController extends CancelarPassagemUI {
         return;
       }
 
-      Reembolso verifCancel = rDao.consultarPorPassagemId(passagem.getId());
+      String verifCancel = passagem.getVoo().getCodigo();
 
-      if (verifCancel == null) {
+      if (verifCancel != null) {
         PassagemModel pasModel = new PassagemModel();
         double reembolso = pasModel.cancelarPassagem(passagem);
 
@@ -189,30 +186,32 @@ public class CancelarPassagemController extends CancelarPassagemUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParametersReebolso();
-
       // Caso o usuario adicione virgula, o sistema atribuirá ponto
       // para cadastrar o dado no banco de dados
+      ReembolsoModel model = new ReembolsoModel();
+      PassagemModel modelPassagem = new PassagemModel();
       String valor = request.stringParam("valor").replace(",", ".");
+      boolean status = false;
 
-      CPF _cpf = null;
-      try {
-        _cpf = CPF.parse(request.stringParam("cpf"));
-        request.set("passagem", passagem.getId());
-        request.set("banco", Integer.parseInt(request.stringParam("banco")));
-        request.set("agencia", Integer.parseInt(request.stringParam("agencia")));
-        request.set("conta", Integer.parseInt(request.stringParam("conta")));
-        request.set("valor", Double.parseDouble(valor));
-        request.set("cpf", _cpf.getDigito());
-      } catch (CPFInvalidException e2) {
-        return;
-      } catch (IllegalArgumentException e2) {
-        return;
+      if (!valor.equals("0.0")) {
+        CPF _cpf = null;
+        try {
+          _cpf = CPF.parse(request.stringParam("cpf"));
+          request.set("passagem", passagem.getId());
+          request.set("banco", Integer.parseInt(request.stringParam("banco")));
+          request.set("agencia", Integer.parseInt(request.stringParam("agencia")));
+          request.set("conta", Integer.parseInt(request.stringParam("conta")));
+          request.set("valor", Double.parseDouble(valor));
+          request.set("cpf", _cpf.getDigito());
+          Reembolso reembolso = new ReembolsoControlCreate(request).createInstance();
+
+          status = model.criarReembolso(reembolso);
+        } catch (Exception e2) {
+          return;
+        }
       }
 
-      Reembolso reembolso = new ReembolsoControlCreate(request).createInstance();
-      ReembolsoModel model = new ReembolsoModel();
-
-      boolean status = model.criarReembolso(reembolso);
+      status = modelPassagem.efetuarCancelamento(passagem);
 
       if (status) {
         messageReembolso();

@@ -66,7 +66,6 @@ public class TesteDeConsultarPassagem {
     assertThat(res.getAssento(), equalTo("B15"));
     assertThat(res.getPessoaFisica().getNome(), equalTo("Nome A"));
     assertThat(res.getVoo().getCodigo(), equalTo("V1002"));
-
   }
 
 }

@@ -41,10 +41,10 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
         .with("inner join FLIGHT.PESSOAFISICA AS PESSOAFISICA")
         .with("on PASSAGEM.PESSOAFISICA_ID = PESSOAFISICA.ID")
 
-        .with("inner join FLIGHT.VOO AS VOO")
+        .with("left join FLIGHT.VOO AS VOO")
         .with("on PASSAGEM.VOO_ID = VOO.ID")
 
-        .with("inner join FLIGHT.AERONAVE AS AERONAVE")
+        .with("left join FLIGHT.AERONAVE AS AERONAVE")
         .with("on VOO.AERONAVE_ID = AERONAVE.ID")
 
         .load(new ReembolsoControlLoader());

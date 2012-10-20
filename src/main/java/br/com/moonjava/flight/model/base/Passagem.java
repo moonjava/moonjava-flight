@@ -52,6 +52,8 @@ public interface Passagem {
 
     boolean transferir(Passagem passagem);
 
+    boolean efetuarCancelamento(Passagem pojo);
+
     void deletar(int id);
   }
 

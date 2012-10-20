@@ -32,6 +32,7 @@ import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
+import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -58,6 +59,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
   }
 
   private class FocusCpfHandler implements FocusListener {
+
     @Override
     public void focusLost(FocusEvent e) {
       try {
@@ -75,6 +77,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
   }
 
   private class FocusTelResHander implements FocusListener {
+
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelResidencial().getText();
@@ -92,6 +95,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
   }
 
   private class FocusTelCelHander implements FocusListener {
+
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelCelular().getText();
@@ -114,6 +118,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
     public void actionPerformed(ActionEvent arg0) {
       String maskNascimento = "  /  /    ";
       String maskCpf = "   .   .   -  ";
+      EncryptPassword pass = new EncryptPassword();
 
       RequestParamWrapper param = getParameters();
       String nome = param.stringParam("nome");
@@ -126,6 +131,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
       String telCelular = param.stringParam("telCelular");
       String login = param.stringParam("login");
       String senha = param.stringParam("senha");
+      param.set("senha", pass.toEncryptMD5(senha));
 
       RequestParamWrapper text = getTexts();
       String textNome = text.stringParam("nome");

@@ -79,13 +79,15 @@ public class TransferirPassagemController extends TransferirPassagemUI {
 
       String verifCancel = passagem.getVoo().getCodigo();
 
-      if (verifCancel != null) {
+      if (verifCancel == null) {
         messagemPasJaCancelada();
+        refresh();
         return;
       }
 
       Status status = Status.DISPONIVEL;
       request.set("status", status);
+      request.set("assento", 0);
 
       List<Voo> voos = vooModel.consultar(request);
 
@@ -118,6 +120,9 @@ public class TransferirPassagemController extends TransferirPassagemUI {
           boolean updated = model.transferir(pojo);
 
           if (updated) {
+            VooModel vooModel = new VooModel();
+            vooModel.incrementarAssento(passagem.getVoo().getId());
+            vooModel.decrementarAssento(voo.getId());
             messageOK();
             return;
           } else {

@@ -194,7 +194,11 @@ public class ConsultarVooController extends ConsultarVooUI {
             addVoo();
           }
           if (res != 2 && flag) {
-            addVoo();
+            if (voos.get(0).getId() != voos.get(1).getId()) {
+              addVoo();
+            } else {
+              voos.remove(1);
+            }
           }
           flag = true;
         } else {

@@ -87,8 +87,8 @@ public class PassagemModel implements Passagem {
   }
 
   @Override
-  public void vender(Passagem pojo) {
-    dao.vender(pojo);
+  public boolean vender(Passagem pojo) {
+    return dao.vender(pojo);
   }
 
   @Override

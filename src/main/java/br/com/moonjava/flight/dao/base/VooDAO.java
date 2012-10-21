@@ -83,6 +83,7 @@ public class VooDAO implements Voo.Jdbc {
     DateTime chegada = request.dateTimeParam("chegada");
     String origem = request.stringParam("origem");
     String destino = request.stringParam("destino");
+    Integer assento = request.intParam("assento");
 
     return query()
 
@@ -92,6 +93,7 @@ public class VooDAO implements Voo.Jdbc {
         .with("and VOO.DATA_CHEGADA <= ?", chegada)
         .with("and VOO.ORIGEM like concat ('%', ?, '%')", origem)
         .with("and VOO.DESTINO like concat ('%', ?, '%')", destino)
+        .with("and VOO.ASSENTO_LIVRE > ?", assento)
 
         .with("order by VOO.DATA_PARTIDA asc")
 
@@ -189,7 +191,7 @@ public class VooDAO implements Voo.Jdbc {
         .with("update FLIGHT.VOO set")
         .with("ASSENTO_LIVRE = (ASSENTO_LIVRE+1)")
 
-        .with("where ID", id)
+        .with("where ID = ?", id)
 
         .andExecute();
   }
@@ -202,7 +204,7 @@ public class VooDAO implements Voo.Jdbc {
         .with("update FLIGHT.VOO set")
         .with("ASSENTO_LIVRE = (ASSENTO_LIVRE-1)")
 
-        .with("where ID", id)
+        .with("where ID = ?", id)
 
         .andExecute();
   }

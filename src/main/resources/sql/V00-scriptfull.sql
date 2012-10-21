@@ -87,6 +87,7 @@ ASSENTO varchar(5) null,
 
 primary key(ID),
 unique key(COD_BILHETE),
+unique key(VOO_ID, PESSOAFISICA_ID),
 
 constraint foreign key FK_VOO_PASSAGEM (VOO_ID)
 references FLIGHT.VOO (ID),

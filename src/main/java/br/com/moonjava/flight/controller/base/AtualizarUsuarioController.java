@@ -37,6 +37,7 @@ import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.usuario.AtualizarUsuarioUI;
 
 /**
@@ -70,6 +71,7 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
 
     setAttributes(subConteudo, bundle, atualizar, deletar);
     addFocusListener(new FocusTextField());
+    addFocusDataListener(new FocusDataHandler());
     addFocusCpfListener(new FocusCpfHandler());
     addFocusTelResListener(new FocusTelResHander());
     addFocusTelCelListener(new FocusTelCelHander());
@@ -83,6 +85,24 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
 
   public void setList(List<Usuario> list) {
     this.list = list;
+  }
+
+  private class FocusDataHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      try {
+        RequestParamWrapper request = getParametersPessoaFisica();
+        String nascimento = request.stringParam("nascimento");
+
+        if (VerifierString.isBirthDay(nascimento, bundle)) {
+          addImageNascimentoValid();
+        } else {
+          addImageNascimentoInvalid();
+        }
+      } catch (Exception e2) {
+        addImageNascimentoInvalid();
+      }
+    }
   }
 
   private class FocusCpfHandler extends FlightFocusLostListener {
@@ -104,9 +124,10 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
       String tel = getTelResidencial().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelResidencial())) {
         try {
-          Integer.parseInt(tel);
+          Long.parseLong(tel);
+          messageTelResidencialOk();
         } catch (Exception e2) {
-          messageTelParseExecption();
+          messageTelResidencialParseExecption();
         }
       }
     }
@@ -118,9 +139,10 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
       String tel = getTelCelular().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelCelular())) {
         try {
-          Integer.parseInt(tel);
+          Long.parseLong(tel);
+          messageTelCelularOk();
         } catch (Exception e2) {
-          messageTelParseExecption();
+          messageTelCelularParseExecption();
         }
       }
     }
@@ -190,40 +212,51 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
           !telResidencial.isEmpty() && !telCelular.isEmpty() && !login.isEmpty() &&
           !senha.isEmpty()) {
 
-        // CPF continua invalido
-        CPF _cpf = null;
         try {
-          _cpf = CPF.parse(cpf);
-        } catch (Exception e1) {
-          messageCpfInvalidExecption();
-          return;
-        }
 
-        int _telResidencial = 0;
-        int _telCelular = 0;
-        try {
-          _telResidencial = Integer.parseInt(telResidencial);
-          _telCelular = Integer.parseInt(telCelular);
+          // CPF continua invalido
+          CPF _cpf = null;
+          try {
+            _cpf = CPF.parse(cpf);
+          } catch (Exception e1) {
+            messageCpfInvalidExecption();
+            return;
+          }
+
+          long _telResidencial = 0;
+          long _telCelular = 0;
+
+          try {
+            _telResidencial = Long.parseLong(telResidencial);
+            _telCelular = Long.parseLong(telCelular);
+          } catch (Exception e2) {
+            messageTelResidencialParseExecption();
+            throw new Exception();
+          }
+
+          LocalDate date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
+          if (VerifierString.isBirthDay(nascimento, bundle)) {
+            date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
+          } else {
+            throw new Exception();
+          }
+
+          requestPf.set("nascimento", date);
+          requestPf.set("cpf", _cpf.getDigito());
+          requestPf.set("telResidencial", _telResidencial);
+          requestPf.set("telCelular", _telCelular);
+
+          PessoaFisica pojoPF = new PessoaFisicaUpdate(requestPf).createInstance();
+          new PessoaFisicaModel().atualizar(pojoPF);
+
+          Usuario pojoUsuario = new UsuarioUpdate(requestUsu).createInstance();
+          new UsuarioModel().atualizar(pojoUsuario);
+
+          messageOK();
+          refresh();
         } catch (Exception e2) {
-          messageTelParseExecption();
-          return;
+          addMessageFailed();
         }
-
-        LocalDate date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
-
-        requestPf.set("nascimento", date);
-        requestPf.set("cpf", _cpf.getDigito());
-        requestPf.set("telResidencial", _telResidencial);
-        requestPf.set("telCelular", _telCelular);
-
-        PessoaFisica pojoPF = new PessoaFisicaUpdate(requestPf).createInstance();
-        new PessoaFisicaModel().atualizar(pojoPF);
-
-        Usuario pojoUsuario = new UsuarioUpdate(requestUsu).createInstance();
-        new UsuarioModel().atualizar(pojoUsuario);
-
-        messageOK();
-        refresh();
       }
     }
   }

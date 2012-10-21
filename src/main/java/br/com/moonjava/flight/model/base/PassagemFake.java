@@ -35,7 +35,7 @@ public class PassagemFake implements Passagem {
   }
 
   @Override
-  public void vender(Passagem pojo) {
+  public boolean vender(Passagem pojo) {
     throw new UnsupportedOperationException();
   }
 

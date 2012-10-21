@@ -66,4 +66,9 @@ public class AeronaveFake implements Aeronave {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public void atualizar(Aeronave aeronave) {
+    throw new UnsupportedOperationException();
+  }
+
 }

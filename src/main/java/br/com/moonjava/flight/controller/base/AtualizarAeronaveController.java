@@ -25,8 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import br.com.moonjava.flight.dao.base.AeronaveDAO;
 import br.com.moonjava.flight.model.base.Aeronave;
+import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.aeronave.AtualizarAeronaveUI;
 
@@ -102,7 +102,7 @@ public class AtualizarAeronaveController extends AtualizarAeronaveUI {
 
       if (!request.stringParam("nome").isEmpty()) {
         Aeronave aeronave = new AeronaveUpdate(request).createInstance();
-        new AeronaveDAO().atualizar(aeronave);
+        new AeronaveModel().atualizar(aeronave);
 
         // Renomeia arquivo do mapa de assento conforme o nome
         File oldFile = new File("airplanes/" + pojo.getNome() + ".jpg");

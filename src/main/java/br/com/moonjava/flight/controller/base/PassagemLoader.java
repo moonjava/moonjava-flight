@@ -20,73 +20,66 @@ import java.sql.ResultSet;
 import br.com.moonjava.flight.jdbc.ResultSetJdbc;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcLoader;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
-import br.com.moonjava.flight.model.base.Perfil;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.PessoaFisica;
-import br.com.moonjava.flight.model.base.Usuario;
-import br.com.moonjava.flight.model.base.UsuarioModel;
+import br.com.moonjava.flight.model.base.Voo;
 
 /**
- * @version 1.0, Aug 10, 2012
+ * @version 1.0 06/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class UsuarioControlLoader implements ResultSetJdbcLoader<Usuario> {
+public class PassagemLoader implements ResultSetJdbcLoader<Passagem> {
 
   private final String alias;
 
-  public UsuarioControlLoader() {
-    this.alias = "USUARIO";
+  public PassagemLoader() {
+    this.alias = "PASSAGEM";
   }
 
   @Override
-  public Usuario get(ResultSet resultSet) {
+  public Passagem get(ResultSet resultSet) {
     ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, alias);
-    return new UsuarioBuilder(rs).createInstance();
+    return new PassagemBuilder(rs).createInstance();
   }
 
-  private class UsuarioBuilder implements Usuario.Builder {
+  private class PassagemBuilder implements Passagem.Builder {
 
     private final ResultSetJdbc rs;
 
-    public UsuarioBuilder(ResultSetJdbc rs) {
+    public PassagemBuilder(ResultSetJdbc rs) {
       this.rs = rs;
     }
 
     @Override
-    public Usuario createInstance() {
-      UsuarioModel impl = new UsuarioModel(this);
+    public Passagem createInstance() {
+      PassagemModel impl = new PassagemModel(this);
       impl.setId(rs.getInt("ID"));
       return impl;
     }
 
     @Override
-    public String getCodigo() {
-      return rs.getString("CODIGO");
-    }
-
-    @Override
-    public Perfil getPerfil() {
-      int valor = rs.getInt("PERFIL");
-      Perfil[] cargos = Perfil.values();
-      return cargos[valor];
-    }
-
-    @Override
-    public String getLogin() {
-      return rs.getString("LOGIN");
-    }
-
-    @Override
-    public String getSenha() {
-      return rs.getString("SENHA");
+    public Voo getVoo() {
+      ResultSet resultSet = rs.getResultSet();
+      return new VooLoader().get(resultSet);
     }
 
     @Override
     public PessoaFisica getPessoaFisica() {
       ResultSet resultSet = rs.getResultSet();
-      return new PessoaFisicaControlLoader().get(resultSet);
+      return new PessoaFisicaLoader().get(resultSet);
     }
 
+    @Override
+    public String getCodigoBilhete() {
+      return rs.getString("COD_BILHETE");
+    }
+
+    @Override
+    public String getAssento() {
+      return rs.getString("ASSENTO");
+    }
   }
 
 }

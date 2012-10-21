@@ -116,5 +116,17 @@ references FLIGHT.PASSAGEM (ID)
 )Engine=InnoDB;
 
 
+insert into FLIGHT.PESSOAFISICA
+(NOME, SOBRENOME, DATA_NASCIMENTO, CPF, RG, ENDERECO,
+TEL_RESIDENCIAL, TEL_CELULAR, EMAIL)
+values('FLIGHT', 'FLIGHT', '01/01/0001', 11111111111, '00000000',
+ 'localhost', '00000000', '00000000', 'contato@moonjava.com.br');
+ 
+
+insert into FLIGHT.USUARIO
+(PESSOAFISICA_ID, CODIGO, PERFIL, LOGIN, SENHA)
+values((select ID from FLIGHT.PESSOAFISICA ), 'U0000', 1, 'admin', 'ISMvKXpXpadDiUoOSoAfww==');
+
+
 CREATE USER 'usjt'@'localhost' IDENTIFIED BY 'usjt';
 GRANT ALL PRIVILEGES ON FLIGHT.* TO 'usjt'@'localhost' WITH GRANT OPTION;

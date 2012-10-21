@@ -33,6 +33,7 @@ public class ReembolsoModel implements Reembolso {
   private int agencia;
   private int conta;
   private double valor;
+  private ReembolsoDAO dao;
 
   public ReembolsoModel(Builder builder) {
     this.passagem = builder.getPassagem();
@@ -45,6 +46,7 @@ public class ReembolsoModel implements Reembolso {
   }
 
   public ReembolsoModel() {
+    dao = new ReembolsoDAO();
   }
 
   public void setId(int id) {
@@ -91,9 +93,8 @@ public class ReembolsoModel implements Reembolso {
     return valor;
   }
 
-  public boolean criarReembolso(Reembolso reembolso) {
-    ReembolsoDAO dao = new ReembolsoDAO();
-
+  @Override
+  public boolean criar(Reembolso reembolso) {
     return dao.criar(reembolso);
   }
 

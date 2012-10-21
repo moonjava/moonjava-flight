@@ -156,6 +156,11 @@ public class VooModel implements Voo {
   }
 
   @Override
+  public void incrementarAssento(int vooId) {
+    dao.incrementarAssento(vooId);
+  }
+
+  @Override
   public void decrementarAssento(int vooId) {
     dao.decrementarAssento(vooId);
   }
@@ -168,6 +173,11 @@ public class VooModel implements Voo {
   @Override
   public List<Voo> consultarPorAeronaveId(int id) {
     return dao.consultarPorAeronaveId(id);
+  }
+
+  @Override
+  public Voo consultarPorId(int id) {
+    return dao.consultarPorId(id);
   }
 
 }

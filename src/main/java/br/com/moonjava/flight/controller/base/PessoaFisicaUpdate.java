@@ -27,11 +27,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class PessoaFisicaControlUpdate implements PessoaFisica.Builder {
+public class PessoaFisicaUpdate implements PessoaFisica.Builder {
 
   private final RequestParam request;
 
-  public PessoaFisicaControlUpdate(RequestParam request) {
+  public PessoaFisicaUpdate(RequestParam request) {
     this.request = request;
   }
 

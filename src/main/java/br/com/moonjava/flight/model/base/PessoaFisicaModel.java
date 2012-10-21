@@ -111,8 +111,7 @@ public class PessoaFisicaModel implements PessoaFisica {
 
   @Override
   public boolean criar(PessoaFisica pojo) {
-    dao.criar(pojo);
-    return true;
+    return dao.criar(pojo);
   }
 
   @Override

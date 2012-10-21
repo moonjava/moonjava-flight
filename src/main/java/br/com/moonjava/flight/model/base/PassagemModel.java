@@ -5,9 +5,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 
-import br.com.moonjava.flight.controller.base.PassagemControlUpdate;
 import br.com.moonjava.flight.dao.base.PassagemDAO;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 public class PassagemModel implements Passagem {
 
@@ -59,7 +57,7 @@ public class PassagemModel implements Passagem {
   }
 
   @Override
-  public double cancelarPassagem(Passagem passagem) {
+  public double getPreco(Passagem passagem) {
     Voo voo = passagem.getVoo();
 
     DateTime partida = voo.getDataDePartida();
@@ -84,19 +82,12 @@ public class PassagemModel implements Passagem {
   }
 
   @Override
-  public boolean transferirPassagem(Passagem passagem, Voo voo) {
-    RequestParamWrapper request = new RequestParamWrapper();
-
-    request.set("id", passagem.getId());
-    request.set("voo", voo.getId());
-
-    Passagem pojo = new PassagemControlUpdate(request).createInstance();
-
+  public boolean transferir(Passagem pojo) {
     return dao.transferir(pojo);
   }
 
   @Override
-  public void venderPassagem(Passagem pojo) {
+  public void vender(Passagem pojo) {
     dao.vender(pojo);
   }
 

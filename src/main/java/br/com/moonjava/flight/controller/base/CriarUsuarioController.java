@@ -18,7 +18,6 @@ package br.com.moonjava.flight.controller.base;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -26,16 +25,18 @@ import javax.swing.JPanel;
 
 import org.joda.time.LocalDate;
 
-import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
-import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.PessoaFisicaModel;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.EncryptPassword;
+import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.usuario.CriarUsuarioUI;
 
 /**
@@ -52,14 +53,32 @@ public class CriarUsuarioController extends CriarUsuarioUI {
     super(conteudo, bundle, atualizar, deletar);
 
     addFocusListener(new FocusTextField());
+    addFocusDataListener(new FocusDataHandler());
     addFocusCpfListener(new FocusCpfHandler());
     addFocusTelResListener(new FocusTelResHander());
     addFocusTelCelListener(new FocusTelCelHander());
     addCadastrarListener(new CadastrarHandler());
   }
 
-  private class FocusCpfHandler implements FocusListener {
+  private class FocusDataHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      try {
+        RequestParamWrapper request = getParameters();
+        String nascimento = request.stringParam("nascimento");
 
+        if (VerifierString.isBirthDay(nascimento, bundle)) {
+          addImageNascimentoValid();
+        } else {
+          addImageNascimentoInvalid();
+        }
+      } catch (Exception e2) {
+        addImageNascimentoInvalid();
+      }
+    }
+  }
+
+  private class FocusCpfHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       try {
@@ -70,45 +89,35 @@ public class CriarUsuarioController extends CriarUsuarioUI {
         addImageCpfInvalido();
       }
     }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-    }
   }
 
-  private class FocusTelResHander implements FocusListener {
-
+  private class FocusTelResHander extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelResidencial().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelResidencial())) {
         try {
           Integer.parseInt(tel);
+          messageTelResidencialOk();
         } catch (Exception e2) {
-          messageTelParseExecption();
+          messageTelResidencialParseExecption();
         }
       }
     }
-    @Override
-    public void focusGained(FocusEvent e) {
-    }
   }
 
-  private class FocusTelCelHander implements FocusListener {
-
+  private class FocusTelCelHander extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelCelular().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelCelular())) {
         try {
           Integer.parseInt(tel);
+          messageTelCelularOk();
         } catch (Exception e2) {
-          messageTelParseExecption();
+          messageTelCelularParseExecption();
         }
       }
-    }
-    @Override
-    public void focusGained(FocusEvent e) {
     }
   }
 
@@ -120,18 +129,18 @@ public class CriarUsuarioController extends CriarUsuarioUI {
       String maskCpf = "   .   .   -  ";
       EncryptPassword pass = new EncryptPassword();
 
-      RequestParamWrapper param = getParameters();
-      String nome = param.stringParam("nome");
-      String sobrenome = param.stringParam("sobrenome");
-      String nascimento = param.stringParam("nascimento");
-      String cpf = param.stringParam("cpf");
-      String rg = param.stringParam("rg");
-      String endereco = param.stringParam("endereco");
-      String telResidencial = param.stringParam("telResidencial");
-      String telCelular = param.stringParam("telCelular");
-      String login = param.stringParam("login");
-      String senha = param.stringParam("senha");
-      param.set("senha", pass.toEncryptMD5(senha));
+      RequestParamWrapper request = getParameters();
+      String nome = request.stringParam("nome");
+      String sobrenome = request.stringParam("sobrenome");
+      String nascimento = request.stringParam("nascimento");
+      String cpf = request.stringParam("cpf");
+      String rg = request.stringParam("rg");
+      String endereco = request.stringParam("endereco");
+      String telResidencial = request.stringParam("telResidencial");
+      String telCelular = request.stringParam("telCelular");
+      String login = request.stringParam("login");
+      String senha = request.stringParam("senha");
+      request.set("senha", pass.toEncryptMD5(senha));
 
       RequestParamWrapper text = getTexts();
       String textNome = text.stringParam("nome");
@@ -162,14 +171,14 @@ public class CriarUsuarioController extends CriarUsuarioUI {
           return;
         }
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = usuarioDAO.consultarPorCpf(_cpf);
+        UsuarioModel usuarioModel = new UsuarioModel();
+        Usuario usuario = usuarioModel.consultarPorCpf(_cpf);
 
         if (usuario != null) {
           messageUsuarioExistente();
         } else {
-          PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
-          PessoaFisica pf = pessoaFisicaDAO.consultarPorCpf(_cpf);
+          PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+          PessoaFisica pf = pessoaFisicaModel.consultarPorCPF(_cpf);
 
           // Cria uma PF
           if (pf == null) {
@@ -181,21 +190,21 @@ public class CriarUsuarioController extends CriarUsuarioUI {
               _telResidencial = Integer.parseInt(telResidencial);
               _telCelular = Integer.parseInt(telCelular);
             } catch (Exception e) {
-              messageTelParseExecption();
+              messageTelResidencialParseExecption();
               return;
             }
 
-            param.set("nascimento", date);
-            param.set("cpf", _cpf.getDigito());
-            param.set("telResidencial", _telResidencial);
-            param.set("telCelular", _telCelular);
+            request.set("nascimento", date);
+            request.set("cpf", _cpf.getDigito());
+            request.set("telResidencial", _telResidencial);
+            request.set("telCelular", _telCelular);
 
-            PessoaFisica pojo = new PessoaFisicaControlCreate(param).createInstance();
-            boolean executed = pessoaFisicaDAO.criar(pojo);
+            PessoaFisica pojo = new PessoaFisicaCreate(request).createInstance();
+            boolean executed = pessoaFisicaModel.criar(pojo);
 
             if (executed) {
-              PessoaFisica pessoa = pessoaFisicaDAO.consultarPorCpf(pojo.getCpf());
-              param.set("pessoaFisica", pessoa.getId());
+              PessoaFisica pessoa = pessoaFisicaModel.consultarPorCPF(pojo.getCpf());
+              request.set("pessoaFisica", pessoa.getId());
             } else {
               messageFailed();
               return;
@@ -203,10 +212,10 @@ public class CriarUsuarioController extends CriarUsuarioUI {
 
             // Utiliza a PF existente (uma vez cliente)
           } else {
-            param.set("pessoaFisica", pf.getId());
+            request.set("pessoaFisica", pf.getId());
           }
-          Usuario pojo = new UsuarioControlCreate(param).createInstance();
-          usuarioDAO.criar(pojo);
+          Usuario pojo = new UsuarioCreate(request).createInstance();
+          new UsuarioModel().criar(pojo);
 
           messageOK();
           refresh();

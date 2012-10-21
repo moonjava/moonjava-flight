@@ -15,48 +15,45 @@
  */
 package br.com.moonjava.flight.controller.base;
 
-import org.joda.time.LocalDate;
-
-import br.com.moonjava.flight.model.base.PessoaFisica;
-import br.com.moonjava.flight.model.base.PessoaFisicaModel;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemFake;
+import br.com.moonjava.flight.model.base.Reembolso;
+import br.com.moonjava.flight.model.base.ReembolsoModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParam;
 
 /**
- * @version 1.0, 10/08/2012
+ * @version 1.0, Aug 13, 2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class PessoaFisicaControlCreate implements PessoaFisica.Builder {
+public class ReembolsoCreate implements Reembolso.Builder {
 
   private final RequestParam request;
 
-  public PessoaFisicaControlCreate(RequestParam request) {
+  public ReembolsoCreate(RequestParam request) {
     this.request = request;
   }
 
   @Override
-  public PessoaFisica createInstance() {
-    return new PessoaFisicaModel(this);
-  }
-
-  public int getId() {
-    return request.intParam("id");
+  public Reembolso createInstance() {
+    return new ReembolsoModel(this);
   }
 
   @Override
-  public String getNome() {
-    return request.stringParam("nome");
+  public Passagem getPassagem() {
+    return new PassagemFake() {
+
+      @Override
+      public int getId() {
+        return request.intParam("passagem");
+      }
+    };
   }
 
   @Override
-  public String getSobrenome() {
-    return request.stringParam("sobrenome");
-  }
-
-  @Override
-  public LocalDate getDataNascimento() {
-    return request.localDateParam("nascimento");
+  public String getTitular() {
+    return request.stringParam("titular");
   }
 
   @Override
@@ -66,28 +63,22 @@ public class PessoaFisicaControlCreate implements PessoaFisica.Builder {
   }
 
   @Override
-  public String getRg() {
-    return request.stringParam("rg");
+  public int getBanco() {
+    return request.intParam("banco");
   }
 
   @Override
-  public String getEndereco() {
-    return request.stringParam("endereco");
+  public int getAgencia() {
+    return request.intParam("agencia");
   }
 
   @Override
-  public int getTelResidencial() {
-    return request.intParam("telResidencial");
+  public int getConta() {
+    return request.intParam("conta");
   }
 
   @Override
-  public int getTelCelular() {
-    return request.intParam("telCelular");
+  public double getValor() {
+    return request.doubleParam("valor");
   }
-
-  @Override
-  public String getEmail() {
-    return request.stringParam("email");
-  }
-
 }

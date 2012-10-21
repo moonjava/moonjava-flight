@@ -64,4 +64,9 @@ public class ReembolsoFake implements Reembolso {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public boolean criar(Reembolso reembolso) {
+    throw new UnsupportedOperationException();
+  }
+
 }

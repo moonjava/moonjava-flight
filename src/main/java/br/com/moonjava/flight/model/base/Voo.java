@@ -57,13 +57,13 @@ public interface Voo {
 
   interface Jdbc {
 
+    List<Voo> consultaPainel();
+
     boolean criar(Voo voo);
 
     List<Voo> consultar(RequestParam request);
 
     Voo consultarPorId(int id);
-
-    List<Voo> consultaPainel();
 
     boolean atualizar(Voo voo);
 
@@ -110,15 +110,19 @@ public interface Voo {
 
   List<Voo> consultar(RequestParamWrapper request);
 
-  void deletar(int id);
+  Voo consultarPorId(int id);
 
   boolean atualizar(Voo pojo);
 
-  void controlarStatus(int id, Status fromString);
-
-  void decrementarAssento(int vooId);
+  void deletar(int id);
 
   void deletaPorAeronaveId(int aeronaveId);
+
+  void controlarStatus(int id, Status fromString);
+
+  void incrementarAssento(int vooId);
+
+  void decrementarAssento(int vooId);
 
   List<Voo> consultarPorAeronaveId(int id);
 

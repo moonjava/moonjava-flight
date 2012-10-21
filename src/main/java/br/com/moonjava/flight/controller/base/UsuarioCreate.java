@@ -27,11 +27,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class UsuarioControlCreate implements Usuario.Builder {
+public class UsuarioCreate implements Usuario.Builder {
 
   private final RequestParam request;
 
-  public UsuarioControlCreate(RequestParam request) {
+  public UsuarioCreate(RequestParam request) {
     this.request = request;
   }
 

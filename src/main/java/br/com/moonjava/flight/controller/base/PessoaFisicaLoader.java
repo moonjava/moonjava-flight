@@ -17,57 +17,62 @@ package br.com.moonjava.flight.controller.base;
 
 import java.sql.ResultSet;
 
+import org.joda.time.LocalDate;
+
 import br.com.moonjava.flight.jdbc.ResultSetJdbc;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcLoader;
 import br.com.moonjava.flight.jdbc.ResultSetJdbcWrapper;
-import br.com.moonjava.flight.model.base.Passagem;
-import br.com.moonjava.flight.model.base.Reembolso;
-import br.com.moonjava.flight.model.base.ReembolsoModel;
+import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.PessoaFisicaModel;
 import br.com.moonjava.flight.util.CPF;
 
 /**
- * @version 1.0, Aug 13, 2012
+ * @version 1.0, 10/08/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
+public class PessoaFisicaLoader implements ResultSetJdbcLoader<PessoaFisica> {
 
   private final String alias;
 
-  public ReembolsoControlLoader() {
-    this.alias = "REEMBOLSO";
+  public PessoaFisicaLoader() {
+    this.alias = "PESSOAFISICA";
   }
 
   @Override
-  public Reembolso get(ResultSet resultSet) {
+  public PessoaFisica get(ResultSet resultSet) {
     ResultSetJdbcWrapper rs = new ResultSetJdbcWrapper(resultSet, alias);
-    return new ReembolsoBuilder(rs).createInstance();
+    return new PessoaFisicaBuilder(rs).createInstance();
   }
 
-  private class ReembolsoBuilder implements Reembolso.Builder {
+  private class PessoaFisicaBuilder implements PessoaFisica.Builder {
 
     private final ResultSetJdbc rs;
 
-    public ReembolsoBuilder(ResultSetJdbc rs) {
+    public PessoaFisicaBuilder(ResultSetJdbc rs) {
       this.rs = rs;
     }
 
     @Override
-    public Reembolso createInstance() {
-      ReembolsoModel impl = new ReembolsoModel(this);
+    public PessoaFisica createInstance() {
+      PessoaFisicaModel impl = new PessoaFisicaModel(this);
       impl.setId(rs.getInt("ID"));
       return impl;
     }
 
     @Override
-    public Passagem getPassagem() {
-      ResultSet resultSet = rs.getResultSet();
-      return new PassagemControlLoader().get(resultSet);
+    public String getNome() {
+      return rs.getString("NOME");
     }
 
     @Override
-    public String getTitular() {
-      return rs.getString("TITULAR");
+    public String getSobrenome() {
+      return rs.getString("SOBRENOME");
+    }
+
+    @Override
+    public LocalDate getDataNascimento() {
+      return rs.getLocalDate("DATA_NASCIMENTO");
     }
 
     @Override
@@ -77,23 +82,30 @@ public class ReembolsoControlLoader implements ResultSetJdbcLoader<Reembolso> {
     }
 
     @Override
-    public int getBanco() {
-      return rs.getInt("BANCO");
+    public String getRg() {
+      return rs.getString("RG");
     }
 
     @Override
-    public int getAgencia() {
-      return rs.getInt("AGENCIA");
+    public String getEndereco() {
+      return rs.getString("ENDERECO");
     }
 
     @Override
-    public int getConta() {
-      return rs.getInt("CONTA");
+    public int getTelResidencial() {
+      return rs.getInt("TEL_RESIDENCIAL");
     }
 
     @Override
-    public double getValor() {
-      return rs.getDouble("VALOR");
+    public int getTelCelular() {
+      return rs.getInt("TEL_CELULAR");
     }
+
+    @Override
+    public String getEmail() {
+      return rs.getString("EMAIL");
+    }
+
   }
+
 }

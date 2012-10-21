@@ -24,13 +24,11 @@ import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.dao.base.PassagemDAO;
-import br.com.moonjava.flight.dao.base.ReembolsoDAO;
-import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Status;
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.passagem.TransferirPassagemUI;
 
@@ -66,14 +64,13 @@ public class TransferirPassagemController extends TransferirPassagemUI {
   private class ConsultarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      VooDAO vDao = new VooDAO();
-      PassagemDAO pDao = new PassagemDAO();
-      ReembolsoDAO rDao = new ReembolsoDAO();
+      VooModel vooModel = new VooModel();
+      PassagemModel passagemModel = new PassagemModel();
 
       RequestParamWrapper request = getParametersPassagem();
       String codBilhete = request.stringParam("codBilhete");
 
-      passagem = pDao.consultarPorCodigoBilhete(codBilhete);
+      passagem = passagemModel.consultarPorCodigoBilhete(codBilhete);
 
       if (passagem == null) {
         messagePassagemOff();
@@ -90,7 +87,7 @@ public class TransferirPassagemController extends TransferirPassagemUI {
       Status status = Status.DISPONIVEL;
       request.set("status", status);
 
-      List<Voo> voos = vDao.consultar(request);
+      List<Voo> voos = vooModel.consultar(request);
 
       setList(voos);
       showList(voos);
@@ -104,16 +101,23 @@ public class TransferirPassagemController extends TransferirPassagemUI {
       int[] rows = getTable().getSelectedRows();
 
       if (rows.length == 1) {
-        Voo pojo = list.get(rows[0]);
+        Voo voo = list.get(rows[0]);
 
-        if (pojo.getAssentoLivre() == 0) {
+        if (voo.getAssentoLivre() == 0) {
           messageFailed();
           return;
 
         } else {
           PassagemModel model = new PassagemModel();
+          RequestParamWrapper request = new RequestParamWrapper();
 
-          if (model.transferirPassagem(passagem, pojo)) {
+          request.set("id", passagem.getId());
+          request.set("voo", voo.getId());
+
+          Passagem pojo = new PassagemUpdate(request).createInstance();
+          boolean updated = model.transferir(pojo);
+
+          if (updated) {
             messageOK();
             return;
           } else {

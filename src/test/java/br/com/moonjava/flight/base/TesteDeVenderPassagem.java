@@ -18,6 +18,8 @@ package br.com.moonjava.flight.base;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.List;
 
@@ -26,9 +28,11 @@ import org.testng.annotations.Test;
 
 import br.com.moonjava.flight.controller.base.PassagemCreate;
 import br.com.moonjava.flight.dao.base.PassagemDAO;
+import br.com.moonjava.flight.dao.base.VooDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -52,10 +56,13 @@ public class TesteDeVenderPassagem {
     int pessoaFisicaId = 1;
 
     PassagemDAO dao = new PassagemDAO();
+    Voo voo = new VooDAO().consultarPorId(vooId);
+    assertThat(voo, is(notNullValue()));
+
     RequestParamWrapper request = new RequestParamWrapper();
 
-    List<Passagem> antes = dao.consultar(request);
-    assertThat(antes.size(), equalTo(4));
+    List<Passagem> antes = dao.consultarPorVoo(voo);
+    assertThat(antes.size(), equalTo(0));
 
     request.set("voo", vooId);
     request.set("codBilhete", codigo);
@@ -66,10 +73,10 @@ public class TesteDeVenderPassagem {
 
     request = new RequestParamWrapper();
 
-    List<Passagem> res = dao.consultar(request);
-    assertThat(res.size(), equalTo(5));
+    List<Passagem> res = dao.consultarPorVoo(voo);
+    assertThat(res.size(), equalTo(1));
 
-    Passagem passagem = res.get(4);
+    Passagem passagem = res.get(0);
 
     assertThat(passagem.getPessoaFisica().getId(), equalTo(pessoaFisicaId));
     assertThat(passagem.getCodigoBilhete(), equalTo(codigo));

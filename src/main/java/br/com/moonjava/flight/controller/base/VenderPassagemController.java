@@ -260,7 +260,7 @@ public class VenderPassagemController extends VenderPassagemUI {
       request.set("telCelular", telCelular);
 
       if (!getTipos().isEmpty()) {
-        PessoaFisica pojoPF = new PessoaFisicaControlCreate(request).createInstance();
+        PessoaFisica pojoPF = new PessoaFisicaCreate(request).createInstance();
         boolean created = new PessoaFisicaModel().criar(pojoPF);
 
         if (created) {
@@ -285,7 +285,7 @@ public class VenderPassagemController extends VenderPassagemUI {
           req.set("codBilhete", codigos.get(i));
           req.set("pessoaFisica", pessoas.get(i).getId());
           Passagem pojo = new PassagemCreate(req).createInstance();
-          new PassagemModel().venderPassagem(pojo);
+          new PassagemModel().vender(pojo);
           new VooModel().decrementarAssento(vooId);
         }
 

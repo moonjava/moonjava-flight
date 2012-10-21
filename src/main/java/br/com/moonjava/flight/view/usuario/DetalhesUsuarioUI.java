@@ -18,7 +18,6 @@ package br.com.moonjava.flight.view.usuario;
 import java.awt.Font;
 import java.util.ResourceBundle;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,8 +35,6 @@ public class DetalhesUsuarioUI {
 
   private JPanel conteudo;
   private ResourceBundle bundle;
-  private JButton atualizar;
-  private JButton deletar;
 
   private JLabel nome;
   private JLabel sobrenome;
@@ -50,7 +47,6 @@ public class DetalhesUsuarioUI {
   private JLabel email;
   private JLabel perfil;
   private JLabel login;
-  private JLabel senha;
   private JLabel codigo;
 
   private JLabel tituloCodigo;
@@ -65,16 +61,10 @@ public class DetalhesUsuarioUI {
   private JLabel tituloEmail;
   private JLabel tituloPerfil;
   private JLabel tituloLogin;
-  private JLabel tituloSenha;
-  private Usuario usuario;
-  private PessoaFisica pf;
 
-  public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-      JButton atualizar, JButton deletar) {
+  public void setAttributes(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
     this.bundle = bundle;
-    this.atualizar = atualizar;
-    this.deletar = deletar;
 
     refresh();
     mainMenu();
@@ -82,30 +72,18 @@ public class DetalhesUsuarioUI {
 
   public void mainMenu() {
     // Titulos
-    tituloCodigo = new JLabel(
-        bundle.getString("criar.usuario.titulo.codigo"));
-    tituloNome = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.nome"));
-    tituloSobrenome = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.sobrenome"));
-    tituloNascimento = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.nascimento"));
-    tituloCpf = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.cpf"));
+    tituloCodigo = new JLabel(bundle.getString("criar.usuario.titulo.codigo"));
+    tituloNome = new JLabel(bundle.getString("criar.pessoafisica.titulo.nome"));
+    tituloSobrenome = new JLabel(bundle.getString("criar.pessoafisica.titulo.sobrenome"));
+    tituloNascimento = new JLabel(bundle.getString("criar.pessoafisica.titulo.nascimento"));
+    tituloCpf = new JLabel(bundle.getString("criar.pessoafisica.titulo.cpf"));
     tituloRg = new JLabel(bundle.getString("criar.pessoafisica.titulo.rg"));
-    tituloEndereco = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.endereco"));
-    tituloTelRes = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.telResidencial"));
-    tituloTelCelular = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.telCelular"));
-    tituloEmail = new JLabel(
-        bundle.getString("criar.pessoafisica.titulo.email"));
-    tituloPerfil = new JLabel(
-        bundle.getString("criar.usuario.titulo.perfil"));
-    tituloLogin = new JLabel(
-        bundle.getString("criar.usuario.titulo.usuario"));
-    tituloSenha = new JLabel(bundle.getString("criar.usuario.titulo.senha"));
+    tituloEndereco = new JLabel(bundle.getString("criar.pessoafisica.titulo.endereco"));
+    tituloTelRes = new JLabel(bundle.getString("criar.pessoafisica.titulo.telResidencial"));
+    tituloTelCelular = new JLabel(bundle.getString("criar.pessoafisica.titulo.telCelular"));
+    tituloEmail = new JLabel(bundle.getString("criar.pessoafisica.titulo.email"));
+    tituloPerfil = new JLabel(bundle.getString("criar.usuario.titulo.perfil"));
+    tituloLogin = new JLabel(bundle.getString("criar.usuario.titulo.usuario"));
 
     codigo = new JLabel();
     nome = new JLabel();
@@ -119,7 +97,6 @@ public class DetalhesUsuarioUI {
     email = new JLabel();
     perfil = new JLabel();
     login = new JLabel();
-    senha = new JLabel("******");
 
     Font font = new Font("Arial", Font.BOLD, 13);
 
@@ -135,7 +112,6 @@ public class DetalhesUsuarioUI {
     tituloEmail.setFont(font);
     tituloPerfil.setFont(font);
     tituloLogin.setFont(font);
-    tituloSenha.setFont(font);
 
     tituloCodigo.setBounds(60, 35, 100, 30);
     tituloNome.setBounds(60, 70, 200, 30);
@@ -149,7 +125,6 @@ public class DetalhesUsuarioUI {
     tituloEmail.setBounds(60, 355, 160, 30);
     tituloPerfil.setBounds(60, 390, 80, 30);
     tituloLogin.setBounds(60, 425, 100, 30);
-    tituloSenha.setBounds(60, 460, 100, 30);
 
     codigo.setBounds(225, 35, 100, 30);
     nome.setBounds(225, 70, 300, 30);
@@ -163,7 +138,6 @@ public class DetalhesUsuarioUI {
     email.setBounds(225, 355, 300, 30);
     perfil.setBounds(225, 390, 250, 30);
     login.setBounds(225, 425, 230, 30);
-    senha.setBounds(225, 460, 230, 30);
   }
 
   public void setParameters(PessoaFisica pf, Usuario usuario) {
@@ -184,7 +158,8 @@ public class DetalhesUsuarioUI {
     telResidencial.setText(String.valueOf(pf.getTelResidencial()));
     telCelular.setText(String.valueOf(pf.getTelCelular()));
     email.setText(pf.getEmail());
-    perfil.setText(usuario.getPerfil().name());
+
+    perfil.setText(usuario.getPerfil().setBundle(bundle));
     login.setText(usuario.getLogin());
 
   }
@@ -202,7 +177,6 @@ public class DetalhesUsuarioUI {
     conteudo.add(tituloEmail);
     conteudo.add(tituloPerfil);
     conteudo.add(tituloLogin);
-    conteudo.add(tituloSenha);
 
     conteudo.add(codigo);
     conteudo.add(nome);
@@ -216,7 +190,6 @@ public class DetalhesUsuarioUI {
     conteudo.add(email);
     conteudo.add(perfil);
     conteudo.add(login);
-    conteudo.add(senha);
 
     conteudo.repaint();
     conteudo.validate();
@@ -235,4 +208,5 @@ public class DetalhesUsuarioUI {
         bundle.getString("detalhes.usuario.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
+
 }

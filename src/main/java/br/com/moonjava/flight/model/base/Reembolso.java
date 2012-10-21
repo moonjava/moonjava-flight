@@ -45,15 +45,6 @@ public interface Reembolso {
 
     boolean criar(Reembolso reembolso);
 
-    Reembolso consultarPorPassagemId(int passagemId);
-
-    Reembolso consultarPorId(int id);
-
-    void atualizar(Reembolso reembolso);
-
-    void deletar(int id);
-
-    void deletarPorPassagemId(int passagemId);
   }
 
   int getId();
@@ -71,4 +62,6 @@ public interface Reembolso {
   int getConta();
 
   double getValor();
+
+  boolean criar(Reembolso reembolso);
 }

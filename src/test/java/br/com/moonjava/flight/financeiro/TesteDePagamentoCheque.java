@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.financeiro.ChequeControlCreate;
+import br.com.moonjava.flight.controller.financeiro.ChequeCreate;
 import br.com.moonjava.flight.model.financeiro.Cheque;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -50,7 +50,7 @@ public class TesteDePagamentoCheque {
     request.set("conta", conta);
     request.set("valor", valor);
 
-    Cheque res = new ChequeControlCreate(request).createInstance();
+    Cheque res = new ChequeCreate(request).createInstance();
     assertThat(res.getTitular(), equalTo(titular));
     assertThat(res.getNumero(), equalTo(numero));
     assertThat(res.getBanco(), equalTo(banco));

@@ -22,12 +22,13 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.UsuarioControlUpdate;
+import br.com.moonjava.flight.controller.base.UsuarioUpdate;
 import br.com.moonjava.flight.dao.base.UsuarioDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.EncryptPassword;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -57,7 +58,7 @@ public class TesteDeAtualizarUsuario {
     String login = "teste1";
     String senha = "6VkIjGBJ8RBMhMm95VYKEw==";
 
-    Usuario antes = dao.consultarPorId(id);
+    Usuario antes = dao.consultarPorCpf(CPF.valueOf(11111111111l));
     assertThat(antes.getCodigo(), equalTo(codigo));
     assertThat(antes.getPessoaFisica().getId(), equalTo(pessoaFisica));
     assertThat(antes.getPerfil(), equalTo(perfil));
@@ -73,11 +74,11 @@ public class TesteDeAtualizarUsuario {
     request.set("login", novoLogin);
     request.set("senha", novaSenha);
 
-    Usuario usuario = new UsuarioControlUpdate(request).createInstance();
+    Usuario usuario = new UsuarioUpdate(request).createInstance();
     boolean executed = dao.atualizar(usuario);
     assertThat(executed, equalTo(true));
 
-    Usuario res = dao.consultarPorId(id);
+    Usuario res = dao.consultarPorCpf(CPF.valueOf(11111111111l));
     assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getPessoaFisica().getId(), equalTo(pessoaFisica));
     assertThat(res.getPerfil(), equalTo(novoPerfil));
@@ -100,7 +101,7 @@ public class TesteDeAtualizarUsuario {
     request.set("login", novoLogin);
     request.set("senha", novaSenha);
 
-    Usuario usuario = new UsuarioControlUpdate(request).createInstance();
+    Usuario usuario = new UsuarioUpdate(request).createInstance();
     boolean executed = dao.atualizar(usuario);
     assertThat(executed, equalTo(false));
   }

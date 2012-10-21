@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 
-import br.com.moonjava.flight.dao.base.PassagemDAO;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Reembolso;
@@ -148,12 +147,12 @@ public class CancelarPassagemController extends CancelarPassagemUI {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      PassagemDAO dao = new PassagemDAO();
+      PassagemModel passagemModel = new PassagemModel();
 
       RequestParamWrapper request = getParametersPassagem();
       String codBilhete = request.stringParam("codBilhete");
 
-      passagem = dao.consultarPorCodigoBilhete(codBilhete);
+      passagem = passagemModel.consultarPorCodigoBilhete(codBilhete);
 
       if (passagem == null) {
         messagePassagemOff();
@@ -164,7 +163,7 @@ public class CancelarPassagemController extends CancelarPassagemUI {
 
       if (verifCancel != null) {
         PassagemModel pasModel = new PassagemModel();
-        double reembolso = pasModel.cancelarPassagem(passagem);
+        double reembolso = pasModel.getPreco(passagem);
 
         if (reembolso > 0.0) {
           setValor(reembolso, passagem.getId());
@@ -203,9 +202,9 @@ public class CancelarPassagemController extends CancelarPassagemUI {
           request.set("conta", Integer.parseInt(request.stringParam("conta")));
           request.set("valor", Double.parseDouble(valor));
           request.set("cpf", _cpf.getDigito());
-          Reembolso reembolso = new ReembolsoControlCreate(request).createInstance();
+          Reembolso reembolso = new ReembolsoCreate(request).createInstance();
 
-          status = model.criarReembolso(reembolso);
+          status = model.criar(reembolso);
         } catch (Exception e2) {
           return;
         }

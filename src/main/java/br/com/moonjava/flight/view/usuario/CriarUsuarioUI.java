@@ -419,6 +419,13 @@ public class CriarUsuarioUI {
         JOptionPane.ERROR_MESSAGE);
   }
 
+  protected void addMessageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("dadoincorreto"),
+        "flight",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
   protected void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);

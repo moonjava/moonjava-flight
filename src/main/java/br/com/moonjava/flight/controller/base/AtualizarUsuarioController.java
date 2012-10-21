@@ -18,7 +18,6 @@ package br.com.moonjava.flight.controller.base;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -34,6 +33,7 @@ import br.com.moonjava.flight.model.base.Usuario;
 import br.com.moonjava.flight.model.base.UsuarioModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
+import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -85,7 +85,7 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
     this.list = list;
   }
 
-  private class FocusCpfHandler implements FocusListener {
+  private class FocusCpfHandler extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       try {
@@ -96,13 +96,9 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
         addImageCpfInvalido();
       }
     }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-    }
   }
 
-  private class FocusTelResHander implements FocusListener {
+  private class FocusTelResHander extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelResidencial().getText();
@@ -114,12 +110,9 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
         }
       }
     }
-    @Override
-    public void focusGained(FocusEvent e) {
-    }
   }
 
-  private class FocusTelCelHander implements FocusListener {
+  private class FocusTelCelHander extends FlightFocusLostListener {
     @Override
     public void focusLost(FocusEvent e) {
       String tel = getTelCelular().getText();
@@ -130,9 +123,6 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
           messageTelParseExecption();
         }
       }
-    }
-    @Override
-    public void focusGained(FocusEvent e) {
     }
   }
 

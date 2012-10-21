@@ -53,7 +53,8 @@ public class App {
 
     try {
       File folder = new File("Log");
-      // Cria uma pasta no computador caso nao exista
+      // Cria uma pasta no computador caso nao exista para salvar os LOGs
+      // diários do sistema
       if (!folder.exists()) {
         folder.mkdir();
         folder.setWritable(true, true);
@@ -61,6 +62,7 @@ public class App {
       String fileName = "Log/log-" + new LocalDate() + ".txt";
       boolean append = true;
       PrintStream printStream = new PrintStream(new FileOutputStream(fileName, append));
+      // Adiciona log INFO, WARN e ERROR
       System.setOut(printStream);
       System.setErr(printStream);
     } catch (IOException e) {

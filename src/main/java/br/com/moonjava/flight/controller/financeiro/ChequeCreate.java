@@ -26,11 +26,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class ChequeControlCreate implements Cheque.Builder {
+public class ChequeCreate implements Cheque.Builder {
 
   private final RequestParam request;
 
-  public ChequeControlCreate(RequestParam request) {
+  public ChequeCreate(RequestParam request) {
     this.request = request;
   }
 

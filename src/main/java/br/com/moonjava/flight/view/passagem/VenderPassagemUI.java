@@ -101,6 +101,8 @@ public class VenderPassagemUI extends AbstractFlightUI {
   private JLabel alertaTelCelular;
   private ArrayList<JComboBox> tipos;
   private double valorTotal;
+  private boolean firstCreate = true;
+  private String number;
 
   public VenderPassagemUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -270,6 +272,10 @@ public class VenderPassagemUI extends AbstractFlightUI {
     this.valorTotal = valor;
   }
 
+  protected double getValorTotal() {
+    return valorTotal;
+  }
+
   // Get parameters
   protected RequestParamWrapper getParametersPF() {
     RequestParamWrapper request = new RequestParamWrapper();
@@ -412,8 +418,23 @@ public class VenderPassagemUI extends AbstractFlightUI {
     tipoLabel = new JLabel(item);
     tipoLabel.setBounds(200, 75, 300, 30);
 
-    String cod = new GerarCodigo("PASSAGEM").getCodigo();
+    // Na primeira execução o código é criado com base no BD (ver
+    // GerarCodigo.java).
+    // A partir da segunda o codigo é gerado internamente,
+    // isto devido ao processo de vender ser em massa, isto é,
+    // cria-se todos os passageiros primeiros e após a confirmação
+    // no sistema de cartão, o sistema emite (cadastra) as respectivas
+    // passagens
+    String cod = null;
+    if (firstCreate) {
+      cod = new GerarCodigo("PASSAGEM").getCodigo();
+      firstCreate = false;
+    } else {
+      long numberFormatted = Long.parseLong(number) + 1;
+      cod = "P" + numberFormatted;
+    }
     codigo = new JLabel(cod);
+    number = codigo.getText().substring(1);
     codigo.setBounds(200, 40, 100, 30);
     conteudo.add(codigo);
     conteudo.add(tipoLabel);

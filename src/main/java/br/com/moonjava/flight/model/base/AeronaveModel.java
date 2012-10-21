@@ -46,16 +46,6 @@ public class AeronaveModel implements Aeronave {
   }
 
   @Override
-  public List<Aeronave> consultar(RequestParamWrapper request) {
-    return dao.consultar(request);
-  }
-
-  @Override
-  public void criar(Aeronave pojo) {
-    dao.criar(pojo);
-  }
-
-  @Override
   public int getId() {
     return id;
   }
@@ -87,6 +77,26 @@ public class AeronaveModel implements Aeronave {
   @Override
   public String toString() {
     return nome;
+  }
+
+  @Override
+  public void criar(Aeronave pojo) {
+    dao.criar(pojo);
+  }
+
+  @Override
+  public List<Aeronave> consultar(RequestParamWrapper request) {
+    return dao.consultar(request);
+  }
+
+  @Override
+  public void atualizar(Aeronave pojo) {
+    dao.atualizar(pojo);
+  }
+
+  @Override
+  public void deletar(int id) {
+    dao.deletar(id);
   }
 
 }

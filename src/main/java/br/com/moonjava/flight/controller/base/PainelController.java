@@ -11,11 +11,8 @@ public class PainelController extends PainelDeDecolagemUI {
 
   public PainelController(ResourceBundle bundle) {
     super(bundle);
-    painelHandler();
     showAll();
-  }
 
-  public void painelHandler() {
     List<Voo> lista = new VooModel().consultaPainel();
     showList(lista);
   }

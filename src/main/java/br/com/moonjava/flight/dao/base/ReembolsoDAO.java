@@ -15,8 +15,6 @@
  */
 package br.com.moonjava.flight.dao.base;
 
-import br.com.moonjava.flight.controller.base.ReembolsoControlLoader;
-import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.Reembolso;
@@ -27,28 +25,6 @@ import br.com.moonjava.flight.model.base.Reembolso;
  * 
  */
 public class ReembolsoDAO implements Reembolso.Jdbc {
-
-  private SqlStatement query() {
-    return new SqlStatementWrapper()
-        .prepare()
-
-        .with("select * from")
-        .with("FLIGHT.REEMBOLSO as REEMBOLSO")
-
-        .with("inner join FLIGHT.PASSAGEM as PASSAGEM")
-        .with("on PASSAGEM_ID = REEMBOLSO.PASSAGEM_ID")
-
-        .with("inner join FLIGHT.PESSOAFISICA AS PESSOAFISICA")
-        .with("on PASSAGEM.PESSOAFISICA_ID = PESSOAFISICA.ID")
-
-        .with("left join FLIGHT.VOO AS VOO")
-        .with("on PASSAGEM.VOO_ID = VOO.ID")
-
-        .with("left join FLIGHT.AERONAVE AS AERONAVE")
-        .with("on VOO.AERONAVE_ID = AERONAVE.ID")
-
-        .load(new ReembolsoControlLoader());
-  }
 
   @Override
   public boolean criar(Reembolso reembolso) {
@@ -73,63 +49,4 @@ public class ReembolsoDAO implements Reembolso.Jdbc {
     return executed;
   }
 
-  @Override
-  public Reembolso consultarPorPassagemId(int passagemId) {
-    return query()
-
-        .with("where 1=1")
-        .with("and REEMBOLSO.PASSAGEM_ID = ?", passagemId)
-
-        .andGet();
-  }
-
-  @Override
-  public Reembolso consultarPorId(int id) {
-    return query()
-
-        .with("where 1=1")
-        .with("and REEMBOLSO.ID = ?", id)
-
-        .andGet();
-  }
-
-  @Override
-  public void atualizar(Reembolso reembolso) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("update FLIGHT.REEMBOLSO set")
-
-        .with("TITULAR = ?,", reembolso.getTitular())
-        .with("CPF = ?,", reembolso.getCpf().getDigito())
-        .with("BANCO = ?,", reembolso.getBanco())
-        .with("AGENCIA = ?,", reembolso.getAgencia())
-        .with("CONTA = ?,", reembolso.getConta())
-        .with("VALOR = ?", reembolso.getValor())
-
-        .with("where ID = ?", reembolso.getId())
-
-        .andExecute();
-  }
-
-  @Override
-  public void deletar(int id) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("delete from FLIGHT.REEMBOLSO")
-        .with("where ID = ?", id)
-
-        .andExecute();
-  }
-
-  public void deletarPorPassagemId(int passagemId) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("delete from FLIGHT.REEMBOLSO")
-        .with("where PASSAGEM_ID = ?", passagemId)
-
-        .andExecute();
-  }
 }

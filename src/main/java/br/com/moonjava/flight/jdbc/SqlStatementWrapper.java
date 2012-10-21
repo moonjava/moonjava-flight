@@ -80,7 +80,7 @@ public class SqlStatementWrapper implements SqlStatement {
       stm = connection.prepareStatement(this.syntax);
 
       SqlStatementExecute.setStmt(stm, params, value);
-
+      System.out.println(stm);
       stm.execute();
       ResultSet resultSet = stm.getResultSet();
 
@@ -108,7 +108,7 @@ public class SqlStatementWrapper implements SqlStatement {
       stm = connection.prepareStatement(this.syntax);
 
       SqlStatementExecute.setStmt(stm, params, value);
-
+      System.out.println(stm);
       stm.execute();
       ResultSet resultSet = stm.getResultSet();
 
@@ -133,6 +133,7 @@ public class SqlStatementWrapper implements SqlStatement {
     try {
       stm = connection.prepareStatement(this.syntax);
       SqlStatementExecute.setStmt(stm, params, value);
+      System.out.println(stm);
       stm.executeUpdate();
 
       stm.close();

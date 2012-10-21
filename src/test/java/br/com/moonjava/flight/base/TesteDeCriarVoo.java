@@ -64,7 +64,8 @@ public class TesteDeCriarVoo {
     DateTime chegada = new DateTime(2015, 8, 9, 3, 0, 0);
     double preco = 230.00;
 
-    Aeronave aeronave = aeronaveDAO.consultarPorId(aeronaveId);
+    request.set("codigo", "A1001");
+    Aeronave aeronave = aeronaveDAO.consultar(request).get(0);
     int assentoLivre = aeronave.getQtdDeAssento();
 
     request.set("status", Status.DISPONIVEL);
@@ -105,5 +106,4 @@ public class TesteDeCriarVoo {
     assertThat(r3.getAssentoLivre(), equalTo(assentoLivre));
     assertThat(r3.getPreco(), equalTo(preco));
   }
-
 }

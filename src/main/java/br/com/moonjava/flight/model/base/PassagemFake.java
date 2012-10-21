@@ -30,17 +30,12 @@ public class PassagemFake implements Passagem {
   }
 
   @Override
-  public double cancelarPassagem(Passagem passagem) {
+  public double getPreco(Passagem passagem) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean transferirPassagem(Passagem passagem, Voo voo) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void venderPassagem(Passagem pojo) {
+  public void vender(Passagem pojo) {
     throw new UnsupportedOperationException();
   }
 
@@ -56,6 +51,21 @@ public class PassagemFake implements Passagem {
 
   @Override
   public boolean efetuarCheckin(Passagem pojo, String assento) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean cancelarPorVoo(Voo voo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean efetuarCancelamento(Passagem pojo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean transferir(Passagem passagem) {
     throw new UnsupportedOperationException();
   }
 

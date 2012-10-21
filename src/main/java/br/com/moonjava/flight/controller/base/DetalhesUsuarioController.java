@@ -18,7 +18,6 @@ package br.com.moonjava.flight.controller.base;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -49,14 +48,12 @@ public class DetalhesUsuarioController extends DetalhesUsuarioUI {
   }
 
   public void setAttributes(JTable tabela,
-      JPanel subConteudo,
-      ResourceBundle bundle,
-      JButton atualizar,
-      JButton deletar) {
+                            JPanel subConteudo,
+                            ResourceBundle bundle) {
 
     this.tabela = tabela;
 
-    setAttributes(subConteudo, bundle, atualizar, deletar);
+    setAttributes(subConteudo, bundle);
     detalhesHandler();
   }
 

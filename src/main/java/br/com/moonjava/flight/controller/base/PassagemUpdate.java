@@ -15,35 +15,36 @@
  */
 package br.com.moonjava.flight.controller.base;
 
-import br.com.moonjava.flight.model.base.Perfil;
+import br.com.moonjava.flight.model.base.Passagem;
+import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.PessoaFisica;
-import br.com.moonjava.flight.model.base.Usuario;
-import br.com.moonjava.flight.model.base.UsuarioModel;
-import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
- * @version 1.0, Aug 10, 2012
+ * @version 1.0 07/10/2012
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class UsuarioControlUpdate implements Usuario.Builder {
+public class PassagemUpdate implements Passagem.Builder {
 
-  private final RequestParam request;
+  private final RequestParamWrapper request;
 
-  public UsuarioControlUpdate(RequestParam request) {
+  public PassagemUpdate(RequestParamWrapper request) {
     this.request = request;
   }
 
   @Override
-  public Usuario createInstance() {
-    UsuarioModel impl = new UsuarioModel(this);
+  public Passagem createInstance() {
+    PassagemModel impl = new PassagemModel(this);
     impl.setId(request.intParam("id"));
     return impl;
   }
 
   @Override
-  public String getCodigo() {
-    return null;
+  public Voo getVoo() {
+    return new VooModel().consultarPorId(request.intParam("voo"));
   }
 
   @Override
@@ -52,18 +53,13 @@ public class UsuarioControlUpdate implements Usuario.Builder {
   }
 
   @Override
-  public Perfil getPerfil() {
-    return request.enumParam(Perfil.class, "perfil");
+  public String getCodigoBilhete() {
+    return null;
   }
 
   @Override
-  public String getLogin() {
-    return request.stringParam("login");
-  }
-
-  @Override
-  public String getSenha() {
-    return request.stringParam("senha");
+  public String getAssento() {
+    return null;
   }
 
 }

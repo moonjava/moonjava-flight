@@ -21,9 +21,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 
+import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.view.voo.DeletarVooUI;
@@ -71,20 +74,29 @@ public class DeletarVooController extends DeletarVooUI {
   private class DeletarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      disableButtons();
-
       if (!result) {
-        result = true;
-        int[] rows = tabela.getSelectedRows();
-        Voo vooModel = new VooModel();
+        UIManager.put("OptionPane.cancelButtonText", bundle.getString("cancelar"));
+        int confirmed = JOptionPane.showConfirmDialog(null,
+            bundle.getString("deletar.voo.joption"),
+            bundle.getString("criar.voo.joption.titulo"),
+            JOptionPane.OK_CANCEL_OPTION);
+        if (confirmed == 0) {
+          disableButtons();
 
-        for (int i = 0; i < rows.length; i++) {
-          Voo pojo = list.get(rows[i]);
-          vooModel.deletar(pojo.getId());
+          result = true;
+          int[] rows = tabela.getSelectedRows();
+          Voo vooModel = new VooModel();
+          PassagemModel passagemModel = new PassagemModel();
+
+          for (int i = 0; i < rows.length; i++) {
+            Voo pojo = list.get(rows[i]);
+            passagemModel.cancelarPorVoo(pojo);
+            vooModel.deletar(pojo.getId());
+          }
+
+          messageDeleteOK();
+          refresh();
         }
-
-        messageDeleteOK();
-        refresh();
       }
     }
   }

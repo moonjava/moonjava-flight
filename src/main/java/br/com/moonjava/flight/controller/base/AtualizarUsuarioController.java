@@ -226,10 +226,10 @@ public class AtualizarUsuarioController extends AtualizarUsuarioUI {
         requestPf.set("telResidencial", _telResidencial);
         requestPf.set("telCelular", _telCelular);
 
-        PessoaFisica pojoPF = new PessoaFisicaControlUpdate(requestPf).createInstance();
+        PessoaFisica pojoPF = new PessoaFisicaUpdate(requestPf).createInstance();
         new PessoaFisicaModel().atualizar(pojoPF);
 
-        Usuario pojoUsuario = new UsuarioControlUpdate(requestUsu).createInstance();
+        Usuario pojoUsuario = new UsuarioUpdate(requestUsu).createInstance();
         new UsuarioModel().atualizar(pojoUsuario);
 
         messageOK();

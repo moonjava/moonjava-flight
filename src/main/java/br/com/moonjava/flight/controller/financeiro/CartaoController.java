@@ -20,10 +20,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.util.ResourceBundle;
 
+import org.joda.time.LocalDate;
+
+import br.com.moonjava.flight.model.financeiro.Bandeira;
 import br.com.moonjava.flight.model.financeiro.Cartao;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.passagem.CartaoUI;
 
@@ -34,8 +38,8 @@ import br.com.moonjava.flight.view.passagem.CartaoUI;
  */
 public class CartaoController extends CartaoUI {
 
-  public CartaoController(ResourceBundle bundle) {
-    super(bundle);
+  public CartaoController(ResourceBundle bundle, double valorTotal) {
+    super(bundle, valorTotal);
 
     // add listeners
     addFocusListener(new FocusTextField());
@@ -71,7 +75,7 @@ public class CartaoController extends CartaoUI {
       if (!numero.isEmpty() && !numero.equals(defaultText)) {
 
         try {
-          int num = Integer.parseInt(numero);
+          long num = Long.parseLong(numero);
           if (num <= 0) {
             throw new NumberFormatException();
           }
@@ -110,9 +114,33 @@ public class CartaoController extends CartaoUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       dispose();
-      Cartao cartao = new CartaoControlCreate(getParameters()).createInstance();
-      boolean created = new CartaoControl().creditar(cartao);
-      setParameterValid(created);
+      try {
+        RequestParamWrapper request = getParameters();
+        request.set("numero", Long.parseLong(request.stringParam("numero")));
+
+        String year = request.stringParam("validade").substring(3, 7);
+        String month = request.stringParam("validade").substring(0, 2);
+
+        LocalDate date = new LocalDate()
+            .withYear(Integer.parseInt(year))
+            .withMonthOfYear(Integer.parseInt(month));
+
+        request.set("validade", date);
+        request.set("bandeira", request.enumParam(Bandeira.class, "bandeira"));
+        request.set("cpf", CPF.parse(request.stringParam("cpf")));
+        request.set("codigo", Integer.parseInt(request.stringParam("codigo")));
+
+        Cartao cartao = null;
+        cartao = new CartaoCreate(request).createInstance();
+        boolean created = new CartaoControl().creditar(cartao);
+        if (created) {
+          setParameterValid(created);
+        } else {
+          addMessageFailed();
+        }
+      } catch (NumberFormatException e2) {
+        addMessageFailed();
+      }
     }
   }
 

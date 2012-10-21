@@ -2,7 +2,7 @@ package br.com.moonjava.flight.dao.base;
 
 import java.util.List;
 
-import br.com.moonjava.flight.controller.base.UsuarioControlLoader;
+import br.com.moonjava.flight.controller.base.UsuarioLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.PessoaFisica;
@@ -43,7 +43,7 @@ public class UsuarioDAO implements Usuario.Jdbc {
         .with("join FLIGHT.PESSOAFISICA as PESSOAFISICA")
         .with("on PESSOAFISICA.ID = USUARIO.PESSOAFISICA_ID")
 
-        .load(new UsuarioControlLoader());
+        .load(new UsuarioLoader());
   }
 
   @Override
@@ -96,15 +96,6 @@ public class UsuarioDAO implements Usuario.Jdbc {
   }
 
   @Override
-  public Usuario consultarPorId(int id) {
-    return query()
-
-        .with("where USUARIO.ID = ?", id)
-
-        .andGet();
-  }
-
-  @Override
   public Usuario consultarPorCpf(CPF cpf) {
     return query()
 
@@ -138,17 +129,6 @@ public class UsuarioDAO implements Usuario.Jdbc {
 
         .with("delete from FLIGHT.USUARIO")
         .with("where ID = ?", id)
-
-        .andExecute();
-  }
-
-  @Override
-  public void deletarPorPessoaFisicaId(int pessoaFisica) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("delete from FLIGHT.USUARIO")
-        .with("where PESSOAFISICA_ID = ?", pessoaFisica)
 
         .andExecute();
   }

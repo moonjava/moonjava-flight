@@ -26,11 +26,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact miqueias@moonjava.com.br
  * 
  */
-public class ReembolsoControlUpdate implements Reembolso.Builder {
+public class ReembolsoUpdate implements Reembolso.Builder {
 
   private final RequestParam request;
 
-  public ReembolsoControlUpdate(RequestParam request) {
+  public ReembolsoUpdate(RequestParam request) {
     this.request = request;
   }
 

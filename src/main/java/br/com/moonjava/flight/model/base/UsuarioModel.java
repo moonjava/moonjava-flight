@@ -18,6 +18,7 @@ package br.com.moonjava.flight.model.base;
 import java.util.List;
 
 import br.com.moonjava.flight.dao.base.UsuarioDAO;
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -99,6 +100,16 @@ public class UsuarioModel implements Usuario {
   @Override
   public Usuario consultarUsuario(RequestParamWrapper request) {
     return dao.consultarUsuario(request);
+  }
+
+  @Override
+  public void criar(Usuario pojo) {
+    dao.criar(pojo);
+  }
+
+  @Override
+  public Usuario consultarPorCpf(CPF cpf) {
+    return dao.consultarPorCpf(cpf);
   }
 
 }

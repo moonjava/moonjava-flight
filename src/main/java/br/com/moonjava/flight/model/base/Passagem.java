@@ -17,9 +17,6 @@ package br.com.moonjava.flight.model.base;
 
 import java.util.List;
 
-import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParam;
-
 /**
  * @version 1.0 Aug 24, 2012
  * @contact miqueias@moonjava.com.br
@@ -42,19 +39,18 @@ public interface Passagem {
 
     boolean vender(Passagem passagem);
 
-    List<Passagem> consultar(RequestParam request);
-
-    Passagem consultarPorId(int id);
-
     Passagem consultarPorCodigoBilhete(String bilhete);
-
-    List<Passagem> consultarPorCpf(CPF cpf);
 
     boolean transferir(Passagem passagem);
 
+    List<Passagem> consultarPorVoo(Voo voo);
+
+    boolean efetuarCheckin(Passagem pojo, String assento);
+
     boolean efetuarCancelamento(Passagem pojo);
 
-    void deletar(int id);
+    boolean cancelarPorVoo(Voo pojo);
+
   }
 
   int getId();
@@ -67,15 +63,20 @@ public interface Passagem {
 
   String getAssento();
 
-  double cancelarPassagem(Passagem passagem);
-
-  boolean transferirPassagem(Passagem passagem, Voo voo);
-
-  void venderPassagem(Passagem pojo);
+  void vender(Passagem pojo);
 
   Passagem consultarPorCodigoBilhete(String bilhete);
+
+  boolean transferir(Passagem passagem);
 
   List<Passagem> consultarPorVoo(Voo voo);
 
   boolean efetuarCheckin(Passagem pojo, String assento);
+
+  boolean efetuarCancelamento(Passagem pojo);
+
+  boolean cancelarPorVoo(Voo voo);
+
+  double getPreco(Passagem passagem);
+
 }

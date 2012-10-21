@@ -119,4 +119,29 @@ public class VooFake implements Voo {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public void decrementarAssento(int vooId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void deletaPorAeronaveId(int aeronaveId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public List<Voo> consultarPorAeronaveId(int id) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void incrementarAssento(int vooId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Voo consultarPorId(int id) {
+    throw new UnsupportedOperationException();
+  }
+
 }

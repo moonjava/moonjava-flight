@@ -129,8 +129,8 @@ public class TesteDeAtualizarPessoaFisica {
     request.set("sobrenome", "Sobrenome D");
     request.set("rg", "111000000");
     request.set("endereco", "Endereco D Nº44");
-    request.set("telResidencial", 1133336666);
-    request.set("telCelular", 1133335555);
+    request.set("telResidencial", 1133336666l);
+    request.set("telCelular", 1133335555l);
 
     PessoaFisica pessoaFisica = new PessoaFisicaUpdate(request).createInstance();
     boolean executed = dao.atualizar(pessoaFisica);

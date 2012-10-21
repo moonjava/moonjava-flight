@@ -59,6 +59,7 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
   private JTable tabela;
   private JDialog dialog;
   private JTextField _alocarAssento;
+  private JScrollPane scroll;
 
   public EfetuarCheckinUI(JPanel conteudo, ResourceBundle bundle) {
     this.conteudo = conteudo;
@@ -160,7 +161,7 @@ public class EfetuarCheckinUI extends AbstractFlightUI {
     tabela.setGridColor(Color.black);
     tabela.setShowGrid(true);
 
-    JScrollPane scroll = new JScrollPane();
+    scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
     scroll.getViewport().add(tabela);
     scroll.setBounds(30, 265, 275, 200);

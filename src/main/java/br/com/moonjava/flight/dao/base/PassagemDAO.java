@@ -80,8 +80,7 @@ public class PassagemDAO implements Passagem.Jdbc {
         .prepare()
 
         .with("update FLIGHT.PASSAGEM as PASSAGEM set")
-        .with("VOO_ID = ?,", passagem.getVoo().getId())
-        .with("ASSENTO = ''")
+        .with("VOO_ID = ?", passagem.getVoo().getId())
 
         .with("where ID = ?", passagem.getId())
 

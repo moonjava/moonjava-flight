@@ -63,7 +63,7 @@ public interface Passagem {
 
   String getAssento();
 
-  void vender(Passagem pojo);
+  boolean vender(Passagem pojo);
 
   Passagem consultarPorCodigoBilhete(String bilhete);
 

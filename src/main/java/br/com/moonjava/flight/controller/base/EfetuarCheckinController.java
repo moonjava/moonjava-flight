@@ -72,8 +72,10 @@ public class EfetuarCheckinController extends EfetuarCheckinUI {
       // Verifica se o assento já existe
       boolean assentoExist = false;
       for (Passagem passagem : passagens) {
-        if (passagem.getAssento().toUpperCase().equals(assento)) {
-          assentoExist = true;
+        if (passagem.getAssento() != null) {
+          if (passagem.getAssento().toUpperCase().equals(assento)) {
+            assentoExist = true;
+          }
         }
       }
       if (!assentoExist) {

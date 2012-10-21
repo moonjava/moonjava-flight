@@ -26,6 +26,7 @@ import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.PassagemModel;
 import br.com.moonjava.flight.model.base.Reembolso;
 import br.com.moonjava.flight.model.base.ReembolsoModel;
+import br.com.moonjava.flight.model.base.VooModel;
 import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FocusTextField;
@@ -213,6 +214,7 @@ public class CancelarPassagemController extends CancelarPassagemUI {
       status = modelPassagem.efetuarCancelamento(passagem);
 
       if (status) {
+        new VooModel().incrementarAssento(passagem.getVoo().getId());
         messageReembolso();
         messageOK();
       } else {

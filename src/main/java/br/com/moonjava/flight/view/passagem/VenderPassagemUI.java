@@ -373,6 +373,11 @@ public class VenderPassagemUI extends AbstractFlightUI {
     repaint();
   }
 
+  protected void removeSolicitarComprabutton() {
+    conteudo.remove(solicitarCompra);
+    repaint();
+  }
+
   protected void messageFailedQtd(int qtd) {
     JOptionPane.showMessageDialog(null,
         bundle.getString("vender.passagem.quantidade.erro") + " " + qtd + " " +
@@ -497,6 +502,19 @@ public class VenderPassagemUI extends AbstractFlightUI {
     FlightImageUI.addError(imagemCpf, alertaCpf,
         bundle.getString("criar.pessoafisica.cpf.alerta.erro"), bundle, conteudo);
     repaint();
+  }
+
+  protected void messagePFExistente() {
+    JOptionPane.showMessageDialog(null, bundle.getString("criar.usuario.erro"),
+        "",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void messageDbUniqueKey() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("erro.bd.uniquekey"),
+        bundle.getString("cancelar.passagem.titulo"),
+        JOptionPane.ERROR_MESSAGE);
   }
 
   // remove layout

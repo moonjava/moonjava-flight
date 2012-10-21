@@ -79,11 +79,6 @@ public class VenderPassagemController extends VenderPassagemUI {
     addConcluirListener(new ConcluirHandler());
   }
 
-  public VenderPassagemController(JPanel conteudo, ResourceBundle bundle, Voo voo) {
-    this(conteudo, bundle);
-    this.voo = voo;
-  }
-
   public VenderPassagemController(JPanel conteudo, ResourceBundle bundle, List<Voo> voos) {
     this(conteudo, bundle);
     this.voos = voos;
@@ -98,7 +93,7 @@ public class VenderPassagemController extends VenderPassagemUI {
       if (!tel.isEmpty() && !tel.equals(defaultText)) {
 
         try {
-          int num = Integer.parseInt(tel);
+          long num = Long.parseLong(tel);
           if (num <= 0) {
             throw new NumberFormatException();
           }
@@ -120,7 +115,7 @@ public class VenderPassagemController extends VenderPassagemUI {
       if (!tel.isEmpty() && !tel.equals(defaultText)) {
 
         try {
-          int num = Integer.parseInt(tel);
+          long num = Long.parseLong(tel);
           if (num <= 0) {
             throw new NumberFormatException();
           }
@@ -204,8 +199,12 @@ public class VenderPassagemController extends VenderPassagemUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       int qtd = Integer.parseInt(getQuantidade().getText());
-      int disponivel = voos.get(0).getAssentoLivre();
-      if (qtd <= disponivel) {
+      int disponivel1 = voos.get(0).getAssentoLivre();
+      int disponivel2 = Integer.MAX_VALUE;
+      if (voos.size() == 2) {
+        disponivel2 = voos.get(1).getAssentoLivre();
+      }
+      if (qtd <= disponivel1 && qtd <= disponivel2) {
 
         double valorTotal = 0;
 
@@ -231,7 +230,13 @@ public class VenderPassagemController extends VenderPassagemUI {
         addSolicitarCompraButton();
 
       } else {
-        messageFailedQtd(disponivel);
+        removeSolicitarComprabutton();
+        if (qtd > disponivel1) {
+          messageFailedQtd(disponivel1);
+        }
+        if (qtd > disponivel2) {
+          messageFailedQtd(disponivel2);
+        }
       }
     }
   }
@@ -252,23 +257,32 @@ public class VenderPassagemController extends VenderPassagemUI {
       String nascimento = request.stringParam("nascimento");
       LocalDate date = FormatDateTime.parseToLocalDate(nascimento, bundle.getString("country"));
       long _cpf = CPF.parse(request.stringParam("cpf")).getDigito();
-      int telResidencial = Integer.parseInt(request.stringParam("telResidencial"));
-      int telCelular = Integer.parseInt(request.stringParam("telCelular"));
+      long telResidencial = Integer.parseInt(request.stringParam("telResidencial"));
+      long telCelular = Integer.parseInt(request.stringParam("telCelular"));
       request.set("nascimento", date);
       request.set("cpf", _cpf);
       request.set("telResidencial", telResidencial);
       request.set("telCelular", telCelular);
 
       if (!getTipos().isEmpty()) {
-        PessoaFisica pojoPF = new PessoaFisicaCreate(request).createInstance();
-        boolean created = new PessoaFisicaModel().criar(pojoPF);
+        PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+        PessoaFisica pfExistente = pessoaFisicaModel.consultarPorCPF(CPF.valueOf(_cpf));
 
-        if (created) {
-          PessoaFisica pf = new PessoaFisicaModel().consultarPorCPF(pojoPF.getCpf());
-          pessoas.add(pf);
+        if (pfExistente != null) {
+          messagePFExistente();
+          pessoas.add(pfExistente);
           codigos.add(request.stringParam("codigo"));
-
           removeForm();
+        } else {
+          PessoaFisica pojoPF = new PessoaFisicaCreate(request).createInstance();
+          boolean created = new PessoaFisicaModel().criar(pojoPF);
+
+          if (created) {
+            PessoaFisica pf = new PessoaFisicaModel().consultarPorCPF(pojoPF.getCpf());
+            pessoas.add(pf);
+            codigos.add(request.stringParam("codigo"));
+            removeForm();
+          }
         }
 
       }
@@ -285,21 +299,26 @@ public class VenderPassagemController extends VenderPassagemUI {
           req.set("codBilhete", codigos.get(i));
           req.set("pessoaFisica", pessoas.get(i).getId());
           Passagem pojo = new PassagemCreate(req).createInstance();
-          new PassagemModel().vender(pojo);
-          new VooModel().decrementarAssento(vooId);
+          boolean executed = new PassagemModel().vender(pojo);
+          if (executed) {
+            new VooModel().decrementarAssento(vooId);
+
+            /** Location of a file to print **/
+            String fileName = "abc.txt";
+
+            /** Read the text content from this location **/
+            String mText = PrintFileToPrinter.readContentFromFileToPrint(fileName);
+
+            /** Create an AttributedString object from the text read */
+            PrintFileToPrinter.myStyledText = new AttributedString(mText);
+
+            PrintFileToPrinter.printToPrinter();
+            refresh();
+          } else {
+            messageDbUniqueKey();
+            refresh();
+          }
         }
-
-        /** Location of a file to print **/
-        String fileName = "abc.txt";
-
-        /** Read the text content from this location **/
-        String mText = PrintFileToPrinter.readContentFromFileToPrint(fileName);
-
-        /** Create an AttributedString object from the text read */
-        PrintFileToPrinter.myStyledText = new AttributedString(mText);
-
-        PrintFileToPrinter.printToPrinter();
-        refresh();
       }
     }
   }

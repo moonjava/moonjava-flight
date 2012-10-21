@@ -16,6 +16,7 @@
 package br.com.moonjava.flight.view.voo;
 
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -33,6 +34,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.util.AbstractFlightUI;
+import br.com.moonjava.flight.util.FlightImageUI;
 import br.com.moonjava.flight.util.GerarCodigo;
 import br.com.moonjava.flight.util.JTextFieldLimit;
 import br.com.moonjava.flight.util.RequestParamWrapper;
@@ -45,7 +47,7 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
 public abstract class CriarVooUI extends AbstractFlightUI {
 
   private final JPanel conteudo;
-  private final ResourceBundle bundle;
+  protected final ResourceBundle bundle;
   private final JButton atualizar;
   private final JButton deletar;
   private final JButton status;
@@ -61,12 +63,18 @@ public abstract class CriarVooUI extends AbstractFlightUI {
   private JComboBox timeChegada;
   private JTextField preco;
   private JButton cadastrar;
+  private JLabel imagemPartida;
+  private JLabel alertaPartida;
+  private JLabel imagemChegada;
+  private JLabel alertaChegada;
+  private JLabel imagemPreco;
+  private JLabel alertaPreco;
 
-  public CriarVooUI(JPanel conteudo,
-                    ResourceBundle bundle,
-                    JButton atualizar,
-                    JButton deletar,
-                    JButton status) {
+  protected CriarVooUI(JPanel conteudo,
+                       ResourceBundle bundle,
+                       JButton atualizar,
+                       JButton deletar,
+                       JButton status) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -83,10 +91,10 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     return conteudo;
   }
 
-  public abstract List<Aeronave> getList();
+  protected abstract List<Aeronave> getList();
 
   @Override
-  public void mainMenu() {
+  protected void mainMenu() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
     status.setEnabled(false);
@@ -103,7 +111,12 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     JLabel tituloAeronave = new JLabel(bundle.getString("criar.voo.titulo.aeronave"));
     JLabel tituloPreco = new JLabel(bundle.getString("criar.voo.titulo.preco"));
 
-    JLabel alertaPartida = new JLabel(bundle.getString("alerta.data"));
+    imagemPartida = new JLabel();
+    alertaPartida = new JLabel();
+    imagemChegada = new JLabel();
+    alertaChegada = new JLabel();
+    imagemPreco = new JLabel();
+    alertaPreco = new JLabel();
     cadastrar = new JButton(bundle.getString("criar.voo.botao.cadastrar"));
 
     String _codigo = new GerarCodigo("VOO").getCodigo();
@@ -138,7 +151,14 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     tituloAeronave.setBounds(60, 310, 200, 30);
     tituloPreco.setBounds(60, 350, 200, 30);
 
-    alertaPartida.setBounds(400, 230, 500, 30);
+    imagemPartida.setBounds(400, 230, 500, 30);
+    alertaPartida.setBounds(430, 230, 500, 30);
+
+    imagemChegada.setBounds(400, 270, 200, 30);
+    alertaChegada.setBounds(430, 270, 500, 30);
+
+    imagemPreco.setBounds(400, 350, 200, 30);
+    alertaPreco.setBounds(430, 350, 400, 30);
 
     codigo.setBounds(180, 70, 200, 30);
     origem.setBounds(180, 110, 200, 30);
@@ -160,6 +180,11 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     conteudo.add(tituloPreco);
 
     conteudo.add(alertaPartida);
+    conteudo.add(imagemPartida);
+    conteudo.add(alertaChegada);
+    conteudo.add(imagemChegada);
+    conteudo.add(alertaPreco);
+    conteudo.add(imagemPreco);
 
     conteudo.add(codigo);
     conteudo.add(origem);
@@ -175,8 +200,8 @@ public abstract class CriarVooUI extends AbstractFlightUI {
       alertaPartida.setBounds(450, 230, 500, 30);
 
       String[] ampm = {
-        "AM",
-        "PM" };
+          "AM",
+          "PM" };
       timePartida = new JComboBox(ampm);
       timeChegada = new JComboBox(ampm);
 
@@ -191,15 +216,27 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     conteudo.validate();
   }
 
-  public String getCountry() {
+  protected String getCountry() {
     return bundle.getString("country");
   }
 
-  public void addCadastrarListener(ActionListener a) {
+  protected void addFocusDataPartidaListener(FocusListener a) {
+    partida.addFocusListener(a);
+  }
+
+  protected void addFocusDataChegadaListener(FocusListener a) {
+    chegada.addFocusListener(a);
+  }
+
+  protected void addFocusPrecoListener(FocusListener a) {
+    preco.addFocusListener(a);
+  }
+
+  protected void addCadastrarListener(ActionListener a) {
     cadastrar.addActionListener(a);
   }
 
-  public RequestParamWrapper getParameters() {
+  protected RequestParamWrapper getParameters() {
     RequestParamWrapper request = new RequestParamWrapper();
     Aeronave _aeronave = (Aeronave) aeronave.getSelectedItem();
     request.set("preco", preco.getText());
@@ -218,28 +255,65 @@ public abstract class CriarVooUI extends AbstractFlightUI {
     return request;
   }
 
-  public void messageOK() {
+  protected void addImagePartidaValid() {
+    FlightImageUI.add(imagemPartida, alertaPartida,
+        bundle.getString("validade.valido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageChegadaValid() {
+    FlightImageUI.add(imagemChegada, alertaChegada,
+        bundle.getString("validade.valido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImagePartidaInvalid() {
+    FlightImageUI.addError(imagemPartida, alertaPartida,
+        bundle.getString("validade.invalido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageChegadaInvalid() {
+    FlightImageUI.addError(imagemChegada, alertaChegada,
+        bundle.getString("alerta.data"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void messageOK() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("criar.voo.joption.ok"),
         bundle.getString("criar.voo.joption.titulo"),
         JOptionPane.INFORMATION_MESSAGE);
+    refresh();
   }
 
-  public void messageFailed() {
+  protected void messagePrecoOk() {
+    conteudo.remove(imagemPreco);
+    conteudo.remove(alertaPreco);
+    repaint();
+  }
+
+  protected void messagePrecoParseExecption() {
+    FlightImageUI.addError(imagemPreco, alertaPreco,
+        bundle.getString("criar.voo.erro.preco"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void messageFailed() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("criar.voo.joption.tempo"),
         bundle.getString("criar.voo.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
 
-  public void messageNumberException() {
+  protected void addMessageFailed() {
     JOptionPane.showMessageDialog(null,
-        bundle.getString("alerta.numero"),
-        bundle.getString("criar.voo.joption.titulo"),
+        bundle.getString("dadoincorreto"),
+        "flight",
         JOptionPane.ERROR_MESSAGE);
   }
 
-  public void disableButtons() {
+  protected void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
   }

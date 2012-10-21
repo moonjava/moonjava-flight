@@ -1,15 +1,3 @@
-package br.com.moonjava.flight.dao.base;
-
-import java.util.List;
-
-import br.com.moonjava.flight.controller.base.UsuarioLoader;
-import br.com.moonjava.flight.jdbc.SqlStatement;
-import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
-import br.com.moonjava.flight.model.base.PessoaFisica;
-import br.com.moonjava.flight.model.base.Usuario;
-import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParam;
-
 /*
  * Copyright 2012 MoonJava LTDA.
  *
@@ -25,6 +13,17 @@ import br.com.moonjava.flight.util.RequestParam;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package br.com.moonjava.flight.dao.base;
+
+import java.util.List;
+
+import br.com.moonjava.flight.controller.base.UsuarioLoader;
+import br.com.moonjava.flight.jdbc.SqlStatement;
+import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
+import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.CPF;
+import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0, Aug 10, 2012
@@ -132,5 +131,4 @@ public class UsuarioDAO implements Usuario.Jdbc {
 
         .andExecute();
   }
-
 }

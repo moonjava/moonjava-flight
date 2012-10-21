@@ -36,6 +36,9 @@ public class SqlStatementWrapper implements SqlStatement {
 
   private static final Logger logger = LoggerFactory.getLogger(SqlStatementWrapper.class);
 
+  // Esta classe esta por trás de tudo q acontece na fluent Interface dos DAOs
+  // Resumindo, Cria-se um statement de acordo com os parametros e executa o sql
+  // montado
   private int value;
   private Connection connection;
   private PreparedStatement stm;

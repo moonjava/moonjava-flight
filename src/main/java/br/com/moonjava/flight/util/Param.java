@@ -27,6 +27,10 @@ public class Param<T> {
 
   private final T value;
 
+  // Utilizados para fazer um Wrapper através de um HashMap<K, V>, isto para
+  // podermos pegar qualquer dado da view como um String e, ao passar para os
+  // Wrappers (NomeDaClasseUpdate.java, NomeDaClasseCreate.java e Loader.java)
+  // os dados venham com o devidos tipos corretos
   public Param(T value) {
     this.value = value;
   }

@@ -33,6 +33,8 @@ import br.com.moonjava.flight.util.Param;
  */
 class SqlStatementExecute {
 
+  // Esta classe popula um statement de acordo com o tipo passado junto ao sql
+  // Utilizado para a Fluent Interface
   static PreparedStatement setStmt(PreparedStatement stm, List<Param<?>> params, int value) {
 
     for (int i = 0; i < params.size(); i++) {

@@ -32,6 +32,8 @@ import javax.swing.JPanel;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
+// Este classe deixa as view dinâmicas,
+// inserindo imagens e removendo-as a cada focusLost
 public class FlightImageUI {
 
   public static void add(JLabel imagem,

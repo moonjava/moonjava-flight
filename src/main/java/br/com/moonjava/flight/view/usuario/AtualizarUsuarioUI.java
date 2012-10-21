@@ -15,19 +15,12 @@
  */
 package br.com.moonjava.flight.view.usuario;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -41,6 +34,7 @@ import javax.swing.text.MaskFormatter;
 import br.com.moonjava.flight.model.base.Perfil;
 import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.model.base.Usuario;
+import br.com.moonjava.flight.util.FlightImageUI;
 import br.com.moonjava.flight.util.FocusTextField;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.JTextFieldLimit;
@@ -54,7 +48,7 @@ import br.com.moonjava.flight.util.RequestParamWrapper;
 public class AtualizarUsuarioUI {
 
   private JPanel conteudo;
-  private ResourceBundle bundle;
+  protected ResourceBundle bundle;
   private JButton atualizar;
   private JButton deletar;
   private JLabel codigo;
@@ -88,9 +82,17 @@ public class AtualizarUsuarioUI {
   private JLabel tituloPerfil;
   private JLabel tituloLogin;
   private JLabel tituloSenha;
+  private JLabel imagemTelResidencial;
+  private JLabel alertaTelResidencial;
+  private JLabel imagemTelCelular;
+  private JLabel alertaTelCelular;
+  private JLabel imagemNascimento;
+  private JLabel alertaNascimento;
+  private JLabel imagemCpf;
+  private JLabel alertaCpf;
 
-  public void setAttributes(JPanel conteudo, ResourceBundle bundle,
-      JButton atualizar, JButton deletar) {
+  protected void setAttributes(JPanel conteudo, ResourceBundle bundle,
+                               JButton atualizar, JButton deletar) {
     this.conteudo = conteudo;
     this.bundle = bundle;
     this.atualizar = atualizar;
@@ -99,7 +101,7 @@ public class AtualizarUsuarioUI {
     mainMenu();
   }
 
-  public void mainMenu() {
+  protected void mainMenu() {
     // Titulos
     tituloCodigo = new JLabel(
         bundle.getString("criar.usuario.titulo.codigo"));
@@ -137,6 +139,14 @@ public class AtualizarUsuarioUI {
     email = new JTextField();
     login = new JTextField();
     senha = new JPasswordField();
+    imagemNascimento = new JLabel();
+    alertaNascimento = new JLabel();
+    imagemTelResidencial = new JLabel();
+    alertaTelResidencial = new JLabel();
+    imagemTelCelular = new JLabel();
+    alertaTelCelular = new JLabel();
+    imagemCpf = new JLabel();
+    alertaCpf = new JLabel();
 
     Perfil[] val = Perfil.values();
     String[] perfis = new String[val.length];
@@ -181,11 +191,19 @@ public class AtualizarUsuarioUI {
     nome.setBounds(200, 70, 300, 30);
     sobrenome.setBounds(200, 105, 300, 30);
     nascimento.setBounds(200, 140, 180, 30);
+    imagemNascimento.setBounds(390, 140, 180, 30);
+    alertaNascimento.setBounds(415, 140, 180, 30);
     cpf.setBounds(200, 175, 180, 30);
+    alertaCpf.setBounds(410, 175, 100, 30);
+    imagemCpf.setBounds(385, 175, 40, 30);
     rg.setBounds(200, 210, 180, 30);
     endereco.setBounds(200, 245, 300, 30);
     telResidencial.setBounds(200, 280, 180, 30);
+    imagemTelResidencial.setBounds(390, 280, 180, 30);
+    alertaTelResidencial.setBounds(415, 280, 300, 30);
     telCelular.setBounds(200, 315, 180, 30);
+    imagemTelCelular.setBounds(390, 315, 180, 30);
+    alertaTelCelular.setBounds(415, 315, 300, 30);
     email.setBounds(200, 355, 300, 30);
     perfil.setBounds(200, 390, 250, 30);
     login.setBounds(200, 425, 230, 30);
@@ -196,11 +214,11 @@ public class AtualizarUsuarioUI {
     imagem.setBounds(380, 175, 40, 30);
   }
 
-  public void addAtualizarListener(ActionListener a) {
+  protected void addAtualizarListener(ActionListener a) {
     atualizar.addActionListener(a);
   }
 
-  public void addFocusListener(FocusListener a) {
+  protected void addFocusListener(FocusListener a) {
     nome.addFocusListener(a);
     sobrenome.addFocusListener(a);
     rg.addFocusListener(a);
@@ -224,43 +242,47 @@ public class AtualizarUsuarioUI {
         bundle.getString("criar.usuario.antes.login"));
   }
 
-  public void addFocusCpfListener(FocusListener a) {
+  protected void addFocusDataListener(FocusListener a) {
+    nascimento.addFocusListener(a);
+  }
+
+  protected void addFocusCpfListener(FocusListener a) {
     cpf.addFocusListener(a);
   }
 
-  public void addFocusTelResListener(FocusListener a) {
+  protected void addFocusTelResListener(FocusListener a) {
     telResidencial.addFocusListener(a);
   }
 
-  public void addFocusTelCelListener(FocusListener a) {
+  protected void addFocusTelCelListener(FocusListener a) {
     telCelular.addFocusListener(a);
   }
 
-  public String getCountry() {
+  protected String getCountry() {
     return bundle.getString("country");
   }
 
-  public JTextField getCpf() {
+  protected JTextField getCpf() {
     return cpf;
   }
 
-  public JTextField getTelResidencial() {
+  protected JTextField getTelResidencial() {
     return telResidencial;
   }
 
-  public JTextField getTelCelular() {
+  protected JTextField getTelCelular() {
     return telCelular;
   }
 
-  public String getTextTelResidencial() {
+  protected String getTextTelResidencial() {
     return bundle.getString("criar.pessoafisica.antes.telResidencial");
   }
 
-  public String getTextTelCelular() {
+  protected String getTextTelCelular() {
     return bundle.getString("criar.pessoafisica.antes.telCelular");
   }
 
-  public RequestParamWrapper getParametersPessoaFisica() {
+  protected RequestParamWrapper getParametersPessoaFisica() {
     RequestParamWrapper request = new RequestParamWrapper();
 
     request.set("id", pf.getId());
@@ -277,7 +299,7 @@ public class AtualizarUsuarioUI {
     return request;
   }
 
-  public RequestParamWrapper getParametersUsuario() {
+  protected RequestParamWrapper getParametersUsuario() {
     RequestParamWrapper request = new RequestParamWrapper();
     Perfil[] val = Perfil.values();
     Perfil item = val[perfil.getSelectedIndex()];
@@ -291,7 +313,7 @@ public class AtualizarUsuarioUI {
     return request;
   }
 
-  public RequestParamWrapper getTexts() {
+  protected RequestParamWrapper getTexts() {
     RequestParamWrapper request = new RequestParamWrapper();
     request.set("nome", bundle.getString("criar.pessoafisica.antes.nome"));
     request.set("sobrenome", bundle.getString("criar.pessoafisica.antes.sobrenome"));
@@ -303,7 +325,7 @@ public class AtualizarUsuarioUI {
     return request;
   }
 
-  public void setParameters(PessoaFisica pf, Usuario usuario) {
+  protected void setParameters(PessoaFisica pf, Usuario usuario) {
     this.pf = pf;
     this.usuario = usuario;
 
@@ -326,7 +348,7 @@ public class AtualizarUsuarioUI {
     senha.setText(usuario.getSenha());
   }
 
-  public void showAll() {
+  protected void showAll() {
     conteudo.add(tituloCodigo);
     conteudo.add(tituloNome);
     conteudo.add(tituloSobrenome);
@@ -345,6 +367,8 @@ public class AtualizarUsuarioUI {
     conteudo.add(nome);
     conteudo.add(sobrenome);
     conteudo.add(nascimento);
+    conteudo.add(imagemNascimento);
+    conteudo.add(alertaNascimento);
     conteudo.add(cpf);
     conteudo.add(rg);
     conteudo.add(endereco);
@@ -360,83 +384,100 @@ public class AtualizarUsuarioUI {
     conteudo.validate();
   }
 
-  public void addImageCpfValido() {
-    try {
-      InputStream stream = getClass().getResourceAsStream(
-          "/img/icon_disponivel.png");
-      Image image;
-      image = ImageIO.read(stream);
-      ImageIcon icon = new ImageIcon(image);
-      imagem.setIcon(icon);
-      alerta.setText("");
-
-      conteudo.add(imagem);
-      conteudo.add(alerta);
-      conteudo.repaint();
-      conteudo.validate();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void addImageCpfInvalido() {
-    try {
-      InputStream stream = getClass().getResourceAsStream(
-          "/img/icon_indisponivel.png");
-      Image image = ImageIO.read(stream);
-
-      ImageIcon icon = new ImageIcon(image);
-      imagem.setIcon(icon);
-
-      alerta.setFont(new Font("Arial", Font.BOLD, 13));
-      alerta.setForeground(Color.RED);
-      alerta.setText(bundle
-          .getString("criar.pessoafisica.cpf.alerta.erro"));
-
-      conteudo.add(imagem);
-      conteudo.add(alerta);
-      conteudo.repaint();
-      conteudo.validate();
-    } catch (IOException e1) {
-      e1.printStackTrace();
-    }
-  }
-
-  public void messageFailed() {
+  protected void messageFailed() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("detalhes.usuario.joption.tempo"),
         bundle.getString("detalhes.usuario.joption.titulo"),
         JOptionPane.ERROR_MESSAGE);
   }
 
-  public void messageOK() {
+  protected void messageTelResidencialOk() {
+    conteudo.remove(imagemTelResidencial);
+    conteudo.remove(alertaTelResidencial);
+    repaint();
+  }
+
+  protected void messageTelCelularOk() {
+    conteudo.remove(imagemTelCelular);
+    conteudo.remove(alertaTelCelular);
+    repaint();
+  }
+
+  protected void addImageNascimentoValid() {
+    FlightImageUI.add(imagemNascimento, alertaNascimento,
+        bundle.getString("validade.valido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageNascimentoInvalid() {
+    FlightImageUI.addError(imagemNascimento, alertaNascimento,
+        bundle.getString("validade.invalido"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageCpfValido() {
+    FlightImageUI.add(imagemCpf, alertaCpf,
+        bundle.getString("criar.pessoafisica.cpf.alerta.ok"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addImageCpfInvalido() {
+    FlightImageUI.addError(imagemCpf, alertaCpf,
+        bundle.getString("criar.pessoafisica.cpf.alerta.erro"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void messageOK() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("atualizar.usuario.sucesso"), "OK",
         JOptionPane.INFORMATION_MESSAGE);
   }
 
-  public void messageTelParseExecption() {
+  protected void messageTelParseExecption() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("criar.usuario.erro.tel"));
   }
 
-  public void messageCpfInvalidExecption() {
+  protected void messageCpfInvalidExecption() {
     JOptionPane.showMessageDialog(null,
         bundle.getString("criar.pessoafisica.cpf.alerta.erro"));
   }
 
-  public void disableButtons() {
+  protected void messageTelResidencialParseExecption() {
+    FlightImageUI.addError(imagemTelResidencial, alertaTelResidencial,
+        bundle.getString("criar.usuario.erro.tel"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void messageTelCelularParseExecption() {
+    FlightImageUI.addError(imagemTelCelular, alertaTelCelular,
+        bundle.getString("criar.usuario.erro.tel"), bundle, conteudo);
+    repaint();
+  }
+
+  protected void addMessageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("dadoincorreto"),
+        "flight",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void disableButtons() {
     atualizar.setEnabled(false);
     deletar.setEnabled(false);
   }
 
-  public void refresh() {
+  protected void refresh() {
     conteudo.removeAll();
+    repaint();
+  }
+
+  protected void repaint() {
     conteudo.validate();
     conteudo.repaint();
   }
 
-  public void addEnviarListener(ActionListener a) {
+  protected void addEnviarListener(ActionListener a) {
     enviar.addActionListener(a);
   }
 

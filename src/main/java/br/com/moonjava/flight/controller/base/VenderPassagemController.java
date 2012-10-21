@@ -257,8 +257,8 @@ public class VenderPassagemController extends VenderPassagemUI {
       String nascimento = request.stringParam("nascimento");
       LocalDate date = FormatDateTime.parseToLocalDate(nascimento, bundle.getString("country"));
       long _cpf = CPF.parse(request.stringParam("cpf")).getDigito();
-      long telResidencial = Integer.parseInt(request.stringParam("telResidencial"));
-      long telCelular = Integer.parseInt(request.stringParam("telCelular"));
+      long telResidencial = Long.parseLong(request.stringParam("telResidencial"));
+      long telCelular = Long.parseLong(request.stringParam("telCelular"));
       request.set("nascimento", date);
       request.set("cpf", _cpf);
       request.set("telResidencial", telResidencial);

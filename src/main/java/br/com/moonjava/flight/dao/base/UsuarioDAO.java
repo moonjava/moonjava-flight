@@ -131,5 +131,4 @@ public class UsuarioDAO implements Usuario.Jdbc {
 
         .andExecute();
   }
-
 }

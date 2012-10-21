@@ -224,7 +224,7 @@ public class CriarUsuarioUI {
     conteudo.add(sobrenome);
     conteudo.add(nascimento);
     conteudo.add(imagemNascimento);
-    codigo.add(alertaNascimento);
+    conteudo.add(alertaNascimento);
     conteudo.add(cpf);
     conteudo.add(rg);
     conteudo.add(endereco);

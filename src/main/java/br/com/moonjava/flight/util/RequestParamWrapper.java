@@ -30,6 +30,7 @@ public class RequestParamWrapper implements RequestParam {
 
   private final Map<String, Object> map;
 
+  // Este é o responsavel por Wrapper dos dados vindo de um Request (View0
   public RequestParamWrapper() {
     this.map = new HashMap<String, Object>();
   }

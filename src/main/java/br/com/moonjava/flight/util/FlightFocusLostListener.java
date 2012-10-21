@@ -23,6 +23,8 @@ import java.awt.event.FocusListener;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
+// Esta classe tem o unico intuito de diminuir linhas de codigo,
+// pois utilizamos muitas vezes o FocusListener sem focusGained
 public abstract class FlightFocusLostListener implements FocusListener {
 
   @Override

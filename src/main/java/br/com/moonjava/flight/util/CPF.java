@@ -20,30 +20,31 @@ package br.com.moonjava.flight.util;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
+// Calculo para Construir CPFs válidos
 public class CPF {
 
   private static final int[] CONSTANTE1 = {
-    10,
-    9,
-    8,
-    7,
-    6,
-    5,
-    4,
-    3,
-    2 };
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2 };
 
   private static final int[] CONSTANTE2 = {
-    11,
-    10,
-    9,
-    8,
-    7,
-    6,
-    5,
-    4,
-    3,
-    2 };
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2 };
 
   private final long digito;
 

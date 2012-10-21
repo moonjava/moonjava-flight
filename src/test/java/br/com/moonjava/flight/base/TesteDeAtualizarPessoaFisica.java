@@ -58,8 +58,8 @@ public class TesteDeAtualizarPessoaFisica {
     assertThat(antes.getCpf().getDigito(), equalTo((44444444444l)));
     assertThat(antes.getRg(), equalTo("111000000"));
     assertThat(antes.getEndereco(), equalTo("Endereço D Nº44"));
-    assertThat(antes.getTelResidencial(), equalTo(1133336666));
-    assertThat(antes.getTelCelular(), equalTo(1133335555));
+    assertThat(antes.getTelResidencial(), equalTo(1133336666l));
+    assertThat(antes.getTelCelular(), equalTo(1133335555l));
     assertThat(antes.getEmail(), equalTo(null));
 
     String novoNome = "novo Nome D";
@@ -101,8 +101,8 @@ public class TesteDeAtualizarPessoaFisica {
     long cpf = 22222222222l;
     String rg = "557773339";
     String endereco = "Endereço B Nº22";
-    int telResidencial = 1144448888;
-    int telCelular = 1199996666;
+    long telResidencial = 1144448888l;
+    long telCelular = 1199996666l;
     String email = "moonjava@moonjava.com.br";
 
     PessoaFisica antes = dao.consultarPorCpf(CPF.valueOf(cpf));

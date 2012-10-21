@@ -22,6 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.moonjava.flight.util.Param;
 
 /**
@@ -30,6 +33,8 @@ import br.com.moonjava.flight.util.Param;
  * 
  */
 public class SqlStatementWrapper implements SqlStatement {
+
+  private static final Logger logger = LoggerFactory.getLogger(SqlStatementWrapper.class);
 
   private int value;
   private Connection connection;
@@ -80,7 +85,7 @@ public class SqlStatementWrapper implements SqlStatement {
       stm = connection.prepareStatement(this.syntax);
 
       SqlStatementExecute.setStmt(stm, params, value);
-      System.out.println(stm);
+      logger.info(stm.toString());
       stm.execute();
       ResultSet resultSet = stm.getResultSet();
 
@@ -108,7 +113,7 @@ public class SqlStatementWrapper implements SqlStatement {
       stm = connection.prepareStatement(this.syntax);
 
       SqlStatementExecute.setStmt(stm, params, value);
-      System.out.println(stm);
+      logger.info(stm.toString());
       stm.execute();
       ResultSet resultSet = stm.getResultSet();
 
@@ -133,7 +138,7 @@ public class SqlStatementWrapper implements SqlStatement {
     try {
       stm = connection.prepareStatement(this.syntax);
       SqlStatementExecute.setStmt(stm, params, value);
-      System.out.println(stm);
+      logger.info(stm.toString());
       stm.executeUpdate();
 
       stm.close();
@@ -141,7 +146,7 @@ public class SqlStatementWrapper implements SqlStatement {
       res = true;
       return res;
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.error(e.toString());
       return res;
     }
   }

@@ -34,8 +34,8 @@ public class PessoaFisicaModel implements PessoaFisica {
   private CPF cpf;
   private String rg;
   private String endereco;
-  private int telResidencial;
-  private int telCelular;
+  private long telResidencial;
+  private long telCelular;
   private String email;
   private PessoaFisicaDAO dao;
 
@@ -95,12 +95,12 @@ public class PessoaFisicaModel implements PessoaFisica {
   }
 
   @Override
-  public int getTelResidencial() {
+  public long getTelResidencial() {
     return telResidencial;
   }
 
   @Override
-  public int getTelCelular() {
+  public long getTelCelular() {
     return telCelular;
   }
 

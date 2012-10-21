@@ -40,9 +40,9 @@ public interface PessoaFisica {
 
     String getEndereco();
 
-    int getTelResidencial();
+    long getTelResidencial();
 
-    int getTelCelular();
+    long getTelCelular();
 
     String getEmail();
 
@@ -72,9 +72,9 @@ public interface PessoaFisica {
 
   String getEndereco();
 
-  int getTelResidencial();
+  long getTelResidencial();
 
-  int getTelCelular();
+  long getTelCelular();
 
   String getEmail();
 

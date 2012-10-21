@@ -97,7 +97,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
       String tel = getTelResidencial().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelResidencial())) {
         try {
-          Integer.parseInt(tel);
+          Long.parseLong(tel);
           messageTelResidencialOk();
         } catch (Exception e2) {
           messageTelResidencialParseExecption();
@@ -112,7 +112,7 @@ public class CriarUsuarioController extends CriarUsuarioUI {
       String tel = getTelCelular().getText();
       if (!tel.isEmpty() && !tel.equals(getTextTelCelular())) {
         try {
-          Integer.parseInt(tel);
+          Long.parseLong(tel);
           messageTelCelularOk();
         } catch (Exception e2) {
           messageTelCelularParseExecption();
@@ -182,13 +182,13 @@ public class CriarUsuarioController extends CriarUsuarioUI {
 
           // Cria uma PF
           if (pf == null) {
-            int _telResidencial = 0;
-            int _telCelular = 0;
+            long _telResidencial = 0;
+            long _telCelular = 0;
             LocalDate date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
 
             try {
-              _telResidencial = Integer.parseInt(telResidencial);
-              _telCelular = Integer.parseInt(telCelular);
+              _telResidencial = Long.parseLong(telResidencial);
+              _telCelular = Long.parseLong(telCelular);
             } catch (Exception e) {
               messageTelResidencialParseExecption();
               return;

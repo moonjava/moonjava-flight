@@ -55,8 +55,8 @@ public class TesteDeCriarPessoaFisica {
     long cpf = 55555555555l;
     String rg = "55777333X";
     String endereco = "Endereço E N°99";
-    int telResidencial = 55334477;
-    int telCelular = 55446622;
+    long telResidencial = 55334477l;
+    long telCelular = 55446622l;
     String email = "testedecriacao@moonjava.com.br";
 
     request.set("nome", "Nome");

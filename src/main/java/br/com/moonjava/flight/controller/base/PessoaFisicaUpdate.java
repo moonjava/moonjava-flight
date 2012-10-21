@@ -74,12 +74,12 @@ public class PessoaFisicaUpdate implements PessoaFisica.Builder {
   }
 
   @Override
-  public int getTelResidencial() {
+  public long getTelResidencial() {
     return request.intParam("telResidencial");
   }
 
   @Override
-  public int getTelCelular() {
+  public long getTelCelular() {
     return request.intParam("telCelular");
   }
 

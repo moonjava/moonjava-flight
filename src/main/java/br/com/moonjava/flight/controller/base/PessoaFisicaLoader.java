@@ -92,12 +92,12 @@ public class PessoaFisicaLoader implements ResultSetJdbcLoader<PessoaFisica> {
     }
 
     @Override
-    public int getTelResidencial() {
+    public long getTelResidencial() {
       return rs.getInt("TEL_RESIDENCIAL");
     }
 
     @Override
-    public int getTelCelular() {
+    public long getTelCelular() {
       return rs.getInt("TEL_CELULAR");
     }
 

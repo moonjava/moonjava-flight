@@ -76,13 +76,13 @@ public class PessoaFisicaCreate implements PessoaFisica.Builder {
   }
 
   @Override
-  public int getTelResidencial() {
-    return request.intParam("telResidencial");
+  public long getTelResidencial() {
+    return request.longParam("telResidencial");
   }
 
   @Override
-  public int getTelCelular() {
-    return request.intParam("telCelular");
+  public long getTelCelular() {
+    return request.longParam("telCelular");
   }
 
   @Override

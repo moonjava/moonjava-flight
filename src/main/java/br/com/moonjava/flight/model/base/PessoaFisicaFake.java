@@ -62,12 +62,12 @@ public class PessoaFisicaFake implements PessoaFisica {
   }
 
   @Override
-  public int getTelResidencial() {
+  public long getTelResidencial() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getTelCelular() {
+  public long getTelCelular() {
     throw new UnsupportedOperationException();
   }
 

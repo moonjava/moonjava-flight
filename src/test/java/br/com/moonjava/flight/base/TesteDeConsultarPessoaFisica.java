@@ -48,7 +48,7 @@ public class TesteDeConsultarPessoaFisica {
     PessoaFisica res = dao.consultarPorCpf(CPF.valueOf(22222222222l));
     assertThat(res.getEmail(), equalTo("moonjava@moonjava.com.br"));
     assertThat(res.getNome(), equalTo("Nome B"));
-    assertThat(res.getTelCelular(), equalTo(1199996666));
+    assertThat(res.getTelCelular(), equalTo(1199996666l));
     assertThat(res.getRg(), equalTo("557773339"));
 
   }

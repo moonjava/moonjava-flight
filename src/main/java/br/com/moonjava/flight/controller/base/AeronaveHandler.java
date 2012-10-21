@@ -24,7 +24,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 /**
- * @version 1.0 Apr 10, 2012
+ * @version 1.0 Aug 10, 2012
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */

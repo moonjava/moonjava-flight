@@ -29,6 +29,7 @@ import org.joda.time.LocalDate;
  */
 public class FormatDateTime {
 
+  // Formata Datas de acordo com o páis (adiciona AM e PM ao US)
   private FormatDateTime() {
   }
 

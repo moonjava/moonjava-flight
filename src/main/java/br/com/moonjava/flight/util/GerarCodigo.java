@@ -30,6 +30,7 @@ public class GerarCodigo {
 
   private final String tabela;
 
+  // Gerar o codigo das tabelas automaticamente
   public GerarCodigo(String tabela) {
     this.tabela = tabela;
   }

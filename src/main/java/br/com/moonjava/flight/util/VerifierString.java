@@ -29,6 +29,7 @@ import org.joda.time.LocalDate;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
+// Verifica Strings vindo da View
 public class VerifierString {
 
   public static boolean containsSpace(String word) {

@@ -33,6 +33,7 @@ public class ResultSetJdbcWrapper implements ResultSetJdbc {
   private final ResultSet rs;
   private final String alias;
 
+  // Esta classe, como o nome ja diz, é um Wrapper de ResultSets
   public ResultSetJdbcWrapper(ResultSet rs, String alias) {
     this.rs = rs;
     this.alias = alias;

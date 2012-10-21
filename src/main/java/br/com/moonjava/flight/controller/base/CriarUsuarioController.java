@@ -162,63 +162,72 @@ public class CriarUsuarioController extends CriarUsuarioUI {
           !telResidencial.isEmpty() && !telCelular.isEmpty() && !login.isEmpty() &&
           !senha.isEmpty()) {
 
-        // CPF continua invalido
-        CPF _cpf = null;
         try {
-          _cpf = CPF.parse(cpf);
-        } catch (Exception e) {
-          messageCpfInvalidExecption();
-          return;
-        }
 
-        UsuarioModel usuarioModel = new UsuarioModel();
-        Usuario usuario = usuarioModel.consultarPorCpf(_cpf);
-
-        if (usuario != null) {
-          messageUsuarioExistente();
-        } else {
-          PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
-          PessoaFisica pf = pessoaFisicaModel.consultarPorCPF(_cpf);
-
-          // Cria uma PF
-          if (pf == null) {
-            long _telResidencial = 0;
-            long _telCelular = 0;
-            LocalDate date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
-
-            try {
-              _telResidencial = Long.parseLong(telResidencial);
-              _telCelular = Long.parseLong(telCelular);
-            } catch (Exception e) {
-              messageTelResidencialParseExecption();
-              return;
-            }
-
-            request.set("nascimento", date);
-            request.set("cpf", _cpf.getDigito());
-            request.set("telResidencial", _telResidencial);
-            request.set("telCelular", _telCelular);
-
-            PessoaFisica pojo = new PessoaFisicaCreate(request).createInstance();
-            boolean executed = pessoaFisicaModel.criar(pojo);
-
-            if (executed) {
-              PessoaFisica pessoa = pessoaFisicaModel.consultarPorCPF(pojo.getCpf());
-              request.set("pessoaFisica", pessoa.getId());
-            } else {
-              messageFailed();
-              return;
-            }
-
-            // Utiliza a PF existente (uma vez cliente)
-          } else {
-            request.set("pessoaFisica", pf.getId());
+          // CPF continua invalido
+          CPF _cpf = null;
+          try {
+            _cpf = CPF.parse(cpf);
+          } catch (Exception e) {
+            messageCpfInvalidExecption();
+            return;
           }
-          Usuario pojo = new UsuarioCreate(request).createInstance();
-          new UsuarioModel().criar(pojo);
 
-          messageOK();
-          refresh();
+          UsuarioModel usuarioModel = new UsuarioModel();
+          Usuario usuario = usuarioModel.consultarPorCpf(_cpf);
+
+          if (usuario != null) {
+            messageUsuarioExistente();
+          } else {
+            PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+            PessoaFisica pf = pessoaFisicaModel.consultarPorCPF(_cpf);
+
+            // Cria uma PF
+            if (pf == null) {
+              long _telResidencial = 0;
+              long _telCelular = 0;
+              LocalDate date = null;
+              if (VerifierString.isBirthDay(nascimento, bundle)) {
+                date = FormatDateTime.parseToLocalDate(nascimento, getCountry());
+              } else {
+                throw new Exception();
+              }
+              try {
+                _telResidencial = Long.parseLong(telResidencial);
+                _telCelular = Long.parseLong(telCelular);
+              } catch (Exception e) {
+                messageTelResidencialParseExecption();
+                throw new Exception();
+              }
+
+              request.set("nascimento", date);
+              request.set("cpf", _cpf.getDigito());
+              request.set("telResidencial", _telResidencial);
+              request.set("telCelular", _telCelular);
+
+              PessoaFisica pojo = new PessoaFisicaCreate(request).createInstance();
+              boolean executed = pessoaFisicaModel.criar(pojo);
+
+              if (executed) {
+                PessoaFisica pessoa = pessoaFisicaModel.consultarPorCPF(pojo.getCpf());
+                request.set("pessoaFisica", pessoa.getId());
+              } else {
+                messageFailed();
+                return;
+              }
+
+              // Utiliza a PF existente (uma vez cliente)
+            } else {
+              request.set("pessoaFisica", pf.getId());
+            }
+            Usuario pojo = new UsuarioCreate(request).createInstance();
+            new UsuarioModel().criar(pojo);
+
+            messageOK();
+            refresh();
+          }
+        } catch (Exception e) {
+          addMessageFailed();
         }
       }
     }

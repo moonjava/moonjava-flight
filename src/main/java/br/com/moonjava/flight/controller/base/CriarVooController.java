@@ -17,6 +17,7 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,8 +30,10 @@ import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.model.base.Voo;
 import br.com.moonjava.flight.model.base.VooModel;
+import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.FormatDateTime;
 import br.com.moonjava.flight.util.RequestParamWrapper;
+import br.com.moonjava.flight.util.VerifierString;
 import br.com.moonjava.flight.view.voo.CriarVooUI;
 
 /**
@@ -40,6 +43,9 @@ import br.com.moonjava.flight.view.voo.CriarVooUI;
  */
 public class CriarVooController extends CriarVooUI {
 
+  private DateTime _partida;
+  private DateTime _chegada;
+
   public CriarVooController(JPanel conteudo,
                             ResourceBundle bundle,
                             JButton atualizar,
@@ -47,6 +53,9 @@ public class CriarVooController extends CriarVooUI {
                             JButton status) {
     super(conteudo, bundle, atualizar, deletar, status);
 
+    addFocusPrecoListener(new FocusPrecoHandler());
+    addFocusDataPartidaListener(new FocusDataPartidaHandler());
+    addFocusDataChegadaListener(new FocusDataChegadaHandler());
     addCadastrarListener(new CadastrarHandler());
   }
 
@@ -54,6 +63,84 @@ public class CriarVooController extends CriarVooUI {
   public List<Aeronave> getList() {
     RequestParamWrapper request = new RequestParamWrapper();
     return new AeronaveModel().consultar(request);
+  }
+
+  private class FocusDataPartidaHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      // Valida a data de acordo com o país
+      try {
+        RequestParamWrapper request = getParameters();
+        String country = getCountry();
+        String partida = request.stringParam("partida");
+        String dataPartida = null;
+
+        if (country.equals("US")) {
+          String timePartida = request.stringParam("timePartida");
+          dataPartida = String.format("%s %s", partida, timePartida);
+        } else {
+          dataPartida = partida;
+        }
+        if (VerifierString.isDateValid(dataPartida, bundle)) {
+          addImagePartidaValid();
+          _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+        } else {
+          addImagePartidaInvalid();
+        }
+      } catch (Exception e2) {
+        addImagePartidaInvalid();
+      }
+    }
+  }
+
+  private class FocusDataChegadaHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      // Valida a data de acordo com o país
+      try {
+        RequestParamWrapper request = getParameters();
+        String country = getCountry();
+        String chegada = request.stringParam("chegada");
+        String dataChegada = null;
+
+        if (country.equals("US")) {
+          String timeChegada = request.stringParam("timeChegada");
+          dataChegada = String.format("%s %s", chegada, timeChegada);
+        } else {
+          dataChegada = chegada;
+        }
+        if (VerifierString.isDateValid(dataChegada, bundle)) {
+          _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
+          if (_chegada.isAfter(_partida)) {
+            addImageChegadaValid();
+          } else {
+            addImageChegadaInvalid();
+          }
+        } else {
+          addImageChegadaInvalid();
+        }
+      } catch (Exception e2) {
+        addImageChegadaInvalid();
+      }
+    }
+  }
+
+  private class FocusPrecoHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      try {
+        RequestParamWrapper request = getParameters();
+        String preco = request.stringParam("preco");
+        double _preco = Double.parseDouble(preco);
+        if (_preco <= 0) {
+          throw new NumberFormatException();
+        } else {
+          messagePrecoOk();
+        }
+      } catch (NumberFormatException e2) {
+        messagePrecoParseExecption();
+      }
+    }
   }
 
   private class CadastrarHandler implements ActionListener {
@@ -78,14 +165,40 @@ public class CriarVooController extends CriarVooUI {
         dataChegada = chegada;
       }
 
-      DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
-      DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
-
       try {
-        String preco = request.stringParam("preco");
-        double _preco = Double.parseDouble(preco);
-        if (_preco <= 0) {
-          throw new NumberFormatException();
+        DateTime _partida = FormatDateTime.parseToDateTime(dataPartida, country);
+        DateTime _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
+
+        if (request.stringParam("origem").isEmpty() || request.stringParam("destino").isEmpty()) {
+          throw new Exception();
+        }
+
+        if (!VerifierString.isDateValid(dataPartida, bundle)) {
+          addImagePartidaInvalid();
+          throw new Exception();
+        }
+
+        if (VerifierString.isDateValid(dataChegada, bundle)) {
+          _chegada = FormatDateTime.parseToDateTime(dataChegada, country);
+          if (!_chegada.isAfter(_partida)) {
+            addImageChegadaInvalid();
+            throw new Exception();
+          }
+        } else {
+          addImageChegadaInvalid();
+          throw new Exception();
+        }
+
+        double _preco = 0;
+        try {
+          String preco = request.stringParam("preco");
+          _preco = Double.parseDouble(preco);
+          if (_preco <= 0) {
+            throw new Exception();
+          }
+        } catch (Exception e2) {
+          messagePrecoParseExecption();
+          throw new Exception();
         }
         request.set("preco", _preco);
         request.set("partida", _partida);
@@ -99,10 +212,9 @@ public class CriarVooController extends CriarVooUI {
         } else {
           messageFailed();
         }
-      } catch (NumberFormatException e2) {
-        messageNumberException();
+      } catch (Exception e2) {
+        addMessageFailed();
       }
-      refresh();
     }
   }
 

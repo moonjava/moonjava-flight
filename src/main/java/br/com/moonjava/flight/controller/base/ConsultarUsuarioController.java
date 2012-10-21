@@ -66,7 +66,7 @@ public class ConsultarUsuarioController extends ConsultarUsuarioUI {
 
         DetalhesUsuarioController detalhes = DetalhesUsuarioController.getInstance();
         detalhes.setList(list);
-        detalhes.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
+        detalhes.setAttributes(tabela, conteudo, bundle);
         detalhes.setResult(false);
 
       }

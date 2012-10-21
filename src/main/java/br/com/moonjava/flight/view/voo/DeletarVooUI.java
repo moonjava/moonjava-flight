@@ -31,7 +31,7 @@ import javax.swing.JTable;
 public class DeletarVooUI {
 
   private JPanel conteudo;
-  private ResourceBundle bundle;
+  protected ResourceBundle bundle;
   private JButton atualizar;
   private JButton deletar;
   private JButton status;

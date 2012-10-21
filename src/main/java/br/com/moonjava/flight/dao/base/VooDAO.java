@@ -102,8 +102,8 @@ public class VooDAO implements Voo.Jdbc {
   public List<Voo> consultaPainel() {
     return query()
 
-        .with("where 1 = 1")
-        .with("order by VOO.STATUS asc")
+        .with("order by VOO.STATUS asc,")
+        .with("VOO.DATA_PARTIDA asc")
         .with("limit 0,15")
 
         .andList();
@@ -119,12 +119,10 @@ public class VooDAO implements Voo.Jdbc {
   }
 
   @Override
-  public List<Voo> consultarPorAeronaveId(RequestParam request) {
-    int idAeronave = request.intParam("aeronaveId");
-
+  public List<Voo> consultarPorAeronaveId(int id) {
     return query()
 
-        .with("where VOO.AERONAVE_ID = ?", idAeronave)
+        .with("where VOO.AERONAVE_ID = ?", id)
 
         .andList();
   }

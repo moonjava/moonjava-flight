@@ -15,14 +15,11 @@
  */
 package br.com.moonjava.flight.dao.base;
 
-import java.util.List;
-
-import br.com.moonjava.flight.controller.base.PessoaFisicaControlLoader;
+import br.com.moonjava.flight.controller.base.PessoaFisicaLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0, 10/08/2012
@@ -38,7 +35,7 @@ public class PessoaFisicaDAO implements PessoaFisica.Jdbc {
         .with("select *")
         .with("from FLIGHT.PESSOAFISICA as PESSOAFISICA")
 
-        .load(new PessoaFisicaControlLoader());
+        .load(new PessoaFisicaLoader());
   }
 
   @Override
@@ -64,30 +61,6 @@ public class PessoaFisicaDAO implements PessoaFisica.Jdbc {
         .andExecute();
 
     return executed;
-  }
-
-  @Override
-  public List<PessoaFisica> consultar(RequestParam request) {
-    String nome = request.stringParam("nome");
-    String sobrenome = request.stringParam("sobrenome");
-
-    return query()
-
-        .with("where 1 = 1")
-        .with("and PESSOAFISICA.NOME like concat ('%',?,'%')", nome)
-        .with("and PESSOAFISICA.SOBRENOME like concat ('%',?,'%')", sobrenome)
-        .with("order by PESSOAFISICA.NOME asc")
-
-        .andList();
-  }
-
-  @Override
-  public PessoaFisica consultarPorId(int id) {
-    return query()
-
-        .with("where PESSOAFISICA.ID = ?", id)
-
-        .andGet();
   }
 
   @Override
@@ -119,17 +92,6 @@ public class PessoaFisicaDAO implements PessoaFisica.Jdbc {
         .andExecute();
 
     return executed;
-  }
-
-  @Override
-  public void deletar(int id) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("delete from FLIGHT.PESSOAFISICA")
-        .with("where PESSOAFISICA.ID = ?", id)
-
-        .andExecute();
   }
 
 }

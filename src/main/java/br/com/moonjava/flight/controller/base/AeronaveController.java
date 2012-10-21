@@ -37,6 +37,9 @@ public class AeronaveController extends AeronaveUI {
     addCadastrarListener(new CadastrarHandler());
   }
 
+  /*
+   * Ação para consultar 
+   */
   private class ConsultarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -44,6 +47,9 @@ public class AeronaveController extends AeronaveUI {
     }
   }
 
+  /*
+   * Ação para cadastrar 
+   */
   private class CadastrarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {

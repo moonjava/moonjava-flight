@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,9 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
 import br.com.moonjava.flight.model.base.Voo;
+import br.com.moonjava.flight.model.base.VooModel;
 
 public class PainelDeDecolagemUI {
 
@@ -39,6 +43,10 @@ public class PainelDeDecolagemUI {
     tabela.setGridColor(Color.black);
     tabela.setShowGrid(true);
     tabela.setFont(new Font("Century Gothic", Font.ITALIC, 13));
+
+    // Atualiza automaticamente o painel de decolagem a cada 1 minuto
+    Timer timer = new Timer(1000 * 60, new Clock());
+    timer.start();
 
     JScrollPane scroll = new JScrollPane();
     scroll.getViewport().setBorder(null);
@@ -70,6 +78,20 @@ public class PainelDeDecolagemUI {
     conteudo.setResizable(false);
     conteudo.setVisible(true);
     conteudo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+
+  /*
+   * Esta classe inicia o evento de acordo com o tempo definido anteriormente
+   */
+  private class Clock implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      List<Voo> lista = new VooModel().consultaPainel();
+      showList(lista);
+
+      conteudo.repaint();
+      conteudo.validate();
+    }
   }
 
 }

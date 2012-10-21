@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.PassagemControlUpdate;
+import br.com.moonjava.flight.controller.base.PassagemUpdate;
 import br.com.moonjava.flight.dao.base.PassagemDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
@@ -44,7 +44,7 @@ public class TesteDeAtualizarPassagem {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void atualizar_voo_passagem() {
+  public void atualizar_passagem() {
     PassagemDAO dao = new PassagemDAO();
     RequestParamWrapper request = new RequestParamWrapper();
 
@@ -53,7 +53,7 @@ public class TesteDeAtualizarPassagem {
     int pf = 1;
     String codBilhete = "P1000";
 
-    Passagem antes = dao.consultarPorId(id);
+    Passagem antes = dao.consultarPorCodigoBilhete(codBilhete);
     assertThat(antes.getVoo().getId(), equalTo(voo));
     assertThat(antes.getPessoaFisica().getId(), equalTo(pf));
     assertThat(antes.getCodigoBilhete(), equalTo(codBilhete));
@@ -62,10 +62,10 @@ public class TesteDeAtualizarPassagem {
     request.set("id", id);
     request.set("voo", novoVoo);
 
-    Passagem passagem = new PassagemControlUpdate(request).createInstance();
+    Passagem passagem = new PassagemUpdate(request).createInstance();
     dao.transferir(passagem);
 
-    Passagem res = dao.consultarPorId(id);
+    Passagem res = dao.consultarPorCodigoBilhete(codBilhete);
     assertThat(res.getVoo().getId(), equalTo(novoVoo));
     assertThat(res.getPessoaFisica().getId(), equalTo(pf));
     assertThat(res.getCodigoBilhete(), equalTo(codBilhete));

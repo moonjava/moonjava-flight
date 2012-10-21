@@ -24,7 +24,7 @@ import java.util.Scanner;
 
 import org.joda.time.LocalDate;
 
-import br.com.moonjava.flight.controller.financeiro.CartaoControlCreate;
+import br.com.moonjava.flight.controller.financeiro.CartaoCreate;
 import br.com.moonjava.flight.model.financeiro.Bandeira;
 import br.com.moonjava.flight.model.financeiro.Cartao;
 import br.com.moonjava.flight.util.ReaderFile;
@@ -77,7 +77,7 @@ public class OperadoraDeCartaoDAO implements ReaderFile<Cartao> {
 
         request.set("valor", valor);
 
-        Cartao pojo = new CartaoControlCreate(request).createInstance();
+        Cartao pojo = new CartaoCreate(request).createInstance();
         list.add(pojo);
       }
     } catch (NoSuchElementException e) {

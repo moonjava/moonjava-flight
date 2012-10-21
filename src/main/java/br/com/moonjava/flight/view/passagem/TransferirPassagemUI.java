@@ -206,7 +206,7 @@ public class TransferirPassagemUI extends AbstractFlightUI {
     return tabela;
   }
 
-  protected void abilitarBotao() {
+  protected void habilitarBotao() {
     transferir.setEnabled(true);
   }
 

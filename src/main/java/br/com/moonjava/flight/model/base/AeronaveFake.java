@@ -58,6 +58,17 @@ public class AeronaveFake implements Aeronave {
 
   @Override
   public void criar(Aeronave pojo) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void deletar(int id) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void atualizar(Aeronave aeronave) {
+    throw new UnsupportedOperationException();
   }
 
 }

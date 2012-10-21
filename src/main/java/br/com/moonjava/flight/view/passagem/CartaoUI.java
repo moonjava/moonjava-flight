@@ -29,6 +29,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -78,9 +79,11 @@ public class CartaoUI extends AbstractFlightUI {
   private JButton oK;
 
   private boolean valid;
+  private final double valorTotal;
 
-  public CartaoUI(ResourceBundle bundle) {
+  public CartaoUI(ResourceBundle bundle, double valorTotal) {
     this.bundle = bundle;
+    this.valorTotal = valorTotal;
 
     frame = new JDialog();
     frame.setTitle(bundle.getString("cartao.titulo"));
@@ -241,6 +244,7 @@ public class CartaoUI extends AbstractFlightUI {
     request.set("bandeira", bandeira.getSelectedItem());
     request.set("cpf", cpf.getText());
     request.set("codigo", codSeguranca.getText());
+    request.set("valor", valorTotal);
 
     return request;
   }
@@ -300,6 +304,13 @@ public class CartaoUI extends AbstractFlightUI {
     FlightImageUI.addError(imagemCodigo, alertaCodigo,
         bundle.getString("alerta.numero"), bundle, conteudo);
     repaint();
+  }
+
+  protected void addMessageFailed() {
+    JOptionPane.showMessageDialog(null,
+        bundle.getString("cartao.erro"),
+        bundle.getString("vender.passagem.pagamento.cartao"),
+        JOptionPane.ERROR_MESSAGE);
   }
 
   // remove layout

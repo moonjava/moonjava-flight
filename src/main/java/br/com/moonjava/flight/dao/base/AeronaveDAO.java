@@ -21,7 +21,7 @@ import br.com.moonjava.flight.controller.base.AeronaveLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Aeronave;
-import br.com.moonjava.flight.util.RequestParam;
+import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0, 25/07/2012
@@ -57,7 +57,7 @@ public class AeronaveDAO implements Aeronave.Jdbc {
   }
 
   @Override
-  public List<Aeronave> consultar(RequestParam request) {
+  public List<Aeronave> consultar(RequestParamWrapper request) {
     String nome = request.stringParam("nome");
     String codigo = request.stringParam("codigo");
 
@@ -69,15 +69,6 @@ public class AeronaveDAO implements Aeronave.Jdbc {
         .with("order by AERONAVE.CODIGO asc")
 
         .andList();
-  }
-
-  @Override
-  public Aeronave consultarPorId(int id) {
-    return query()
-
-        .with("where AERONAVE.ID = ?", id)
-
-        .andGet();
   }
 
   @Override

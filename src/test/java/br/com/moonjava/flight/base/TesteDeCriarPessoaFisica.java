@@ -19,17 +19,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.PessoaFisicaControlCreate;
+import br.com.moonjava.flight.controller.base.PessoaFisicaCreate;
 import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
@@ -61,8 +60,8 @@ public class TesteDeCriarPessoaFisica {
     String email = "testedecriacao@moonjava.com.br";
 
     request.set("nome", "Nome");
-    List<PessoaFisica> antes = dao.consultar(request);
-    assertThat(antes.size(), equalTo(4));
+    PessoaFisica antes = dao.consultarPorCpf(CPF.valueOf(cpf));
+    assertThat(antes, equalTo(null));
 
     request.set("nome", nome);
     request.set("sobrenome", sobrenome);
@@ -74,23 +73,19 @@ public class TesteDeCriarPessoaFisica {
     request.set("telCelular", telCelular);
     request.set("email", email);
 
-    PessoaFisica pf = new PessoaFisicaControlCreate(request).createInstance();
+    PessoaFisica pf = new PessoaFisicaCreate(request).createInstance();
     dao.criar(pf);
 
-    RequestParamWrapper req = new RequestParamWrapper();
-    List<PessoaFisica> res = dao.consultar(req);
-    assertThat(res.size(), equalTo(5));
-
-    PessoaFisica r4 = res.get(4);
-    assertThat(r4.getNome(), equalTo(nome));
-    assertThat(r4.getSobrenome(), equalTo(sobrenome));
-    assertThat(r4.getDataNascimento(), equalTo(nascimento));
-    assertThat(r4.getCpf().getDigito(), equalTo(cpf));
-    assertThat(r4.getRg(), equalTo(rg));
-    assertThat(r4.getEndereco(), equalTo(endereco));
-    assertThat(r4.getTelResidencial(), equalTo(telResidencial));
-    assertThat(r4.getTelCelular(), equalTo(telCelular));
-    assertThat(r4.getEmail(), equalTo(email));
+    PessoaFisica res = dao.consultarPorCpf(CPF.valueOf(cpf));
+    assertThat(res.getNome(), equalTo(nome));
+    assertThat(res.getSobrenome(), equalTo(sobrenome));
+    assertThat(res.getDataNascimento(), equalTo(nascimento));
+    assertThat(res.getCpf().getDigito(), equalTo(cpf));
+    assertThat(res.getRg(), equalTo(rg));
+    assertThat(res.getEndereco(), equalTo(endereco));
+    assertThat(res.getTelResidencial(), equalTo(telResidencial));
+    assertThat(res.getTelCelular(), equalTo(telCelular));
+    assertThat(res.getEmail(), equalTo(email));
   }
 
 }

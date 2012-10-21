@@ -19,8 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -29,7 +27,6 @@ import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.PessoaFisica;
 import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParamWrapper;
 
 /**
  * @version 1.0, Aug 12, 2012
@@ -54,28 +51,6 @@ public class TesteDeConsultarPessoaFisica {
     assertThat(res.getTelCelular(), equalTo(1199996666));
     assertThat(res.getRg(), equalTo("557773339"));
 
-  }
-
-  public void buscar_pessoaFisica_por_id() {
-    PessoaFisicaDAO dao = new PessoaFisicaDAO();
-
-    int id = 3;
-    PessoaFisica res = dao.consultarPorId(id);
-    assertThat(res.getCpf().getDigito(), equalTo((33333333333l)));
-    assertThat(res.getTelCelular(), equalTo(1122229999));
-    assertThat(res.getNome(), equalTo("Nome C"));
-  }
-
-  public void buscar_pf_por_nome() {
-    PessoaFisicaDAO dao = new PessoaFisicaDAO();
-    RequestParamWrapper request = new RequestParamWrapper();
-
-    request.set("nome", "Nome B");
-    List<PessoaFisica> res = dao.consultar(request);
-    assertThat(res.size(), equalTo(1));
-
-    PessoaFisica r1 = res.get(0);
-    assertThat(r1.getCpf().getDigito(), equalTo((22222222222l)));
   }
 
 }

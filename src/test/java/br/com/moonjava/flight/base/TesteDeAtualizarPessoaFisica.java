@@ -23,11 +23,12 @@ import org.joda.time.LocalDate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import br.com.moonjava.flight.controller.base.PessoaFisicaControlUpdate;
+import br.com.moonjava.flight.controller.base.PessoaFisicaUpdate;
 import br.com.moonjava.flight.dao.base.PessoaFisicaDAO;
 import br.com.moonjava.flight.jdbc.DbUnit;
 import br.com.moonjava.flight.jdbc.DbUnitFlightXml;
 import br.com.moonjava.flight.model.base.PessoaFisica;
+import br.com.moonjava.flight.util.CPF;
 import br.com.moonjava.flight.util.CPFInvalidException;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 
@@ -50,7 +51,7 @@ public class TesteDeAtualizarPessoaFisica {
     RequestParamWrapper request = new RequestParamWrapper();
 
     int id = 4;
-    PessoaFisica antes = dao.consultarPorId(id);
+    PessoaFisica antes = dao.consultarPorCpf(CPF.valueOf(44444444444l));
     assertThat(antes.getNome(), equalTo("Nome D"));
     assertThat(antes.getSobrenome(), equalTo("Sobrenome D"));
     assertThat(antes.getDataNascimento(), equalTo(new LocalDate(2000, 12, 01)));
@@ -77,12 +78,12 @@ public class TesteDeAtualizarPessoaFisica {
     request.set("telResidencial", antes.getTelResidencial());
     request.set("telCelular", antes.getTelCelular());
 
-    PessoaFisica pessoaFisica = new PessoaFisicaControlUpdate(request).createInstance();
+    PessoaFisica pessoaFisica = new PessoaFisicaUpdate(request).createInstance();
 
     boolean executed = dao.atualizar(pessoaFisica);
     assertThat(executed, equalTo(true));
 
-    PessoaFisica res = dao.consultarPorId(id);
+    PessoaFisica res = dao.consultarPorCpf(CPF.valueOf(novoCpf));
     assertThat(res.getNome(), equalTo(novoNome));
     assertThat(res.getCpf().getDigito(), equalTo(novoCpf));
     assertThat(res.getNome(), equalTo(novoNome));
@@ -104,7 +105,7 @@ public class TesteDeAtualizarPessoaFisica {
     int telCelular = 1199996666;
     String email = "moonjava@moonjava.com.br";
 
-    PessoaFisica antes = dao.consultarPorId(id);
+    PessoaFisica antes = dao.consultarPorCpf(CPF.valueOf(cpf));
     assertThat(antes.getNome(), equalTo(nome));
     assertThat(antes.getSobrenome(), equalTo(sobrenome));
     assertThat(antes.getDataNascimento(), equalTo(dataDeNascimento));
@@ -131,11 +132,11 @@ public class TesteDeAtualizarPessoaFisica {
     request.set("telResidencial", 1133336666);
     request.set("telCelular", 1133335555);
 
-    PessoaFisica pessoaFisica = new PessoaFisicaControlUpdate(request).createInstance();
+    PessoaFisica pessoaFisica = new PessoaFisicaUpdate(request).createInstance();
     boolean executed = dao.atualizar(pessoaFisica);
     assertThat(executed, equalTo(false));
 
-    PessoaFisica res = dao.consultarPorId(id);
+    PessoaFisica res = dao.consultarPorCpf(CPF.valueOf(cpf));
     assertThat(res.getNome(), equalTo(nome));
     assertThat(res.getSobrenome(), equalTo(sobrenome));
     assertThat(res.getDataNascimento(), equalTo(dataDeNascimento));
@@ -169,7 +170,7 @@ public class TesteDeAtualizarPessoaFisica {
     request.set("telResidencial", 1133336666);
     request.set("telCelular", 1133335555);
 
-    PessoaFisica pessoaFisica = new PessoaFisicaControlUpdate(request).createInstance();
+    PessoaFisica pessoaFisica = new PessoaFisicaUpdate(request).createInstance();
     boolean executed = dao.atualizar(pessoaFisica);
     assertThat(executed, equalTo(false));
   }

@@ -19,6 +19,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -52,8 +54,10 @@ public class TesteDeAtualizarAeronave {
     String codigo = "A1000";
     int qtdAssento = 100;
     boolean mapa = true;
+    request.set("codigo", codigo);
 
-    Aeronave antes = dao.consultarPorId(1);
+    List<Aeronave> aeronaves = dao.consultar(request);
+    Aeronave antes = aeronaves.get(0);
     assertThat(antes.getNome(), equalTo(nome));
     assertThat(antes.getCodigo(), equalTo(codigo));
     assertThat(antes.getQtdDeAssento(), equalTo(qtdAssento));
@@ -67,7 +71,8 @@ public class TesteDeAtualizarAeronave {
     Aeronave aeronave = new AeronaveUpdate(request).createInstance();
     dao.atualizar(aeronave);
 
-    Aeronave res = dao.consultarPorId(id);
+    List<Aeronave> aeronavesRes = dao.consultar(request);
+    Aeronave res = aeronavesRes.get(0);
     assertThat(res.getNome(), equalTo(novoNome));
     assertThat(res.getCodigo(), equalTo(codigo));
     assertThat(res.getQtdDeAssento(), equalTo(qtdAssento));

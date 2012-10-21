@@ -17,13 +17,11 @@ package br.com.moonjava.flight.dao.base;
 
 import java.util.List;
 
-import br.com.moonjava.flight.controller.base.PassagemControlLoader;
+import br.com.moonjava.flight.controller.base.PassagemLoader;
 import br.com.moonjava.flight.jdbc.SqlStatement;
 import br.com.moonjava.flight.jdbc.SqlStatementWrapper;
 import br.com.moonjava.flight.model.base.Passagem;
 import br.com.moonjava.flight.model.base.Voo;
-import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0 06/10/2012
@@ -48,7 +46,7 @@ public class PassagemDAO implements Passagem.Jdbc {
         .with("left join FLIGHT.AERONAVE as AERONAVE")
         .with("on VOO.AERONAVE_ID = AERONAVE.ID")
 
-        .load(new PassagemControlLoader());
+        .load(new PassagemLoader());
   }
 
   @Override
@@ -68,40 +66,12 @@ public class PassagemDAO implements Passagem.Jdbc {
   }
 
   @Override
-  public List<Passagem> consultar(RequestParam request) {
-    return query()
-
-        .with("where 1 = 1 ")
-
-        .andList();
-  }
-
-  @Override
-  public Passagem consultarPorId(int id) {
-    return query()
-
-        .with("where PASSAGEM.ID = ?", id)
-
-        .andGet();
-  }
-
-  @Override
   public Passagem consultarPorCodigoBilhete(String bilhete) {
     return query()
 
         .with("where PASSAGEM.COD_BILHETE = ?", bilhete)
 
         .andGet();
-  }
-
-  @Override
-  public List<Passagem> consultarPorCpf(CPF cpf) {
-    return query()
-
-        .with("where PESSOAFISICA.CPF = ?", cpf.getDigito())
-
-        .andList();
-
   }
 
   @Override
@@ -120,24 +90,16 @@ public class PassagemDAO implements Passagem.Jdbc {
   }
 
   @Override
-  public void deletar(int id) {
-    new SqlStatementWrapper()
-        .prepare()
-
-        .with("delete from FLIGHT.PASSAGEM")
-        .with("where PASSAGEM.ID = ?", id)
-
-        .andExecute();
-  }
-
   public List<Passagem> consultarPorVoo(Voo voo) {
     return query()
 
         .with("where PASSAGEM.VOO_ID = ?", voo.getId())
+        .with("and VOO.ASSENTO_LIVRE > 0")
 
         .andList();
   }
 
+  @Override
   public boolean efetuarCheckin(Passagem pojo, String assento) {
     boolean executed = new SqlStatementWrapper()
         .prepare()
@@ -152,13 +114,26 @@ public class PassagemDAO implements Passagem.Jdbc {
   }
 
   @Override
+  public boolean cancelarPorVoo(Voo pojo) {
+    boolean executed = new SqlStatementWrapper()
+        .prepare()
+
+        .with("update FLIGHT.PASSAGEM as PASSAGEM set")
+        .with("VOO_ID = NULL")
+        .with("where VOO_ID = ?", pojo.getId())
+
+        .andExecute();
+    return executed;
+
+  }
+
+  @Override
   public boolean efetuarCancelamento(Passagem pojo) {
     boolean executed = new SqlStatementWrapper()
         .prepare()
 
         .with("update FLIGHT.PASSAGEM as PASSAGEM set")
         .with("VOO_ID = null")
-
         .with("where ID = ?", pojo.getId())
 
         .andExecute();

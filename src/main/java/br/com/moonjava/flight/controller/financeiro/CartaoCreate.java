@@ -28,11 +28,11 @@ import br.com.moonjava.flight.util.RequestParam;
  * @contact tiago.aguiar@moonjava.com.br
  * 
  */
-public class CartaoControlCreate implements Cartao.Builder {
+public class CartaoCreate implements Cartao.Builder {
 
   private final RequestParam request;
 
-  public CartaoControlCreate(RequestParam request) {
+  public CartaoCreate(RequestParam request) {
     this.request = request;
   }
 
@@ -53,7 +53,7 @@ public class CartaoControlCreate implements Cartao.Builder {
 
   @Override
   public LocalDate getDataDeValidade() {
-    return request.localDateParam("validade");
+    return request.localDateParam("validade").withDayOfMonth(1);
   }
 
   @Override

@@ -33,8 +33,8 @@ import br.com.moonjava.flight.view.passagem.ChequeUI;
  */
 public class ChequeController extends ChequeUI {
 
-  public ChequeController(ResourceBundle bundle) {
-    super(bundle);
+  public ChequeController(ResourceBundle bundle, double valorTotal) {
+    super(bundle, valorTotal);
 
     // add listeners
     addFocusListener(new FocusTextField());

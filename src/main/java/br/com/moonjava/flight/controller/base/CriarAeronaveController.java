@@ -17,6 +17,7 @@ package br.com.moonjava.flight.controller.base;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -28,6 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import br.com.moonjava.flight.model.base.Aeronave;
 import br.com.moonjava.flight.model.base.AeronaveModel;
 import br.com.moonjava.flight.util.CopyFile;
+import br.com.moonjava.flight.util.FlightFocusLostListener;
 import br.com.moonjava.flight.util.RequestParamWrapper;
 import br.com.moonjava.flight.view.aeronave.CriarAeronaveUI;
 
@@ -47,8 +49,25 @@ public class CriarAeronaveController extends CriarAeronaveUI {
                                  JButton deletar) {
     super(conteudo, bundle, atualizar, deletar);
 
+    addFocusAssentoListener(new AssentoHandler());
     addLoaderFileListener(new LoaderFileHandler());
     addCadastrarListener(new CadastrarHandler());
+  }
+
+  private class AssentoHandler extends FlightFocusLostListener {
+    @Override
+    public void focusLost(FocusEvent e) {
+      try {
+        String assento = getParameters().stringParam("qtdDeAssento");
+        int numero = Integer.parseInt(assento);
+        if (numero <= 0) {
+          throw new NumberFormatException();
+        }
+        addImageAssentoValid();
+      } catch (NumberFormatException e2) {
+        addImageAssentoInvalid();
+      }
+    }
   }
 
   private class LoaderFileHandler implements ActionListener {
@@ -66,7 +85,7 @@ public class CriarAeronaveController extends CriarAeronaveUI {
         // Adiciona ao request o assento como tipo int
         request.set("qtdDeAssento", assento);
 
-        // Carrega a imagem do mapa de assento
+        // Carrega a imagem do mapa de assento (somente .jpg)
         JFileChooser caixa = new JFileChooser();
         caixa.setFileFilter(new FileNameExtensionFilter("*.jpg", "jpg"));
         int retorno = caixa.showOpenDialog(null);
@@ -78,6 +97,7 @@ public class CriarAeronaveController extends CriarAeronaveUI {
           String absolutePath = file.getAbsolutePath();
           fileName = file.getName();
 
+          // Cria uma pasta no computador caso nao exista
           if (!folder.exists()) {
             folder.mkdir();
             folder.setWritable(true, true);
@@ -101,16 +121,21 @@ public class CriarAeronaveController extends CriarAeronaveUI {
   private class CadastrarHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      String res = request.stringParam("nome") + ".jpg";
+      try {
+        String res = request.stringParam("nome") + ".jpg";
 
-      // Executa se nome de arquivo for igual a aeronave
-      if (fileName.equals(res)) {
-        Aeronave pojo = new AeronaveCreate(request).createInstance();
-        Aeronave aeronave = new AeronaveModel();
-        aeronave.criar(pojo);
-        messageOK();
-      } else {
-        messageFailed();
+        // Executa se nome de arquivo for igual a aeronave
+        if (fileName.equals(res)) {
+          Aeronave pojo = new AeronaveCreate(request).createInstance();
+          Aeronave aeronave = new AeronaveModel();
+          aeronave.criar(pojo);
+          messageOK();
+        } else {
+          messageFailed();
+        }
+
+      } catch (Exception e2) {
+        addMessageFailed();
       }
     }
   }

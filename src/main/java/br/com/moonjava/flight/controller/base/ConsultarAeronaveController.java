@@ -61,7 +61,6 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
   }
 
   private class ConsultarHandler implements ActionListener {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       RequestParamWrapper request = getParameters();
@@ -69,6 +68,7 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
       Aeronave aeronave = new AeronaveModel();
       list = aeronave.consultar(request);
 
+      // Exibe vôos na tabela
       boolean isEmpty = showList(list);
 
       if (isEmpty) {
@@ -80,7 +80,6 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
   }
 
   private class SeatMapHandler implements ActionListener {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       int index = getTable().getSelectedRow();
@@ -105,6 +104,14 @@ public class ConsultarAeronaveController extends ConsultarAeronaveUI {
       enableButtons();
       JTable tabela = getTable();
 
+      // Os controladores de Deletar e Atualizar
+      // são objetos Singleton pois a cada evento (mouseClicked)
+      // um objeto seria instanciado, ocasionando a ação
+      // dos JOptionPane (definidos nestas classes) mais de uma vez.
+      // Ex.: Deletar mais de um item sem um Singleton executará a JOptionPane
+      // em questão a mesma quantidade de clicks (isso porque o HashCode de cada
+      // objeto é diferente). Com Singleton, isso não ocorrerá porque há somente
+      // um HashCode, logo, há somente um JOptionPane.
       DeletarAeronaveController delete = DeletarAeronaveController.getInstance();
       delete.setAttributes(tabela, conteudo, bundle, atualizar, deletar);
       delete.setResult(false);

@@ -15,12 +15,9 @@
  */
 package br.com.moonjava.flight.model.base;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 
 import br.com.moonjava.flight.util.CPF;
-import br.com.moonjava.flight.util.RequestParam;
 
 /**
  * @version 1.0, 10/08/2012
@@ -55,15 +52,10 @@ public interface PessoaFisica {
 
     boolean criar(PessoaFisica pessoaFisica);
 
-    List<PessoaFisica> consultar(RequestParam request);
-
-    PessoaFisica consultarPorId(int id);
-
     PessoaFisica consultarPorCpf(CPF cpf);
 
     boolean atualizar(PessoaFisica pessoaFisica);
 
-    void deletar(int id);
   }
 
   int getId();
@@ -88,8 +80,8 @@ public interface PessoaFisica {
 
   boolean criar(PessoaFisica pojo);
 
-  void atualizar(PessoaFisica pojo);
-
   PessoaFisica consultarPorCPF(CPF cpf);
+
+  void atualizar(PessoaFisica pojo);
 
 }

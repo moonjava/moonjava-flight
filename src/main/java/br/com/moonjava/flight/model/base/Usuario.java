@@ -47,8 +47,6 @@ public interface Usuario {
 
     List<Usuario> consultar(RequestParam request);
 
-    Usuario consultarPorId(int id);
-
     Usuario consultarPorCpf(CPF cpf);
 
     Usuario consultarUsuario(RequestParam request);
@@ -56,8 +54,6 @@ public interface Usuario {
     boolean atualizar(Usuario usuario);
 
     void deletar(int id);
-
-    void deletarPorPessoaFisicaId(int pessoaFisica);
 
   }
 
@@ -73,12 +69,16 @@ public interface Usuario {
 
   String getSenha();
 
+  void criar(Usuario pojo);
+
   List<Usuario> consultar(RequestParamWrapper request);
 
-  void deletar(int id);
+  Usuario consultarPorCpf(CPF cpf);
+
+  Usuario consultarUsuario(RequestParamWrapper request);
 
   void atualizar(Usuario pojo);
 
-  Usuario consultarUsuario(RequestParamWrapper request);
+  void deletar(int id);
 
 }

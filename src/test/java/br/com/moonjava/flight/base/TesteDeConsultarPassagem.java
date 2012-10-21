@@ -32,7 +32,6 @@ import br.com.moonjava.flight.model.base.Passagem;
  * @contact miqueias@moonjava.com.br
  * 
  */
-
 @Test
 public class TesteDeConsultarPassagem {
 
@@ -42,20 +41,18 @@ public class TesteDeConsultarPassagem {
     dbUnit.load(new DbUnitFlightXml());
   }
 
-  public void consultar_por_id() {
+  public void consultar_por_codigo_p1003() {
     PassagemDAO dao = new PassagemDAO();
 
-    int id = 4;
-
-    Passagem res = dao.consultarPorId(id);
+    Passagem res = dao.consultarPorCodigoBilhete("P1003");
 
     assertThat(res.getCodigoBilhete(), equalTo("P1003"));
     assertThat(res.getAssento(), equalTo("A11"));
     assertThat(res.getPessoaFisica().getNome(), equalTo("Nome D"));
-    assertThat(res.getVoo().getDestino(), equalTo(null));
+    assertThat(res.getVoo().getCodigo(), equalTo(null));
   }
 
-  public void consultar_por_codigo() {
+  public void consultar_por_codigo_p1000() {
     PassagemDAO dao = new PassagemDAO();
 
     String codigo = "P1000";
@@ -66,7 +63,6 @@ public class TesteDeConsultarPassagem {
     assertThat(res.getAssento(), equalTo("B15"));
     assertThat(res.getPessoaFisica().getNome(), equalTo("Nome A"));
     assertThat(res.getVoo().getCodigo(), equalTo("V1002"));
-
   }
 
 }
